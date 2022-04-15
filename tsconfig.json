@@ -4,8 +4,10 @@
     "sourceMap": true,
     "lib": ["esnext"],
     "alwaysStrict": true,
-    "types": ["@cloudflare/workers-types", "jest"]
+    "types": ["@cloudflare/workers-types", "jest"],
+    "skipLibCheck": true,
+    "noEmit": true
   },
-  "include": ["src/**/*", "tests"],
-  "exclude": ["node_modules/*", "tsconfig.json"]
+  "include": ["src/**/*", "tests", "dist/index.js"],
+  "exclude": ["node_modules/**/*", "tsconfig.json"]
 }
