@@ -2,6 +2,7 @@ name: Build
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
@@ -11,6 +12,8 @@ jobs:
     steps:
       - name: Checkout current repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup NodeJs
         uses: actions/setup-node@v2
         with:
@@ -19,3 +22,8 @@ jobs:
         run: npm i
       - name: Build
         run: npm run build
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
