@@ -12,7 +12,8 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      reporter: ["html"],
+      include: ["src/**/*"],
+      exclude: ["node_modules/**/*", "src/tests/**/*"],
     },
   },
 });
