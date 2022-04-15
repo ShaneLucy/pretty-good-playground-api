@@ -4,7 +4,7 @@
     "sourceMap": true,
     "lib": ["esnext"],
     "alwaysStrict": true,
-    "types": ["@cloudflare/workers-types"]
+    "types": ["@cloudflare/workers-types", "jest"]
   },
   "include": ["src/**/*", "tests"],
   "exclude": ["node_modules/*", "tsconfig.json"]
