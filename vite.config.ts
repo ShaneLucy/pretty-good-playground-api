@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -7,6 +8,11 @@ export default defineConfig({
       name: "lib",
       entry: "src/index.ts",
       formats: ["es"],
+    },
+  },
+  test: {
+    coverage: {
+      reporter: ["html"],
     },
   },
 });
