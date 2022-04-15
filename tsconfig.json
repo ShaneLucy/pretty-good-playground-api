@@ -4,7 +4,7 @@
     "sourceMap": true,
     "lib": ["esnext"],
     "alwaysStrict": true,
-    "types": ["@cloudflare/workers-types", "jest"],
+    "types": ["@cloudflare/workers-types", "jest", "node"],
     "skipLibCheck": true,
     "noEmit": true
   },
