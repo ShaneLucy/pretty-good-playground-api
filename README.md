@@ -2,12 +2,9 @@
 
 # TODO
 
-- Link project with https://sonarcloud.io/,
-- Link project with https://coveralls.io/,
-- Link project with https://snyk.io/,
-- Link project with https://codeclimate.com/
+- Update readme
 
-# Project Title
+# Pretty Good Playground API
 
 Simple overview of use/purpose.
 
