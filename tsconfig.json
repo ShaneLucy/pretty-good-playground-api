@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "sourceMap": true,
+    "lib": ["esnext"],
+    "alwaysStrict": true,
+    "types": ["@cloudflare/workers-types"]
+  },
+  "include": ["src/**/*", "tests"],
+  "exclude": ["node_modules/*", "tsconfig.json"]
+}
