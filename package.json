@@ -10,7 +10,7 @@
     "format": "prettier --write '**/*.{js,css,json,md}'",
     "lint": "prettier --write '**/*.{js,ts,md}' && eslint src/**",
     "lint-fix": "prettier --write . && eslint src/** --fix",
-    "coverage": "nyc --reporter=lcov npm run test"
+    "coverage": "nyc --reporter=lcov vitest --run --coverage"
   },
   "author": "Shane Lucy <shanelucy01@protonmail.com>",
   "license": "MIT",
