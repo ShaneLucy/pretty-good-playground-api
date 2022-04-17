@@ -15,6 +15,7 @@ const registerUser = async (username: string, password: string, salt: string) =>
         "Content-Type": "application/json",
       },
     });
+    response = await response.text();
   } catch (e) {
     response = e;
   }
