@@ -1,5 +1,10 @@
 import { Router } from "itty-router";
-import { generateSalt, encodePassword, decodeHash, generateHash } from "../authentication-utils";
+import {
+  generateSalt,
+  encodePassword,
+  decodeHash,
+  generateHash,
+} from "../utilities/authentication";
 import registerUser from "../api";
 
 const router = Router();

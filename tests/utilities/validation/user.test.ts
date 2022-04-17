@@ -8,7 +8,7 @@ import {
   passwordEmptyErrorMessage,
   passwordInvalidErrorMessage,
   validateUser,
-} from "../../src/validation-utils";
+} from "../../../src/utilities/validation";
 
 const [validUsername, validUsername2, validUsername3] = [
   "9021qwIdsad9390",
