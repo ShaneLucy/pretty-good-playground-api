@@ -8,7 +8,7 @@ import {
   generateSalt,
   encodePassword,
   decodeHash,
-} from "../../../authentication-utils";
+} from "../../src/authentication-utils";
 
 // @ts-ignore
 global.crypto = new Crypto();

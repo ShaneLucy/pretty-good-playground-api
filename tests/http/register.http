@@ -1,0 +1,36 @@
+# valid request (username might need to be changed to satisfy UNIQUE requirement)
+POST http://localhost:9000/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "oewjkdofj",
+    "password": "password1"
+}
+
+### invalid username
+POST http://localhost:9000/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "",
+    "password": "password"
+}
+
+### invalid username
+POST http://localhost:9000/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "123456jgjh f",
+    "password": "password"
+}
+
+### invalid password
+POST http://localhost:9000/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "oewjkdofj",
+    "password": "passd"
+}
+ 
