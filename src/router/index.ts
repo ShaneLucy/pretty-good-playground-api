@@ -5,12 +5,24 @@ import {
   decodeHash,
   generateHash,
 } from "../utilities/authentication";
+import { validateUser } from "../utilities/validation";
 import registerUser from "../api";
 
 const router = Router();
 
 router.post("/register", async (request: Request) => {
   const { username, password } = await request.json();
+
+  const isUserValid = validateUser(username, password);
+  if (!isUserValid.isValid) {
+    return new Response(JSON.stringify({ error: isUserValid.errorMessage }), {
+      headers: {
+        "Content-type": "application/json",
+      },
+      status: 422,
+      statusText: isUserValid.errorMessage,
+    });
+  }
 
   const salt = generateSalt();
   const encodedPassword = encodePassword(password, salt);
