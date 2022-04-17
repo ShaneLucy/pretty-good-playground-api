@@ -1,39 +1,9 @@
 import { Router } from "itty-router";
-import {
-  generateSalt,
-  encodePassword,
-  decodeHash,
-  generateHash,
-} from "../utilities/authentication";
-import { validateUser } from "../utilities/validation";
-import registerUser from "../api";
+
+import { registrationHandler } from "../request-handler";
 
 const router = Router();
 
-router.post("/register", async (request: Request) => {
-  const { username, password } = await request.json();
-
-  const isUserValid = validateUser(username, password);
-  if (!isUserValid.isValid) {
-    return new Response(JSON.stringify({ error: isUserValid.errorMessage }), {
-      headers: {
-        "Content-type": "application/json",
-      },
-      status: 422,
-      statusText: isUserValid.errorMessage,
-    });
-  }
-
-  const salt = generateSalt();
-  const encodedPassword = encodePassword(password, salt);
-  const hashedPassword = decodeHash(await generateHash(encodedPassword));
-  const response = await registerUser(username, hashedPassword, salt);
-
-  return new Response(JSON.stringify(response), {
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
-});
+router.post("/register", async (request: Request) => Promise.resolve(registrationHandler(request)));
 
 export default router;
