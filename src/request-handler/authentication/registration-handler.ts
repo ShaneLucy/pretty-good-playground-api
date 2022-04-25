@@ -1,7 +1,7 @@
 import {
   generateSalt,
   encodePassword,
-  decodeHash,
+  convertHashToHexString,
   generateHash,
 } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
@@ -23,7 +23,7 @@ const registrationHandler = async (request: Request): Promise<Response> => {
 
   const salt = generateSalt();
   const encodedPassword = encodePassword(password, salt);
-  const hashedPassword = decodeHash(await generateHash(encodedPassword));
+  const hashedPassword = convertHashToHexString(await generateHash(encodedPassword));
   const response = await registerUser(username, hashedPassword, salt);
 
   return new Response(JSON.stringify(response), {

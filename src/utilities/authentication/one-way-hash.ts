@@ -4,7 +4,7 @@ export const encodePassword = (password: string, salt: string): ArrayBuffer => {
   return encoder.encode(`${password}${salt}`);
 };
 
-export const decodeHash = (hashedPassword: ArrayBuffer): string => {
+export const convertHashToHexString = (hashedPassword: ArrayBuffer): string => {
   const hashArray = Array.from(new Uint8Array(hashedPassword)); // convert buffer to byte array
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 };

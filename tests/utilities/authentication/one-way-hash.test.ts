@@ -7,7 +7,7 @@ import {
   generateHash,
   generateSalt,
   encodePassword,
-  decodeHash,
+  convertHashToHexString,
 } from "../../../src/utilities/authentication";
 
 // @ts-ignore
@@ -52,11 +52,11 @@ describe("the encodePassword function works correctly", () => {
   });
 });
 
-describe("the decodeHash function works correctly", () => {
+describe("the convertHashToHexString function works correctly", () => {
   it("always returns a 129 character string", async () => {
     const [password1, password2, password3] = [
-      decodeHash(await generateHash(encodePassword("password1", "salt1"))),
-      decodeHash(
+      convertHashToHexString(await generateHash(encodePassword("password1", "salt1"))),
+      convertHashToHexString(
         await generateHash(
           encodePassword(
             "skdfnlksdfsdjflksdjflksdjflksdjflksdjflksdjflkjsdflksdjflksjdlfkjsdlkfjlskdjflksdjflskdjf",
@@ -64,7 +64,7 @@ describe("the decodeHash function works correctly", () => {
           )
         )
       ),
-      decodeHash(await generateHash(encodePassword("", "salt3"))),
+      convertHashToHexString(await generateHash(encodePassword("", "salt3"))),
     ];
 
     expect(password1).toHaveLength(128);
@@ -74,9 +74,9 @@ describe("the decodeHash function works correctly", () => {
 
   it("generates an identical hash given identical inputs", async () => {
     const [identicalPassword1, identicalPassword2, password] = [
-      decodeHash(await generateHash(encodePassword("password", "salt"))),
-      decodeHash(await generateHash(encodePassword("password", "salt"))),
-      decodeHash(await generateHash(encodePassword("password", "salt3"))),
+      convertHashToHexString(await generateHash(encodePassword("password", "salt"))),
+      convertHashToHexString(await generateHash(encodePassword("password", "salt"))),
+      convertHashToHexString(await generateHash(encodePassword("password", "salt3"))),
     ];
 
     expect(identicalPassword1).to.deep.equal(identicalPassword2);
