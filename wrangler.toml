@@ -20,3 +20,8 @@ main = "./pretty-good-playground-api.es.js"
 [[build.upload.rules]]
 type = "ESModule"
 globs = ["**/*.js"]
+
+[[kv_namespaces]]
+binding = "USERS"
+id = "490da278e7bb4b819f97291fb706763e"
+preview_id = "490da278e7bb4b819f97291fb706763e"

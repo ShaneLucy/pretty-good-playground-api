@@ -6,7 +6,8 @@
     "alwaysStrict": true,
     "types": ["@cloudflare/workers-types", "jest", "node"],
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "typeRoots": ["./src/types.d.ts"]
   },
   "include": ["src/**/*", "tests", "dist/index.js"],
   "exclude": ["node_modules/**/*", "tsconfig.json"]
