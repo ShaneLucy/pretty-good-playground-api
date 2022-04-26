@@ -1,7 +1,7 @@
 import { TextEncoder } from "util";
 import { Crypto } from "@peculiar/webcrypto";
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 
 import {
   generateHash,
@@ -10,8 +10,7 @@ import {
   convertHashToHexString,
 } from "../../../src/utilities/authentication";
 
-// @ts-ignore
-global.crypto = new Crypto();
+vi.stubGlobal("crypto", new Crypto());
 
 describe("the generateHash function works correctly", () => {
   it("returns a different value to its input", async () => {
