@@ -5,6 +5,7 @@ import {
   generateHash,
 } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
+import { HttpStatusCodes, LoggingMessages } from "../../logging";
 
 type Response = {
   message: string;
@@ -21,14 +22,14 @@ const registrationHandler = async (
   if (!isUserValid.isValid) {
     return {
       message: isUserValid.errorMessage,
-      code: 422,
+      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
 
   if ((await kvNamespace.get(username)) !== null) {
     return {
-      message: "Username already exists",
-      code: 422,
+      message: LoggingMessages.USER_EXISTS,
+      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
 
@@ -36,11 +37,11 @@ const registrationHandler = async (
   const encodedPassword = encodePassword(password, salt);
   const hashedPassword = convertHashToHexString(await generateHash(encodedPassword));
 
-  await kvNamespace.put(username, JSON.stringify({ username, password: hashedPassword, salt }));
+  await kvNamespace.put(username, JSON.stringify({ username, salt, password: hashedPassword }));
 
   return {
-    message: "Success",
-    code: 200,
+    message: LoggingMessages.SUCCESS,
+    code: HttpStatusCodes.SUCCESS,
   };
 };
 
