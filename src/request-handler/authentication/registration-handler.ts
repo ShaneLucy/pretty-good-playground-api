@@ -6,48 +6,42 @@ import {
 } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
 
+type Response = {
+  message: string;
+  code: number;
+};
+
 const registrationHandler = async (
-  request: Request,
+  userDetails: { username: string; password: string },
   kvNamespace: KVNamespace
 ): Promise<Response> => {
-  const { username, password } = await request.json();
+  const { username, password } = userDetails;
 
   const isUserValid = validateUser(username, password);
   if (!isUserValid.isValid) {
-    return new Response(JSON.stringify({ error: isUserValid.errorMessage }), {
-      headers: {
-        "Content-type": "application/json",
-      },
-      status: 422,
-      statusText: isUserValid.errorMessage,
-    });
+    return {
+      message: isUserValid.errorMessage,
+      code: 422,
+    };
   }
 
   if ((await kvNamespace.get(username)) !== null) {
-    const errorText = "Username already exists";
-    return new Response(JSON.stringify({ error: errorText }), {
-      headers: {
-        "Content-type": "application/json",
-      },
-      status: 422,
-      statusText: errorText,
-    });
+    return {
+      message: "Username already exists",
+      code: 422,
+    };
   }
 
   const salt = generateSalt();
   const encodedPassword = encodePassword(password, salt);
   const hashedPassword = convertHashToHexString(await generateHash(encodedPassword));
 
-  const response = kvNamespace.put(
-    username,
-    JSON.stringify({ username, password: hashedPassword, salt })
-  );
+  await kvNamespace.put(username, JSON.stringify({ username, password: hashedPassword, salt }));
 
-  return new Response(JSON.stringify(response), {
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
+  return {
+    message: "Success",
+    code: 200,
+  };
 };
 
 export default registrationHandler;
