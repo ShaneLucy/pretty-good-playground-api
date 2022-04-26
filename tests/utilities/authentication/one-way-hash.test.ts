@@ -26,8 +26,9 @@ describe("the generateHash function works correctly", () => {
 
 describe("the generateSalt function works correctly", () => {
   it("returns a string 36 characters long", () => {
+    const saltLength = 35;
     const salt = generateSalt();
-    expect(salt).toHaveLength(35);
+    expect(salt).toHaveLength(saltLength);
   });
 
   it("when called multiple times, returns different values", () => {
@@ -53,6 +54,7 @@ describe("the encodePassword function works correctly", () => {
 
 describe("the convertHashToHexString function works correctly", () => {
   it("always returns a 129 character string", async () => {
+    const passwordLength = 128;
     const [password1, password2, password3] = [
       convertHashToHexString(await generateHash(encodePassword("password1", "salt1"))),
       convertHashToHexString(
@@ -66,9 +68,9 @@ describe("the convertHashToHexString function works correctly", () => {
       convertHashToHexString(await generateHash(encodePassword("", "salt3"))),
     ];
 
-    expect(password1).toHaveLength(128);
-    expect(password2).toHaveLength(128);
-    expect(password3).toHaveLength(128);
+    expect(password1).toHaveLength(passwordLength);
+    expect(password2).toHaveLength(passwordLength);
+    expect(password3).toHaveLength(passwordLength);
   });
 
   it("generates an identical hash given identical inputs", async () => {

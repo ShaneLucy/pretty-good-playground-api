@@ -5,8 +5,10 @@ export const encodePassword = (password: string, salt: string): ArrayBuffer => {
 };
 
 export const convertHashToHexString = (hashedPassword: ArrayBuffer): string => {
+  const numToHexRadix = 16;
+  const padLength = 2;
   const hashArray = Array.from(new Uint8Array(hashedPassword));
-  return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return hashArray.map((b) => b.toString(numToHexRadix).padStart(padLength, "0")).join("");
 };
 
 export const generateHash = async (encodedPassword: ArrayBuffer): Promise<ArrayBuffer> =>

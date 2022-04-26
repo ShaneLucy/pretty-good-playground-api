@@ -7,17 +7,17 @@ import { HttpStatusCodes, LoggingMessages } from "../../../src/logging";
 vi.stubGlobal("crypto", new Crypto());
 
 describe("the registrationHandler function works correctly", () => {
-  it(`when given a valid username and password returns the correct status & success message`, async () => {
-    const kvNamespace = {
-      put: vi.fn(),
-      get: vi.fn().mockReturnValue(null),
-      delete: vi.fn(),
-      getWithMetadata: vi.fn(),
-      list: vi.fn(),
-    };
+  const kvNamespace = {
+    put: vi.fn(),
+    get: vi.fn().mockReturnValue(null),
+    delete: vi.fn(),
+    getWithMetadata: vi.fn(),
+    list: vi.fn(),
+  };
 
+  it(`when given a valid username and password returns the correct status & success message`, async () => {
     const response = await registrationHandler(
-      { username: "test", password: "09483490589054" },
+      { username: "test", password: "09483490054" },
       kvNamespace
     );
 
@@ -26,14 +26,6 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const kvNamespace = {
-      put: vi.fn(),
-      get: vi.fn().mockReturnValue(null),
-      delete: vi.fn(),
-      getWithMetadata: vi.fn(),
-      list: vi.fn(),
-    };
-
     const response = await registrationHandler(
       { username: "t es t", password: "09483490589054" },
       kvNamespace
@@ -44,14 +36,6 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const kvNamespace = {
-      put: vi.fn(),
-      get: vi.fn().mockReturnValue(null),
-      delete: vi.fn(),
-      getWithMetadata: vi.fn(),
-      list: vi.fn(),
-    };
-
     const response = await registrationHandler(
       { username: "test", password: "123456" },
       kvNamespace
@@ -62,7 +46,7 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given a username that already exists returns the correct status  error message`, async () => {
-    const kvNamespace = {
+    const kvNamespaceWithGet = {
       put: vi.fn(),
       get: vi.fn().mockReturnValue("test"),
       delete: vi.fn(),
@@ -71,8 +55,8 @@ describe("the registrationHandler function works correctly", () => {
     };
 
     const response = await registrationHandler(
-      { username: "test", password: "09483490589054" },
-      kvNamespace
+      { username: "test", password: "011589054" },
+      kvNamespaceWithGet
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);

@@ -5,6 +5,7 @@ type ValidationResponse = {
   errorMessage: string;
 };
 
+const minPasswordLength = 8;
 export const validateUsername = (username: string): ValidationResponse => {
   const response = {
     isValid: true,
@@ -37,7 +38,7 @@ export const validatePassword = (password: string): ValidationResponse => {
     return response;
   }
 
-  if (password.length < 8) {
+  if (password.length < minPasswordLength) {
     response.isValid = false;
     response.errorMessage = LoggingMessages.PASSWORD_INVALID;
     return response;
