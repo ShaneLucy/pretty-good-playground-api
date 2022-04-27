@@ -2,9 +2,9 @@ import {
   encodePassword,
   convertHashToHexString,
   generateHash,
+  generateJWT,
 } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
-import generateJWT from "../../utilities/authentication/jwt";
 import { HttpStatusCodes, LoggingMessages } from "../../utilities";
 
 type Response = {
