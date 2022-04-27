@@ -17,9 +17,8 @@ router.post("/register", async (request: Request, env: Env) => {
 
 router.post("/login", async (request: Request, env: Env) => {
   const result = await loginHandler(await request.json(), env.USERS, env.JWT_SECRET);
-  const body = result.jwt ? result.jwt : result.message;
 
-  return new Response(JSON.stringify(body), {
+  return new Response(JSON.stringify(result.message), {
     headers: {
       "Content-type": "application/json",
     },

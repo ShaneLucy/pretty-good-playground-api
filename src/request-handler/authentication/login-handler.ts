@@ -9,7 +9,6 @@ import { HttpStatusCodes, LoggingMessages } from "../../utilities";
 
 type Response = {
   message: string;
-  jwt?: string;
   code: number;
 };
 
@@ -49,8 +48,7 @@ const loginHandler = async (
   }
 
   return {
-    message: LoggingMessages.SUCCESS,
-    jwt: await generateJWT(parsedUsername, jwtSecret),
+    message: await generateJWT(parsedUsername, jwtSecret),
     code: HttpStatusCodes.SUCCESS,
   };
 };
