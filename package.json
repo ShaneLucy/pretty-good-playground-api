@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@types/node": "^17.0.24",
-    "itty-router": "^2.6.1"
+    "itty-router": "^2.6.1",
+    "jose": "^4.8.0"
   }
 }
