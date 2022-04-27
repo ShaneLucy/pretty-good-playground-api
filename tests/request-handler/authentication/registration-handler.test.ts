@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 
 import { registrationHandler } from "../../../src/request-handler";
-import { HttpStatusCodes, LoggingMessages } from "../../../src/logging";
+import { HttpStatusCodes, LoggingMessages } from "../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 

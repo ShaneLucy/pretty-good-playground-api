@@ -1,4 +1,4 @@
-import { LoggingMessages } from "../../logging";
+import { LoggingMessages } from "../index";
 
 type ValidationResponse = {
   isValid: boolean;

@@ -5,7 +5,7 @@ import {
   validatePassword,
   validateUser,
 } from "../../../src/utilities/validation";
-import { LoggingMessages } from "../../../src/logging";
+import { LoggingMessages } from "../../../src/utilities";
 
 const [validUsername, validUsername2, validUsername3] = [
   "9021qwIdsad9390",

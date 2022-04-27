@@ -5,7 +5,7 @@ import {
   generateHash,
 } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
-import { HttpStatusCodes, LoggingMessages } from "../../logging";
+import { HttpStatusCodes, LoggingMessages } from "../../utilities";
 
 type Response = {
   message: string;
