@@ -9,6 +9,13 @@ vi.stubGlobal("crypto", new Crypto());
 describe("the registrationHandler function works correctly", async () => {
   const salt = "salt";
   const password = "12345678";
+  const kvNamespaceGetNull = {
+    put: vi.fn(),
+    get: vi.fn().mockReturnValue(null),
+    delete: vi.fn(),
+    getWithMetadata: vi.fn(),
+    list: vi.fn(),
+  };
 
   vi.mock("../../../src/utilities/authentication", () => ({
     generateJWT: vi.fn().mockReturnValue("jwt"),
@@ -32,17 +39,9 @@ describe("the registrationHandler function works correctly", async () => {
   });
 
   it(`when given a username that doesn't exist it returns the correct status and code`, async () => {
-    const kvNamespace = {
-      put: vi.fn(),
-      get: vi.fn().mockReturnValue(null),
-      delete: vi.fn(),
-      getWithMetadata: vi.fn(),
-      list: vi.fn(),
-    };
-
     const response = await loginHandler(
       { username: "test", password: "09483490589054" },
-      kvNamespace,
+      kvNamespaceGetNull,
       "secret"
     );
 
@@ -51,17 +50,9 @@ describe("the registrationHandler function works correctly", async () => {
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const kvNamespace = {
-      put: vi.fn(),
-      get: vi.fn().mockReturnValue(null),
-      delete: vi.fn(),
-      getWithMetadata: vi.fn(),
-      list: vi.fn(),
-    };
-
     const response = await loginHandler(
-      { username: "test", password: "123456" },
-      kvNamespace,
+      { username: "validUsername", password: "*" },
+      kvNamespaceGetNull,
       "secret"
     );
 
@@ -70,17 +61,9 @@ describe("the registrationHandler function works correctly", async () => {
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const kvNamespace = {
-      put: vi.fn(),
-      get: vi.fn().mockReturnValue(null),
-      delete: vi.fn(),
-      getWithMetadata: vi.fn(),
-      list: vi.fn(),
-    };
-
     const response = await loginHandler(
-      { username: "te st", password: "12345678" },
-      kvNamespace,
+      { username: "not a valid username", password: "valid password" },
+      kvNamespaceGetNull,
       "secret"
     );
 
