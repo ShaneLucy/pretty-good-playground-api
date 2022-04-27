@@ -2,7 +2,6 @@ name = "pretty-good-playground-api"
 type = "javascript"
 zone_id = ""
 account_id = "2cd8df55c7a88e252fc16663238a4c84"
-route = ""
 workers_dev = true
 compatibility_date = "2022-04-15"
 
@@ -12,6 +11,9 @@ kv_namespaces = [
 
 [dev]
 port = 9000
+
+[secrets]
+# JWT_SECRET
 
 [build]
 command = "npm run build"

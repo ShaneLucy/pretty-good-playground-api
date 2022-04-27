@@ -6,4 +6,5 @@ type User = {
 
 type Env = {
   USERS: KVNamespace;
+  JWT_SECRET: string;
 };
