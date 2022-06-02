@@ -14,6 +14,7 @@ export default defineConfig({
     coverage: {
       include: ["src/**/*"],
       exclude: ["node_modules/**/*", "src/tests/**/*"],
+      reporter: ["text", "lcov"],
     },
   },
 });
