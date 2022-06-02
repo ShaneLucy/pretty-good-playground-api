@@ -8,6 +8,7 @@ import {
   generateSalt,
   encodePassword,
   convertHashToHexString,
+  convertPlainTextToPasswordHash,
 } from "../../../src/utilities/authentication";
 
 vi.stubGlobal("crypto", new Crypto());
@@ -82,5 +83,26 @@ describe("the convertHashToHexString function works correctly", () => {
 
     expect(identicalPassword1).to.deep.equal(identicalPassword2);
     expect(password).to.not.deep.equal(identicalPassword1);
+  });
+});
+
+describe("the convert plain text to password hash function works correctly", () => {
+  it("returns a different value to the combined value of the input parameters", async () => {
+    const password = "password";
+    const salt = "salt";
+    const hashedPassword = await convertPlainTextToPasswordHash(password, salt);
+
+    expect(hashedPassword).to.not.deep.equal(`${password}${salt}`);
+  });
+
+  it("given the identical inputs, returns identical outputs", async () => {
+    const password = "password";
+    const salt = "salt";
+    const hashedPassword = await convertPlainTextToPasswordHash(password, salt);
+    const hashedPassword2 = await convertPlainTextToPasswordHash(password, salt);
+    const hashedPassword3 = await convertPlainTextToPasswordHash(password, salt);
+
+    expect(hashedPassword).to.deep.equal(hashedPassword2);
+    expect(hashedPassword).to.deep.equal(hashedPassword3);
   });
 });

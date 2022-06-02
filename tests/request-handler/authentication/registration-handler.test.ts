@@ -6,6 +6,11 @@ import { HttpStatusCodes, LoggingMessages } from "../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 
+vi.mock("../../../src/utilities/authentication", () => ({
+  generateSalt: vi.fn().mockReturnValue("test"),
+  convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
+}));
+
 describe("the registrationHandler function works correctly", () => {
   const kvNamespace = {
     put: vi.fn(),

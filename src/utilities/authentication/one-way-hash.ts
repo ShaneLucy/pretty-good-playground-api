@@ -15,3 +15,8 @@ export const generateHash = async (encodedPassword: ArrayBuffer): Promise<ArrayB
   crypto.subtle.digest("SHA-512", encodedPassword);
 
 export const generateSalt = (): string => crypto.randomUUID();
+
+export const convertPlainTextToPasswordHash = async (
+  password: string,
+  salt: string
+): Promise<string> => convertHashToHexString(await generateHash(encodePassword(password, salt)));

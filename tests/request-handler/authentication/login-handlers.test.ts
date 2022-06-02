@@ -6,7 +6,7 @@ import { HttpStatusCodes, LoggingMessages } from "../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 
-describe("the registrationHandler function works correctly", async () => {
+describe("the loginHandler function works correctly", async () => {
   const salt = "salt";
   const password = "12345678";
   const kvNamespaceGetNull = {
@@ -19,9 +19,7 @@ describe("the registrationHandler function works correctly", async () => {
 
   vi.mock("../../../src/utilities/authentication", () => ({
     generateJWT: vi.fn().mockReturnValue("jwt"),
-    encodePassword: vi.fn().mockReturnValue("test"),
-    generateHash: vi.fn().mockReturnValue("test"),
-    convertHashToHexString: vi.fn().mockReturnValue("12345678"),
+    convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
   }));
 
   it(`when given a valid username and password returns the correct status & a valid jwt`, async () => {
