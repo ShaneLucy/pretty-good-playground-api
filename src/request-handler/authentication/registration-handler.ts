@@ -1,24 +1,12 @@
-import {
-  generateSalt,
-  encodePassword,
-  convertHashToHexString,
-  generateHash,
-} from "../../utilities/authentication";
+import { generateSalt, convertPlainTextToPasswordHash } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
 import { HttpStatusCodes, LoggingMessages } from "../../utilities";
 
-type Response = {
-  message: string;
-  code: number;
-};
-
 const registrationHandler = async (
-  userDetails: { username: string; password: string },
+  userAuthenticationData: UserAuthenticationData,
   kvNamespace: KVNamespace
-): Promise<Response> => {
-  const { username, password } = userDetails;
-
-  const isUserValid = validateUser(username, password);
+): Promise<ResponseData> => {
+  const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
     return {
       message: isUserValid.errorMessage,
@@ -26,7 +14,7 @@ const registrationHandler = async (
     };
   }
 
-  if ((await kvNamespace.get(username)) !== null) {
+  if ((await kvNamespace.get(userAuthenticationData.username)) !== null) {
     return {
       message: LoggingMessages.USER_EXISTS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
@@ -34,10 +22,15 @@ const registrationHandler = async (
   }
 
   const salt = generateSalt();
-  const encodedPassword = encodePassword(password, salt);
-  const hashedPassword = convertHashToHexString(await generateHash(encodedPassword));
+  const hashedPassword = await convertPlainTextToPasswordHash(
+    userAuthenticationData.password,
+    salt
+  );
 
-  await kvNamespace.put(username, JSON.stringify({ username, salt, password: hashedPassword }));
+  await kvNamespace.put(
+    userAuthenticationData.username,
+    JSON.stringify({ username: userAuthenticationData.username, salt, password: hashedPassword })
+  );
 
   return {
     message: LoggingMessages.SUCCESS,

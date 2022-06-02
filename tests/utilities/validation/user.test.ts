@@ -30,6 +30,18 @@ const [validPassword, validPassword2, validPassword3] = [
 
 const [invalidPassword, invalidPassword2] = ["", "1234567"];
 
+const [validUserDetails, validUserDetails2, validUserDetails3] = [
+  { username: validUsername, password: validPassword },
+  { username: validUsername2, password: validPassword2 },
+  { username: validUsername3, password: validPassword3 },
+];
+
+const [invalidUserDetails, invalidUserDetails2, invalidUserDetails3] = [
+  { username: invalidUsername, password: invalidPassword },
+  { username: validUsername3, password: invalidPassword },
+  { username: invalidUsername4, password: validPassword },
+];
+
 describe("the validateUsername function works correctly", () => {
   it("accepts a valid username", () => {
     const [isValid, isValid2, isValid3] = [
@@ -113,9 +125,9 @@ describe("the validatePassword function works correctly", () => {
 describe("the validateUser function works correctly", () => {
   it("accepts a valid username and password", () => {
     const [isValid, isValid2, isValid3] = [
-      validateUser(validUsername, validPassword),
-      validateUser(validUsername2, validPassword2),
-      validateUser(validUsername3, validPassword3),
+      validateUser(validUserDetails),
+      validateUser(validUserDetails2),
+      validateUser(validUserDetails3),
     ];
 
     expect(isValid.isValid).to.deep.equal(true);
@@ -130,9 +142,9 @@ describe("the validateUser function works correctly", () => {
 
   it("rejects invalid usernames and passwords", () => {
     const [isInvalid, isInvalid2, isInvalid3] = [
-      validateUser(invalidUsername, invalidPassword),
-      validateUser(validUsername3, invalidPassword),
-      validateUser(invalidUsername4, validPassword),
+      validateUser(invalidUserDetails),
+      validateUser(invalidUserDetails2),
+      validateUser(invalidUserDetails3),
     ];
 
     expect(isInvalid.isValid).to.deep.equal(false);

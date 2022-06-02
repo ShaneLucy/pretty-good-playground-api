@@ -1,25 +1,14 @@
-import {
-  encodePassword,
-  convertHashToHexString,
-  generateHash,
-  generateJWT,
-} from "../../utilities/authentication";
+import { convertPlainTextToPasswordHash, generateJWT } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
 import { HttpStatusCodes, LoggingMessages } from "../../utilities";
 
-type Response = {
-  message: string;
-  code: number;
-};
-
 const loginHandler = async (
-  userDetails: { username: string; password: string },
+  userAuthenticationData: UserAuthenticationData,
   kvNamespace: KVNamespace,
   jwtSecret: string
-): Promise<Response> => {
-  const { username, password } = userDetails;
-
-  const isUserValid = validateUser(username, password);
+): Promise<ResponseData> => {
+  const { username: providedUsername, password: providedPassword } = userAuthenticationData;
+  const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
     return {
       message: isUserValid.errorMessage,
@@ -27,7 +16,7 @@ const loginHandler = async (
     };
   }
 
-  const user = await kvNamespace.get(username);
+  const user = await kvNamespace.get(providedUsername);
   if (user === null) {
     return {
       message: LoggingMessages.USER_NOT_FOUND,
@@ -35,12 +24,19 @@ const loginHandler = async (
     };
   }
 
-  const parsedUser: User = JSON.parse(user);
-  const { username: parsedUsername, salt: parsedSalt, password: parsedPassword } = parsedUser;
-  const encodedPassword = encodePassword(password, parsedSalt);
-  const hashedPassword = convertHashToHexString(await generateHash(encodedPassword));
+  const userCredentials: UserCredentials = JSON.parse(user);
+  const {
+    username: userCredentialsUsername,
+    salt: userCredentialsSalt,
+    password: userCredentialsPassword,
+  } = userCredentials;
 
-  if (hashedPassword !== parsedPassword) {
+  const hashedPassword = await convertPlainTextToPasswordHash(
+    providedPassword,
+    userCredentialsSalt
+  );
+
+  if (hashedPassword !== userCredentialsPassword) {
     return {
       message: LoggingMessages.INCORRECT_CREDENTIALS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
@@ -48,7 +44,7 @@ const loginHandler = async (
   }
 
   return {
-    message: await generateJWT(parsedUsername, jwtSecret),
+    message: await generateJWT(userCredentialsUsername, jwtSecret),
     code: HttpStatusCodes.SUCCESS,
   };
 };

@@ -47,7 +47,10 @@ export const validatePassword = (password: string): ValidationResponse => {
   return response;
 };
 
-export const validateUser = (username: string, password: string): ValidationResponse => {
+export const validateUser = ({
+  username,
+  password,
+}: UserAuthenticationData): ValidationResponse => {
   const usernameResponse = validateUsername(username);
   if (!usernameResponse.isValid) {
     return usernameResponse;
