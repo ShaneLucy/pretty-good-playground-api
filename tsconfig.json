@@ -4,7 +4,7 @@
     "sourceMap": true,
     "lib": ["esnext"],
     "alwaysStrict": true,
-    "types": ["@cloudflare/workers-types", "jest", "node"],
+    "types": ["@cloudflare/workers-types", "node"],
     "skipLibCheck": true,
     "noEmit": true,
     "typeRoots": ["./src/types.d.ts"]
