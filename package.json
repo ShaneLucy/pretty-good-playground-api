@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "pretty-good-playground-api",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A template for kick starting a Cloudflare Workers project",
   "main": "dist/pretty-good-playground-api.es.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "format": "prettier --write '**/*.{js,css,json,md}'",
     "lint": "prettier --write '**/*.{js,ts,md}' && eslint src/**",
     "lint-fix": "prettier --write . && eslint src/** --fix",
-    "coverage": "nyc --reporter=lcov vitest --run --coverage"
+    "coverage": "vitest --run --coverage"
   },
   "author": "Shane Lucy <shanelucy01@protonmail.com>",
   "license": "MIT",
