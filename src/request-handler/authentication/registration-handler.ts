@@ -29,7 +29,7 @@ const registrationHandler = async (
 
   await kvNamespace.put(
     userAuthenticationData.username,
-    JSON.stringify({ username: userAuthenticationData.username, salt, password: hashedPassword })
+    JSON.stringify({ username: userAuthenticationData.username, password: hashedPassword, salt })
   );
 
   return {
