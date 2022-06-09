@@ -1,4 +1,4 @@
-import { LoggingMessages } from "../index";
+import { ResponseMessages } from "../index";
 
 type ValidationResponse = {
   isValid: boolean;
@@ -14,13 +14,13 @@ export const validateUsername = (username: string): ValidationResponse => {
 
   if (username.length === 0) {
     response.isValid = false;
-    response.errorMessage = LoggingMessages.USERNAME_EMPTY;
+    response.errorMessage = ResponseMessages.USERNAME_EMPTY;
     return response;
   }
 
   if (/\s/.test(username)) {
     response.isValid = false;
-    response.errorMessage = LoggingMessages.USERNAME_MALFORMED;
+    response.errorMessage = ResponseMessages.USERNAME_MALFORMED;
     return response;
   }
   return response;
@@ -34,13 +34,13 @@ export const validatePassword = (password: string): ValidationResponse => {
 
   if (password.length === 0) {
     response.isValid = false;
-    response.errorMessage = LoggingMessages.PASSWORD_EMPTY;
+    response.errorMessage = ResponseMessages.PASSWORD_EMPTY;
     return response;
   }
 
   if (password.length < minPasswordLength) {
     response.isValid = false;
-    response.errorMessage = LoggingMessages.PASSWORD_INVALID;
+    response.errorMessage = ResponseMessages.PASSWORD_INVALID;
     return response;
   }
 

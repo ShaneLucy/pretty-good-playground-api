@@ -1,6 +1,6 @@
 import { generateSalt, convertPlainTextToPasswordHash } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
-import { HttpStatusCodes, LoggingMessages } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages } from "../../utilities";
 
 const registrationHandler = async (
   userAuthenticationData: UserAuthenticationData,
@@ -16,7 +16,7 @@ const registrationHandler = async (
 
   if ((await kvNamespace.get(userAuthenticationData.username)) !== null) {
     return {
-      message: LoggingMessages.USER_EXISTS,
+      message: ResponseMessages.USER_EXISTS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
@@ -33,7 +33,7 @@ const registrationHandler = async (
   );
 
   return {
-    message: LoggingMessages.SUCCESS,
+    message: ResponseMessages.SUCCESS,
     code: HttpStatusCodes.SUCCESS,
   };
 };

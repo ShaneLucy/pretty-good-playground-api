@@ -1,4 +1,4 @@
-enum LoggingMessages {
+enum ResponseMessages {
   // Authentication
   "SUCCESS" = "Success",
   "USERNAME_MALFORMED" = "Username cannot contain spaces",
@@ -11,4 +11,4 @@ enum LoggingMessages {
   "MALFORMED_REQUEST_BODY" = "The request body was not well formed",
 }
 
-export default LoggingMessages;
+export default ResponseMessages;

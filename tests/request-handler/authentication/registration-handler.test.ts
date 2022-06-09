@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 
 import { registrationHandler } from "../../../src/request-handler";
-import { HttpStatusCodes, LoggingMessages } from "../../../src/utilities";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 
@@ -27,7 +27,7 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.SUCCESS);
-    expect(response.message).to.be.equal(LoggingMessages.SUCCESS);
+    expect(response.message).to.be.equal(ResponseMessages.SUCCESS);
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
@@ -37,7 +37,7 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(response.message).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
@@ -47,7 +47,7 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(LoggingMessages.PASSWORD_INVALID);
+    expect(response.message).to.be.equal(ResponseMessages.PASSWORD_INVALID);
   });
 
   it(`when given a username that already exists returns the correct status  error message`, async () => {
@@ -65,6 +65,6 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(LoggingMessages.USER_EXISTS);
+    expect(response.message).to.be.equal(ResponseMessages.USER_EXISTS);
   });
 });

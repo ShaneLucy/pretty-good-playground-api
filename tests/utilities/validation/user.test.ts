@@ -5,7 +5,7 @@ import {
   validatePassword,
   validateUser,
 } from "../../../src/utilities/validation";
-import { LoggingMessages } from "../../../src/utilities";
+import { ResponseMessages } from "../../../src/utilities";
 
 const [validUsername, validUsername2, validUsername3] = [
   "9021qwIdsad9390",
@@ -71,22 +71,22 @@ describe("the validateUsername function works correctly", () => {
     ];
 
     expect(isInvalid.isValid).to.deep.equal(false);
-    expect(isInvalid.errorMessage).to.deep.equal(LoggingMessages.USERNAME_EMPTY);
+    expect(isInvalid.errorMessage).to.deep.equal(ResponseMessages.USERNAME_EMPTY);
 
     expect(isInvalid2.isValid).to.deep.equal(false);
-    expect(isInvalid2.errorMessage).to.deep.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(isInvalid2.errorMessage).to.deep.equal(ResponseMessages.USERNAME_MALFORMED);
 
     expect(isInvalid3.isValid).to.deep.equal(false);
-    expect(isInvalid3.errorMessage).to.deep.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(isInvalid3.errorMessage).to.deep.equal(ResponseMessages.USERNAME_MALFORMED);
 
     expect(isInvalid4.isValid).to.deep.equal(false);
-    expect(isInvalid4.errorMessage).to.deep.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(isInvalid4.errorMessage).to.deep.equal(ResponseMessages.USERNAME_MALFORMED);
 
     expect(isInvalid5.isValid).to.deep.equal(false);
-    expect(isInvalid5.errorMessage).to.deep.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(isInvalid5.errorMessage).to.deep.equal(ResponseMessages.USERNAME_MALFORMED);
 
     expect(isInvalid6.isValid).to.deep.equal(false);
-    expect(isInvalid6.errorMessage).to.deep.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(isInvalid6.errorMessage).to.deep.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 });
 
@@ -115,10 +115,10 @@ describe("the validatePassword function works correctly", () => {
     ];
 
     expect(isInvalid.isValid).to.deep.equal(false);
-    expect(isInvalid.errorMessage).to.deep.equal(LoggingMessages.PASSWORD_EMPTY);
+    expect(isInvalid.errorMessage).to.deep.equal(ResponseMessages.PASSWORD_EMPTY);
 
     expect(isInvalid2.isValid).to.deep.equal(false);
-    expect(isInvalid2.errorMessage).to.deep.equal(LoggingMessages.PASSWORD_INVALID);
+    expect(isInvalid2.errorMessage).to.deep.equal(ResponseMessages.PASSWORD_INVALID);
   });
 });
 
@@ -148,12 +148,12 @@ describe("the validateUser function works correctly", () => {
     ];
 
     expect(isInvalid.isValid).to.deep.equal(false);
-    expect(isInvalid.errorMessage).to.deep.equal(LoggingMessages.USERNAME_EMPTY);
+    expect(isInvalid.errorMessage).to.deep.equal(ResponseMessages.USERNAME_EMPTY);
 
     expect(isInvalid2.isValid).to.deep.equal(false);
-    expect(isInvalid2.errorMessage).to.deep.equal(LoggingMessages.PASSWORD_EMPTY);
+    expect(isInvalid2.errorMessage).to.deep.equal(ResponseMessages.PASSWORD_EMPTY);
 
     expect(isInvalid3.isValid).to.deep.equal(false);
-    expect(isInvalid3.errorMessage).to.deep.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(isInvalid3.errorMessage).to.deep.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 });

@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import "whatwg-fetch";
 
 import malformedRequestBodyHandler from "../../../src/middleware/error-handler/malformed-request-body-handler";
-import { HttpStatusCodes, LoggingMessages } from "../../../src/utilities";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
 /**
  * @vitest-environment jsdom
@@ -25,6 +25,6 @@ describe("the malformedRequestBodyHandler function works correctly", () => {
 
     expect(result?.status).to.deep.equal(HttpStatusCodes.BAD_REQUEST);
     // @ts-ignore
-    expect(result?._bodyText).to.deep.equal(`"${LoggingMessages.MALFORMED_REQUEST_BODY}"`);
+    expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.MALFORMED_REQUEST_BODY}"`);
   });
 });

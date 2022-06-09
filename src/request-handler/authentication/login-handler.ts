@@ -1,6 +1,6 @@
 import { convertPlainTextToPasswordHash, generateJWT } from "../../utilities/authentication";
 import { validateUser } from "../../utilities/validation";
-import { HttpStatusCodes, LoggingMessages } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages } from "../../utilities";
 
 const loginHandler = async (
   userAuthenticationData: UserAuthenticationData,
@@ -19,7 +19,7 @@ const loginHandler = async (
   const user = await kvNamespace.get(providedUsername);
   if (user === null) {
     return {
-      message: LoggingMessages.USER_NOT_FOUND,
+      message: ResponseMessages.USER_NOT_FOUND,
       code: HttpStatusCodes.NOT_FOUND,
     };
   }
@@ -38,7 +38,7 @@ const loginHandler = async (
 
   if (hashedPassword !== userCredentialsPassword) {
     return {
-      message: LoggingMessages.INCORRECT_CREDENTIALS,
+      message: ResponseMessages.INCORRECT_CREDENTIALS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }

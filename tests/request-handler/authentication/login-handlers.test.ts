@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 
 import { loginHandler } from "../../../src/request-handler";
-import { HttpStatusCodes, LoggingMessages } from "../../../src/utilities";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 
@@ -44,7 +44,7 @@ describe("the loginHandler function works correctly", async () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.NOT_FOUND);
-    expect(response.message).to.be.equal(LoggingMessages.USER_NOT_FOUND);
+    expect(response.message).to.be.equal(ResponseMessages.USER_NOT_FOUND);
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
@@ -55,7 +55,7 @@ describe("the loginHandler function works correctly", async () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(LoggingMessages.PASSWORD_INVALID);
+    expect(response.message).to.be.equal(ResponseMessages.PASSWORD_INVALID);
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
@@ -66,7 +66,7 @@ describe("the loginHandler function works correctly", async () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(LoggingMessages.USERNAME_MALFORMED);
+    expect(response.message).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 
   it(`when the given password doesn't match the stored password, it returns the correct status and code`, async () => {
@@ -87,6 +87,6 @@ describe("the loginHandler function works correctly", async () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(LoggingMessages.INCORRECT_CREDENTIALS);
+    expect(response.message).to.be.equal(ResponseMessages.INCORRECT_CREDENTIALS);
   });
 });
