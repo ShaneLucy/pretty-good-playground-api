@@ -1,9 +1,12 @@
 import { Router } from "itty-router";
 
 import { registrationHandler, loginHandler } from "../request-handler";
+import malformedRequestBodyHandler from "../middleware/error-handler/malformed-request-body-handler";
 import { responseBuilder } from "../utilities";
 
 const authRouter = Router({ base: `/api/authentication` });
+
+authRouter.all("*", malformedRequestBodyHandler);
 
 authRouter.post("/register", async (request: Request, env: Env) => {
   const result = await registrationHandler(await request.json(), env.USERS);

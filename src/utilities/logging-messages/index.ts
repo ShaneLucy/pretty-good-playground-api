@@ -8,6 +8,7 @@ enum LoggingMessages {
   "PASSWORD_INVALID" = "Password length must be greater than 8 characters",
   "PASSWORD_EMPTY" = "Password cannot be empty",
   "INCORRECT_CREDENTIALS" = "Username or password are not correct",
+  "MALFORMED_REQUEST_BODY" = "The request body was not well formed",
 }
 
 export default LoggingMessages;
