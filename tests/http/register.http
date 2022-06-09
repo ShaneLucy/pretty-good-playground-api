@@ -1,5 +1,5 @@
 # valid request (username might need to be changed to satisfy UNIQUE requirement)
-POST http://localhost:9000/register HTTP/1.1
+POST http://localhost:9000/api/authentication/register HTTP/1.1
 content-type: application/json
 
 {
@@ -8,7 +8,7 @@ content-type: application/json
 }
 
 ### invalid username
-POST http://localhost:9000/register HTTP/1.1
+POST http://localhost:9000/api/authentication/register HTTP/1.1
 content-type: application/json
 
 {
@@ -17,7 +17,7 @@ content-type: application/json
 }
 
 ### invalid username
-POST http://localhost:9000/register HTTP/1.1
+POST http://localhost:9000/api/authentication/register HTTP/1.1
 content-type: application/json
 
 {
@@ -26,7 +26,7 @@ content-type: application/json
 }
 
 ### invalid password
-POST http://localhost:9000/register HTTP/1.1
+POST http://localhost:9000/api/authentication/register HTTP/1.1
 content-type: application/json
 
 {
@@ -35,7 +35,7 @@ content-type: application/json
 }
  
 ### invalid password
-POST http://localhost:9000/register HTTP/1.1
+POST http://localhost:9000/api/authentication/register HTTP/1.1
 content-type: application/json
 
 {
