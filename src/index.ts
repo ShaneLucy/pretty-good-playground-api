@@ -7,7 +7,8 @@ export default {
       return await router.handle(request, env);
     } catch (e) {
       const error = e as Error;
-      return responseBuilder(error.message, HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      console.error(error.message);
+      return responseBuilder("Internal Server Error", HttpStatusCodes.INTERNAL_SERVER_ERROR);
     }
   },
 };
