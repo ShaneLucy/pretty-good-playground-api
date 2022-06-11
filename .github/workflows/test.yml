@@ -20,5 +20,3 @@ jobs:
         run: npm i
       - name: Run Unit & Integration Tests
         run: npm run test
-        with:
-          apiToken: ${{ secrets.CF_API_TOKEN }}
