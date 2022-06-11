@@ -26,7 +26,7 @@ const waitForURLReachable = async (url: string, timeout: number) => {
 
 const testServer = (): Promise<ChildProcessWithoutNullStreams> =>
   new Promise((resolve, reject) => {
-    const server = spawn("npx", ["wrangler", "dev", "--port", port.toString()]);
+    const server = spawn("npx", ["wrangler", "dev", "--port", port.toString()], { detached: true });
 
     server.on("error", reject);
 
