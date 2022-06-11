@@ -11,7 +11,7 @@
     "format": "prettier --write '**/*.{js,css,json,md}'",
     "lint": "prettier --write '**/*.{js,ts,md}' && eslint src/**",
     "lint-fix": "prettier --write . && eslint src/** --fix",
-    "coverage": "vitest --run --coverage"
+    "coverage": "vitest --dir tests/unit --run --coverage"
   },
   "author": "Shane Lucy <shanelucy01@protonmail.com>",
   "license": "MIT",
