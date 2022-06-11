@@ -15,7 +15,7 @@ export default defineConfig({
   test: {
     coverage: {
       include: ["src/**/*"],
-      exclude: ["node_modules/**/*", "src/tests/**/*"],
+      exclude: ["node_modules/**/*", "tests/**/*"],
       reporter: ["text", "lcov"],
     },
     hookTimeout: twoMinutesInMilliSeconds,
