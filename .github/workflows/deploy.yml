@@ -23,5 +23,3 @@ jobs:
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
-      - name: Run Unit & Integration Tests
-        run: npm run test
