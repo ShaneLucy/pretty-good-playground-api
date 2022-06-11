@@ -28,15 +28,7 @@ const testServer = (): Promise<ChildProcessWithoutNullStreams> =>
   new Promise((resolve, reject) => {
     const server = spawn("npx", ["wrangler", "dev", "--port", port.toString()]);
 
-    console.log(server.connected);
-
-    server.stderr.on("data", (data: Buffer) => {
-      console.log(data.toString());
-    });
-
-    server.stdout.on("data", (data: Buffer) => {
-      console.log(data.toString());
-    });
+    console.log(`Server started: ${server.connected}`);
 
     server.on("error", reject);
 
