@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 
-import { loginHandler } from "../../../src/request-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import { loginHandler } from "../../../../src/request-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 
@@ -17,7 +17,7 @@ describe("the loginHandler function works correctly", async () => {
     list: vi.fn(),
   };
 
-  vi.mock("../../../src/utilities/authentication", () => ({
+  vi.mock("../../../../src/utilities/authentication", () => ({
     generateJWT: vi.fn().mockReturnValue("jwt"),
     convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
   }));

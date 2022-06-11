@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 
-import { registrationHandler } from "../../../src/request-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import { registrationHandler } from "../../../../src/request-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
 
 vi.stubGlobal("crypto", new Crypto());
 
-vi.mock("../../../src/utilities/authentication", () => ({
+vi.mock("../../../../src/utilities/authentication", () => ({
   generateSalt: vi.fn().mockReturnValue("test"),
   convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
 }));

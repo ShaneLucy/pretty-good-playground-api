@@ -2,8 +2,8 @@
 import { describe, it, expect } from "vitest";
 import "whatwg-fetch";
 
-import malformedRequestBodyHandler from "../../../src/middleware/error-handler/malformed-request-body-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import malformedRequestBodyHandler from "../../../../src/middleware/error-handler/malformed-request-body-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
 
 /**
  * @vitest-environment jsdom

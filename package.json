@@ -6,7 +6,8 @@
   "main": "dist/pretty-good-playground-api.es.js",
   "scripts": {
     "build": "tsc && vite build",
-    "test": "vitest --run",
+    "test": "vitest --dir tests/unit --run",
+    "test-integration": "vitest --dir tests/integration --run",
     "format": "prettier --write '**/*.{js,css,json,md}'",
     "lint": "prettier --write '**/*.{js,ts,md}' && eslint src/**",
     "lint-fix": "prettier --write . && eslint src/** --fix",

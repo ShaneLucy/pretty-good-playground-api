@@ -4,8 +4,8 @@ import {
   validateUsername,
   validatePassword,
   validateUser,
-} from "../../../src/utilities/validation";
-import { ResponseMessages } from "../../../src/utilities";
+} from "../../../../src/utilities/validation";
+import { ResponseMessages } from "../../../../src/utilities";
 
 const [validUsername, validUsername2, validUsername3] = [
   "9021qwIdsad9390",
