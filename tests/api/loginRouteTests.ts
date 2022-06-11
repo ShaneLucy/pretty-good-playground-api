@@ -1,7 +1,8 @@
 import { expect } from "vitest";
+import { decodeJwt } from "jose";
 
 import { baseUrlConfig, fetchWrapper } from "../test-utils";
-import { HttpStatusCodes } from "../../src/utilities";
+import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
 const validUsername = "oewjkdofj";
 const validPassword = "password1";
@@ -12,8 +13,10 @@ export const loginRequestWithValidData = async () => {
     username: validUsername,
     password: validPassword,
   });
+  const jwt = decodeJwt(await result.text());
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
+  expect(jwt?.username).to.be.deep.equal(validUsername);
 };
 
 export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async () => {
@@ -23,6 +26,7 @@ export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async ()
   });
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.NOT_FOUND);
+  expect(await result.json()).to.be.deep.equal(ResponseMessages.USER_NOT_FOUND);
 };
 
 export const loginRequestWithUsernameInSystemButIncorrectPassword = async () => {
@@ -32,6 +36,7 @@ export const loginRequestWithUsernameInSystemButIncorrectPassword = async () => 
   });
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+  expect(await result.json()).to.be.deep.equal(ResponseMessages.INCORRECT_CREDENTIALS);
 };
 
 export const loginRequestWithInvalidUsername = async () => {
@@ -41,6 +46,7 @@ export const loginRequestWithInvalidUsername = async () => {
   });
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+  expect(await result.json()).to.be.deep.equal(ResponseMessages.USERNAME_EMPTY);
 };
 
 export const loginRequestWithInvalidPassword = async () => {
@@ -50,10 +56,12 @@ export const loginRequestWithInvalidPassword = async () => {
   });
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+  expect(await result.json()).to.be.deep.equal(ResponseMessages.PASSWORD_EMPTY);
 };
 
 export const loginRequestWithoutAnyCredentials = async () => {
   const result = await fetchWrapper(requestUrl, "POST", { username: "", password: "" });
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+  expect(await result.json()).to.be.deep.equal(ResponseMessages.USERNAME_EMPTY);
 };
