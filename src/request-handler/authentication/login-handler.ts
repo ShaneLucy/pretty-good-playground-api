@@ -24,19 +24,19 @@ const loginHandler = async (
     };
   }
 
-  const userCredentials: UserCredentials = JSON.parse(user);
+  const storedUserCredentials: StoredUserCredentials = JSON.parse(user);
   const {
-    username: userCredentialsUsername,
-    salt: userCredentialsSalt,
-    password: userCredentialsPassword,
-  } = userCredentials;
+    username: storedUserCredentialsUsername,
+    salt: storedUserCredentialsSalt,
+    password: storedUserCredentialsPassword,
+  } = storedUserCredentials;
 
   const hashedPassword = await convertPlainTextToPasswordHash(
     providedPassword,
-    userCredentialsSalt
+    storedUserCredentialsSalt
   );
 
-  if (hashedPassword !== userCredentialsPassword) {
+  if (hashedPassword !== storedUserCredentialsPassword) {
     return {
       message: ResponseMessages.INCORRECT_CREDENTIALS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
@@ -44,7 +44,7 @@ const loginHandler = async (
   }
 
   return {
-    message: await generateJWT(userCredentialsUsername, jwtSecret),
+    message: await generateJWT(storedUserCredentialsUsername, jwtSecret),
     code: HttpStatusCodes.SUCCESS,
   };
 };

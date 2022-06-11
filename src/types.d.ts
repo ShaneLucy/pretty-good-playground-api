@@ -1,10 +1,10 @@
-type UserCredentials = {
+type StoredUserCredentials = {
   username: string;
   password: string;
   salt: string;
 };
 
-type UserAuthenticationData = Pick<UserCredentials, "username" | "password">;
+type UserAuthenticationData = Pick<StoredUserCredentials, "username" | "password">;
 
 type Env = {
   USERS: KVNamespace;
