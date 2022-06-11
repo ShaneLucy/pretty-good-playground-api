@@ -1,8 +1,8 @@
 import { expect } from "vitest";
 import { decodeJwt } from "jose";
 
-import { baseUrlConfig, fetchWrapper } from "../test-utils";
-import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
+import { baseUrlConfig, fetchWrapper } from "../../test-utils";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
 const validUsername = "oewjkdofj";
 const validPassword = "password1";

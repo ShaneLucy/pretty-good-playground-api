@@ -10,7 +10,13 @@ import {
   loginRequestWithoutAnyCredentials,
   loginRequestWithUsernameInSystemButIncorrectPassword,
   loginRequestWithUsernameNotInSystemButWithAUsersPassword,
-} from "./loginRouteTests";
+} from "./authentication/loginRouteTests";
+
+import {
+  registerRequestWithInvalidPassword,
+  registerRequestWithInvalidUsername,
+  registerRequestWithValidData,
+} from "./authentication/registerRouteTests";
 
 let server: ChildProcessWithoutNullStreams;
 
@@ -23,6 +29,21 @@ afterAll(() => {
 
   // kill any straggling wrangler process
   execSync("pidof wrangler | xargs kill");
+});
+
+describe("the register routes work correctly", () => {
+  // it(
+  //   "given valid user credentials, returns the correct response message and code",
+  //   registerRequestWithValidData
+  // );
+  it(
+    "given a valid username but invalid password, returns the correct error message and code",
+    registerRequestWithInvalidPassword
+  );
+  it(
+    "given an invalid username but valid password, returns the correct error message and code",
+    registerRequestWithInvalidUsername
+  );
 });
 
 describe("the login routes work correctly", () => {
