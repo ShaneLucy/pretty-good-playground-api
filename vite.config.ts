@@ -1,6 +1,8 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
 
+const twoMinutesInMilliSeconds = 120_000;
+
 export default defineConfig({
   build: {
     minify: true,
@@ -16,5 +18,6 @@ export default defineConfig({
       exclude: ["node_modules/**/*", "src/tests/**/*"],
       reporter: ["text", "lcov"],
     },
+    hookTimeout: twoMinutesInMilliSeconds,
   },
 });
