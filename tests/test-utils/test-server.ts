@@ -28,8 +28,6 @@ const testServer = (): Promise<ChildProcessWithoutNullStreams> =>
   new Promise((resolve, reject) => {
     const server = spawn("npx", ["wrangler", "dev", "--port", port.toString()]);
 
-    console.log(`Server started: ${server.connected}`);
-
     server.on("error", reject);
 
     return waitForURLReachable(`${baseUrl}/health-check`, oneMinuteInMilliseconds)
