@@ -1,8 +1,8 @@
+import responseHeaders from "../http-headers/response-headers";
+
 const responseBuilder = (message: string, code: number): Response =>
   new Response(JSON.stringify(message), {
-    headers: {
-      "Content-type": "application/json",
-    },
+    headers: responseHeaders,
     status: code,
   });
 
