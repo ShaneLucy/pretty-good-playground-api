@@ -15,3 +15,11 @@ type ResponseData = {
   message: string;
   code: number;
 };
+
+type RequestMethodTypes = "GET" | "POST";
+
+interface IRequest extends Request {
+  method: RequestMethodTypes;
+  url: string;
+  optional?: string;
+}

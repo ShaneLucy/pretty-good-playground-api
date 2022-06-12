@@ -7,7 +7,7 @@
     "types": ["@cloudflare/workers-types", "node"],
     "skipLibCheck": true,
     "noEmit": true,
-    "typeRoots": ["./src/types.d.ts"]
+    "typeRoots": ["src/types/index.d.ts"]
   },
   "include": ["src/**/*", "tests", "dist/index.js"],
   "exclude": ["node_modules/**/*", "tsconfig.json"]

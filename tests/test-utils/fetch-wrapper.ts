@@ -1,10 +1,8 @@
 import fetch, { Response } from "node-fetch";
 
-type RequestMethod = "GET" | "POST";
-
 const fetchWrapper = async (
   requestUrl: string,
-  method: RequestMethod,
+  method: RequestMethodTypes,
   data: Object
 ): Promise<Response> => {
   try {

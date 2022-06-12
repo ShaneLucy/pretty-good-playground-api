@@ -1,10 +1,11 @@
 import { Router } from "itty-router";
 
+import type { RouterMethodTypes } from "../types/router-methods";
 import { registrationHandler, loginHandler } from "../request-handler";
 import malformedRequestBodyHandler from "../middleware/error-handler/malformed-request-body-handler";
 import { responseBuilder } from "../utilities";
 
-const authRouter = Router({ base: `/api/authentication` });
+const authRouter = Router<IRequest, RouterMethodTypes>({ base: `/api/authentication` });
 
 authRouter.all("*", malformedRequestBodyHandler);
 
