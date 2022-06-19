@@ -9,6 +9,7 @@ enum ResponseMessages {
   "PASSWORD_EMPTY" = "Password cannot be empty",
   "INCORRECT_CREDENTIALS" = "Username or password are not correct",
   "MALFORMED_REQUEST_BODY" = "The request body was not well formed",
+  "UNAUTHORISED" = "You need to login to request this resource",
 }
 
 export default ResponseMessages;
