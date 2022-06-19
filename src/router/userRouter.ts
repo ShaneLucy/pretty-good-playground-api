@@ -7,7 +7,9 @@ import { responseBuilder } from "../utilities";
 
 const userRouter = Router<IRequest, RouterMethodTypes>({ base: `/api/users` });
 
-userRouter.options("/:uuid", async () => responseBuilder("Success", 200));
-userRouter.get("/:uuid", userAuthenticatedHandler, async () => responseBuilder("Success", 200));
+userRouter.options("/:uuid", async () => responseBuilder({ body: "Success", code: 200 }));
+userRouter.get("/:uuid", userAuthenticatedHandler, async () =>
+  responseBuilder({ body: "Success", code: 200 })
+);
 
 export default userRouter;

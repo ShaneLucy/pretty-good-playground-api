@@ -8,7 +8,10 @@ export default {
     } catch (e) {
       const error = e as Error;
       console.error(error.message);
-      return responseBuilder("Internal Server Error", HttpStatusCodes.INTERNAL_SERVER_ERROR);
+      return responseBuilder({
+        body: "Internal Server Error",
+        code: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+      });
     }
   },
 };

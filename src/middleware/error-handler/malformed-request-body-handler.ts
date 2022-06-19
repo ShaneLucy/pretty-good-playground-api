@@ -9,7 +9,10 @@ const malformedRequestBodyHandler = async (request: Request): Promise<Response |
     const requestClone = request.clone();
     await requestClone.json();
   } catch (e) {
-    return responseBuilder(ResponseMessages.MALFORMED_REQUEST_BODY, HttpStatusCodes.BAD_REQUEST);
+    return responseBuilder({
+      body: ResponseMessages.MALFORMED_REQUEST_BODY,
+      code: HttpStatusCodes.BAD_REQUEST,
+    });
   }
 };
 

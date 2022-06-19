@@ -27,7 +27,7 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.SUCCESS);
-    expect(response.message).to.be.equal(ResponseMessages.SUCCESS);
+    expect(response.body).to.be.equal(ResponseMessages.SUCCESS);
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
@@ -37,7 +37,7 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
+    expect(response.body).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
@@ -47,7 +47,7 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(ResponseMessages.PASSWORD_INVALID);
+    expect(response.body).to.be.equal(ResponseMessages.PASSWORD_INVALID);
   });
 
   it(`when given a username that already exists returns the correct status  error message`, async () => {
@@ -65,6 +65,6 @@ describe("the registrationHandler function works correctly", () => {
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.message).to.be.equal(ResponseMessages.USER_EXISTS);
+    expect(response.body).to.be.equal(ResponseMessages.USER_EXISTS);
   });
 });

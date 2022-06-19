@@ -9,14 +9,14 @@ const registrationHandler = async (
   const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
     return {
-      message: isUserValid.errorMessage,
+      body: isUserValid.errorMessage,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
 
   if ((await kvNamespace.get(userAuthenticationData.username)) !== null) {
     return {
-      message: ResponseMessages.USER_EXISTS,
+      body: ResponseMessages.USER_EXISTS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
@@ -37,7 +37,7 @@ const registrationHandler = async (
   await kvNamespace.put(userAuthenticationData.username, JSON.stringify(userCredentialsToStore));
 
   return {
-    message: ResponseMessages.SUCCESS,
+    body: ResponseMessages.SUCCESS,
     code: HttpStatusCodes.SUCCESS,
   };
 };

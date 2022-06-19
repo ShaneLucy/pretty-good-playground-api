@@ -9,14 +9,12 @@ const authRouter = Router<IRequest, RouterMethodTypes>({ base: `/api/authenticat
 
 authRouter.all("*", malformedRequestBodyHandler);
 
-authRouter.post("/register", async (request: Request, env: Env) => {
-  const result = await registrationHandler(await request.json(), env.USERS);
-  return responseBuilder(result.message, result.code);
-});
+authRouter.post("/register", async (request: Request, env: Env) =>
+  responseBuilder(await registrationHandler(await request.json(), env.USERS))
+);
 
-authRouter.post("/login", async (request: Request, env: Env) => {
-  const result = await loginHandler(await request.json(), env.USERS, env.JWT_SECRET);
-  return responseBuilder(result.message, result.code);
-});
+authRouter.post("/login", async (request: Request, env: Env) =>
+  responseBuilder(await loginHandler(await request.json(), env.USERS, env.JWT_SECRET))
+);
 
 export default authRouter;

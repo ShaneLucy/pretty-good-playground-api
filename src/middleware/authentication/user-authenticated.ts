@@ -12,7 +12,10 @@ const userAuthenticatedHandler = async (request: Request, env: Env): Promise<Res
   const jwt = request.headers.get("Authorization");
 
   if (jwt === null) {
-    return responseBuilder(ResponseMessages.UNAUTHORISED, HttpStatusCodes.UNAUTHORISED);
+    return responseBuilder({
+      body: ResponseMessages.UNAUTHORISED,
+      code: HttpStatusCodes.UNAUTHORISED,
+    });
   }
 
   try {
@@ -21,7 +24,10 @@ const userAuthenticatedHandler = async (request: Request, env: Env): Promise<Res
       audience: "pretty-good-playground",
     });
   } catch (e) {
-    return responseBuilder(ResponseMessages.UNAUTHORISED, HttpStatusCodes.UNAUTHORISED);
+    return responseBuilder({
+      body: ResponseMessages.UNAUTHORISED,
+      code: HttpStatusCodes.UNAUTHORISED,
+    });
   }
 };
 

@@ -11,7 +11,7 @@ const loginHandler = async (
   const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
     return {
-      message: isUserValid.errorMessage,
+      body: isUserValid.errorMessage,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
@@ -19,7 +19,7 @@ const loginHandler = async (
   const user = await kvNamespace.get(providedUsername);
   if (user === null) {
     return {
-      message: ResponseMessages.USER_NOT_FOUND,
+      body: ResponseMessages.USER_NOT_FOUND,
       code: HttpStatusCodes.NOT_FOUND,
     };
   }
@@ -39,14 +39,14 @@ const loginHandler = async (
 
   if (hashedPassword !== storedUserCredentialsPassword) {
     return {
-      message: ResponseMessages.INCORRECT_CREDENTIALS,
+      body: ResponseMessages.INCORRECT_CREDENTIALS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
     };
   }
 
   return {
-    message: {
-      authToken: await generateJWT(storedUserCredentialsUuid, jwtSecret),
+    body: {
+      authToken: await generateJWT(storedUserCredentialsUsername, jwtSecret),
       username: storedUserCredentialsUsername,
       uuid: storedUserCredentialsUuid,
     },

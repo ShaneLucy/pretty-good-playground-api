@@ -13,9 +13,23 @@ type Env = {
 };
 
 type ResponseData = {
-  message: string | Object;
+  body:
+    | string
+    | {
+        authToken: string;
+        username: string;
+        uuid: string;
+      };
   code: number;
 };
+
+type FetchResponseData =
+  | {
+      authToken: string;
+      username: string;
+      uuid: string;
+    }
+  | string;
 
 type RequestMethodTypes = "GET" | "POST";
 

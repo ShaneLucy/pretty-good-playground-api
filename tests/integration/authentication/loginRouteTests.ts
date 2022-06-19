@@ -13,7 +13,13 @@ export const loginRequestWithValidData = async () => {
     username: validUsername,
     password: validPassword,
   });
-  const jwt = decodeJwt(await result.text());
+
+  const responseData = (await result.json()) as FetchResponseData;
+  if (!(responseData instanceof Object)) {
+    throw new TypeError("");
+  }
+
+  const jwt = decodeJwt(responseData.authToken);
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(jwt?.username).to.be.deep.equal(validUsername);
