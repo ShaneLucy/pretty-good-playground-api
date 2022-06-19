@@ -18,7 +18,7 @@ describe("the loginHandler function works correctly", async () => {
     list: vi.fn(),
   };
 
-  vi.mock("../../../../src/utilities/authentication", () => ({
+  vi.mock("../../../../src/authentication", () => ({
     generateJWT: vi.fn().mockReturnValue("jwt"),
     convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
   }));
@@ -31,7 +31,7 @@ describe("the loginHandler function works correctly", async () => {
       getWithMetadata: vi.fn(),
       list: vi.fn(),
     };
-    const response = await loginHandler({ password, username: "test" }, kvNamespace, "secret");
+    const response = await loginHandler({ password, username: "test" }, kvNamespace, "secret", "*");
 
     if (!(response.body instanceof Object)) {
       throw new TypeError("");
@@ -46,7 +46,8 @@ describe("the loginHandler function works correctly", async () => {
     const response = await loginHandler(
       { username: "test", password: "09483490589054" },
       kvNamespaceGetNull,
-      "secret"
+      "secret",
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.NOT_FOUND);
@@ -57,7 +58,8 @@ describe("the loginHandler function works correctly", async () => {
     const response = await loginHandler(
       { username: "validUsername", password: "*" },
       kvNamespaceGetNull,
-      "secret"
+      "secret",
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
@@ -68,7 +70,8 @@ describe("the loginHandler function works correctly", async () => {
     const response = await loginHandler(
       { username: "not a valid username", password: "valid password" },
       kvNamespaceGetNull,
-      "secret"
+      "secret",
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
@@ -89,7 +92,8 @@ describe("the loginHandler function works correctly", async () => {
     const response = await loginHandler(
       { username: "valid", password: "12345678" },
       kvNamespace,
-      "secret"
+      "secret",
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);

@@ -1,16 +1,18 @@
-import { generateSalt, convertPlainTextToPasswordHash } from "../../utilities/authentication";
-import { validateUser } from "../../utilities/validation";
+import { generateSalt, convertPlainTextToPasswordHash } from "../../authentication";
+import { validateUser } from "../../validation";
 import { HttpStatusCodes, ResponseMessages } from "../../utilities";
 
 const registrationHandler = async (
   userAuthenticationData: UserAuthenticationData,
-  kvNamespace: KVNamespace
+  kvNamespace: KVNamespace,
+  accessControl: string
 ): Promise<ResponseData> => {
   const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
     return {
       body: isUserValid.errorMessage,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      accessControl,
     };
   }
 
@@ -18,6 +20,7 @@ const registrationHandler = async (
     return {
       body: ResponseMessages.USER_EXISTS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      accessControl,
     };
   }
 
@@ -39,6 +42,7 @@ const registrationHandler = async (
   return {
     body: ResponseMessages.SUCCESS,
     code: HttpStatusCodes.SUCCESS,
+    accessControl,
   };
 };
 

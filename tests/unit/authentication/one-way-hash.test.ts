@@ -9,7 +9,7 @@ import {
   encodePassword,
   convertHashToHexString,
   convertPlainTextToPasswordHash,
-} from "../../../../src/utilities/authentication";
+} from "../../../src/authentication";
 
 vi.stubGlobal("crypto", new Crypto());
 

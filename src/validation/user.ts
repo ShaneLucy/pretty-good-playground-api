@@ -1,4 +1,4 @@
-import { ResponseMessages } from "../index";
+import { ResponseMessages } from "../utilities/index";
 
 type ValidationResponse = {
   isValid: boolean;

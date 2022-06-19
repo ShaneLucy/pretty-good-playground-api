@@ -11,6 +11,7 @@ export default {
       return responseBuilder({
         body: "Internal Server Error",
         code: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+        accessControl: env.ALLOWED_ORIGIN,
       });
     }
   },

@@ -4,7 +4,10 @@
 // get forwarded to the request handler
 import { responseBuilder, HttpStatusCodes, ResponseMessages } from "../../utilities";
 
-const malformedRequestBodyHandler = async (request: Request): Promise<Response | void> => {
+const malformedRequestBodyHandler = async (
+  request: Request,
+  env: Env
+): Promise<Response | void> => {
   try {
     const requestClone = request.clone();
     await requestClone.json();
@@ -12,6 +15,7 @@ const malformedRequestBodyHandler = async (request: Request): Promise<Response |
     return responseBuilder({
       body: ResponseMessages.MALFORMED_REQUEST_BODY,
       code: HttpStatusCodes.BAD_REQUEST,
+      accessControl: env.ALLOWED_ORIGIN,
     });
   }
 };

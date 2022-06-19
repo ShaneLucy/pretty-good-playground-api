@@ -10,6 +10,7 @@ type UserAuthenticationData = Pick<StoredUserCredentials, "username" | "password
 type Env = {
   USERS: KVNamespace;
   JWT_SECRET: string;
+  ALLOWED_ORIGIN: string;
 };
 
 type ResponseData = {
@@ -21,6 +22,7 @@ type ResponseData = {
         uuid: string;
       };
   code: number;
+  accessControl: string;
 };
 
 type FetchResponseData =

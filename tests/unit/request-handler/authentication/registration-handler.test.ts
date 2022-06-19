@@ -23,7 +23,8 @@ describe("the registrationHandler function works correctly", () => {
   it(`when given a valid username and password returns the correct status & success message`, async () => {
     const response = await registrationHandler(
       { username: "test", password: "09483490054" },
-      kvNamespace
+      kvNamespace,
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.SUCCESS);
@@ -33,7 +34,8 @@ describe("the registrationHandler function works correctly", () => {
   it(`when given an invalid username returns the correct status and error message`, async () => {
     const response = await registrationHandler(
       { username: "t es t", password: "09483490589054" },
-      kvNamespace
+      kvNamespace,
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
@@ -43,7 +45,8 @@ describe("the registrationHandler function works correctly", () => {
   it(`when given an invalid password returns the correct status and error message`, async () => {
     const response = await registrationHandler(
       { username: "test", password: "123456" },
-      kvNamespace
+      kvNamespace,
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
@@ -61,7 +64,8 @@ describe("the registrationHandler function works correctly", () => {
 
     const response = await registrationHandler(
       { username: "test", password: "011589054" },
-      kvNamespaceWithGet
+      kvNamespaceWithGet,
+      "*"
     );
 
     expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);

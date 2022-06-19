@@ -15,6 +15,7 @@ const userAuthenticatedHandler = async (request: Request, env: Env): Promise<Res
     return responseBuilder({
       body: ResponseMessages.UNAUTHORISED,
       code: HttpStatusCodes.UNAUTHORISED,
+      accessControl: env.ALLOWED_ORIGIN,
     });
   }
 
@@ -27,6 +28,7 @@ const userAuthenticatedHandler = async (request: Request, env: Env): Promise<Res
     return responseBuilder({
       body: ResponseMessages.UNAUTHORISED,
       code: HttpStatusCodes.UNAUTHORISED,
+      accessControl: env.ALLOWED_ORIGIN,
     });
   }
 };

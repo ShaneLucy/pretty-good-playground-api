@@ -1,11 +1,12 @@
-import { convertPlainTextToPasswordHash, generateJWT } from "../../utilities/authentication";
-import { validateUser } from "../../utilities/validation";
+import { convertPlainTextToPasswordHash, generateJWT } from "../../authentication";
+import { validateUser } from "../../validation";
 import { HttpStatusCodes, ResponseMessages } from "../../utilities";
 
 const loginHandler = async (
   userAuthenticationData: UserAuthenticationData,
   kvNamespace: KVNamespace,
-  jwtSecret: string
+  jwtSecret: string,
+  accessControl: string
 ): Promise<ResponseData> => {
   const { username: providedUsername, password: providedPassword } = userAuthenticationData;
   const isUserValid = validateUser(userAuthenticationData);
@@ -13,6 +14,7 @@ const loginHandler = async (
     return {
       body: isUserValid.errorMessage,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      accessControl,
     };
   }
 
@@ -21,6 +23,7 @@ const loginHandler = async (
     return {
       body: ResponseMessages.USER_NOT_FOUND,
       code: HttpStatusCodes.NOT_FOUND,
+      accessControl,
     };
   }
 
@@ -41,6 +44,7 @@ const loginHandler = async (
     return {
       body: ResponseMessages.INCORRECT_CREDENTIALS,
       code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      accessControl,
     };
   }
 
@@ -51,6 +55,7 @@ const loginHandler = async (
       uuid: storedUserCredentialsUuid,
     },
     code: HttpStatusCodes.SUCCESS,
+    accessControl,
   };
 };
 

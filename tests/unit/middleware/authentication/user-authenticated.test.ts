@@ -2,9 +2,9 @@
 import { describe, it, expect, vi } from "vitest";
 import "whatwg-fetch";
 
-import userAuthenticatedRequestHandler from "../../../../src/middleware/authentication/user-authenticated";
+import userAuthenticatedRequestHandler from "../../../../src/middleware/authentication/user-authenticated-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
-import { generateJWT } from "../../../../src/utilities/authentication";
+import { generateJWT } from "../../../../src/authentication";
 
 /**
  * @vitest-environment jsdom
@@ -23,6 +23,7 @@ const JWT_SECRET = "AVerySecretPassphrase";
 const env = {
   USERS: kvNamespace,
   JWT_SECRET,
+  ALLOWED_ORIGIN: "*",
 };
 
 describe("the userAuthenticatedRequestHandler function works correctly", () => {
