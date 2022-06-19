@@ -29,6 +29,7 @@ const loginHandler = async (
     username: storedUserCredentialsUsername,
     salt: storedUserCredentialsSalt,
     password: storedUserCredentialsPassword,
+    uuid: storedUserCredentialsUuid,
   } = storedUserCredentials;
 
   const hashedPassword = await convertPlainTextToPasswordHash(
@@ -44,7 +45,11 @@ const loginHandler = async (
   }
 
   return {
-    message: await generateJWT(storedUserCredentialsUsername, jwtSecret),
+    message: {
+      authToken: await generateJWT(storedUserCredentialsUuid, jwtSecret),
+      username: storedUserCredentialsUsername,
+      uuid: storedUserCredentialsUuid,
+    },
     code: HttpStatusCodes.SUCCESS,
   };
 };

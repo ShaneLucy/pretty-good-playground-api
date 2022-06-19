@@ -2,6 +2,7 @@ type StoredUserCredentials = {
   username: string;
   password: string;
   salt: string;
+  uuid: string;
 };
 
 type UserAuthenticationData = Pick<StoredUserCredentials, "username" | "password">;
@@ -12,7 +13,7 @@ type Env = {
 };
 
 type ResponseData = {
-  message: string;
+  message: string | Object;
   code: number;
 };
 

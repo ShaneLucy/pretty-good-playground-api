@@ -21,16 +21,20 @@ const registrationHandler = async (
     };
   }
 
-  const salt = generateSalt();
+  const [salt, uuid] = [generateSalt(), generateSalt()];
   const hashedPassword = await convertPlainTextToPasswordHash(
     userAuthenticationData.password,
     salt
   );
 
-  await kvNamespace.put(
-    userAuthenticationData.username,
-    JSON.stringify({ username: userAuthenticationData.username, password: hashedPassword, salt })
-  );
+  const userCredentialsToStore: StoredUserCredentials = {
+    username: userAuthenticationData.username,
+    password: hashedPassword,
+    salt,
+    uuid,
+  };
+
+  await kvNamespace.put(userAuthenticationData.username, JSON.stringify(userCredentialsToStore));
 
   return {
     message: ResponseMessages.SUCCESS,
