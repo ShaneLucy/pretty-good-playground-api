@@ -2,11 +2,13 @@ import { Router } from "itty-router";
 
 import type { RouterMethodTypes } from "../types/router-methods";
 import authRouter from "./authRouter";
+import userRouter from "./userRouter";
 
 const baseRouter = Router<IRequest, RouterMethodTypes>({ base: `/api` });
 
 baseRouter.get("/health-check", () => new Response("Service is Up!"));
 baseRouter.all("/authentication/*", authRouter.handle);
+baseRouter.all("/users/*", userRouter.handle);
 
 export default baseRouter;
 
