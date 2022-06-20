@@ -1,4 +1,4 @@
-import baseRouter from "./router";
+import baseRouter from "./controllers";
 import { HttpStatusCodes, responseBuilder } from "./utilities";
 
 export default {

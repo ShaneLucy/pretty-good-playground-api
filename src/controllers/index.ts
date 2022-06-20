@@ -1,8 +1,8 @@
 import { Router } from "itty-router";
 
 import type { RouterMethodTypes } from "../types/router-methods";
-import authRouter from "./authRouter";
-import userRouter from "./userRouter";
+import authRouter from "./auth-controller";
+import userRouter from "./user-controller";
 
 const baseRouter = Router<IRequest, RouterMethodTypes>({ base: `/api` });
 
