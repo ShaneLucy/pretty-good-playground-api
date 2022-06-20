@@ -1,62 +1,59 @@
 import { convertPlainTextToPasswordHash, generateJWT } from "../../authentication";
 import { validateUser } from "../../validation";
-import { HttpStatusCodes, ResponseMessages } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages, responseBuilder, Audience } from "../../utilities";
+import type { CustomRequest } from "../../types/custom";
 
-const loginHandler = async (
-  userAuthenticationData: UserAuthenticationData,
-  kvNamespace: KVNamespace,
-  jwtSecret: string,
-  accessControl: string
-): Promise<ResponseData> => {
-  const { username: providedUsername, password: providedPassword } = userAuthenticationData;
-  const isUserValid = validateUser(userAuthenticationData);
+const loginHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
+  const { username, password } = (await request.json()) as UserAuthenticationData;
+
+  const isUserValid = validateUser({ username, password });
   if (!isUserValid.isValid) {
-    return {
+    return responseBuilder({
       body: isUserValid.errorMessage,
-      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
-      accessControl,
-    };
+      status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      accessControl: env.ALLOWED_ORIGIN,
+    });
   }
 
-  const user = await kvNamespace.get(providedUsername);
+  const user = await env.USERS.get(username);
   if (user === null) {
-    return {
+    return responseBuilder({
       body: ResponseMessages.USER_NOT_FOUND,
-      code: HttpStatusCodes.NOT_FOUND,
-      accessControl,
-    };
+      status: HttpStatusCodes.NOT_FOUND,
+      accessControl: env.ALLOWED_ORIGIN,
+    });
   }
 
-  const storedUserCredentials: StoredUserCredentials = JSON.parse(user);
   const {
-    username: storedUserCredentialsUsername,
-    salt: storedUserCredentialsSalt,
-    password: storedUserCredentialsPassword,
-    uuid: storedUserCredentialsUuid,
-  } = storedUserCredentials;
+    salt: userModelSalt,
+    password: userModelPassword,
+    questionId: userModelQuestionId,
+  } = JSON.parse(user) as UserModel;
 
-  const hashedPassword = await convertPlainTextToPasswordHash(
-    providedPassword,
-    storedUserCredentialsSalt
-  );
+  const hashedPassword = await convertPlainTextToPasswordHash(password, userModelSalt);
 
-  if (hashedPassword !== storedUserCredentialsPassword) {
-    return {
+  if (hashedPassword !== userModelPassword) {
+    return responseBuilder({
       body: ResponseMessages.INCORRECT_CREDENTIALS,
-      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
-      accessControl,
-    };
+      status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      accessControl: env.ALLOWED_ORIGIN,
+    });
   }
 
-  return {
+  return responseBuilder({
     body: {
-      authToken: await generateJWT(storedUserCredentialsUsername, jwtSecret),
-      username: storedUserCredentialsUsername,
-      uuid: storedUserCredentialsUuid,
+      authToken: await generateJWT(
+        { username, questionId: userModelQuestionId },
+        env.JWT_SECRET,
+        env.JWT_DURATION_HOURS,
+        Audience.ALL
+      ),
+      username,
+      questionId: userModelQuestionId,
     },
-    code: HttpStatusCodes.SUCCESS,
-    accessControl,
-  };
+    status: HttpStatusCodes.SUCCESS,
+    accessControl: env.ALLOWED_ORIGIN,
+  });
 };
 
 export default loginHandler;

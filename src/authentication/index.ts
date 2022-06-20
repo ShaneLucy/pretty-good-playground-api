@@ -1,2 +1,2 @@
 export * from "./one-way-hash";
-export { default as generateJWT } from "./jwt";
+export * from "./jwt";

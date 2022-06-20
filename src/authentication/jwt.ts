@@ -1,15 +1,81 @@
-import { SignJWT } from "jose";
+import { SignJWT, jwtVerify } from "jose";
+import { Audience } from "../utilities";
 
-const generateJWT = async (username: string, secret: string): Promise<string> => {
-  const encoder = new TextEncoder();
-  const thirtyMinutesInMilliseconds = 300_000;
-  return new SignJWT({ username })
-    .setProtectedHeader({ alg: "HS256" })
+const [issuer, encoder] = ["pretty-good-playground", new TextEncoder()];
+const [millisecondsInASecond, secondsInAMinute, minutesInAnHour] = [1_000, 60, 60];
+export const convertHoursToSeconds = (hours: number) => secondsInAMinute * minutesInAnHour * hours;
+
+export const generateJWT = async (
+  payload: AllAudienceAccessTokenPayload | QuestionAccessTokenPayload,
+  secret: string,
+  durationInHours: number,
+  audience: Audience
+): Promise<string> =>
+  new SignJWT({ payload })
+    .setProtectedHeader({ alg: "HS256", b64: true })
     .setIssuedAt()
-    .setIssuer("pretty-good-playground")
-    .setAudience("pretty-good-playground")
-    .setExpirationTime(Date.now() + thirtyMinutesInMilliseconds)
+    .setIssuer(issuer)
+    .setAudience(audience)
+    .setExpirationTime(
+      Math.floor(Date.now() / millisecondsInASecond) + convertHoursToSeconds(durationInHours)
+    )
     .sign(encoder.encode(secret));
+
+const verifyAllAudienceAccessToken = (
+  accessToken: AllAudienceAccessToken,
+  username: string | null
+) => {
+  if (accessToken.payload.username !== username) {
+    return false;
+  }
+  return true;
 };
 
-export default generateJWT;
+const verifyQuestionAccessToken = (accessToken: QuestionAccessToken, question: string | null) => {
+  if (accessToken.payload.questionId !== question) {
+    return false;
+  }
+  return true;
+};
+
+export const verifyJWT = async (
+  jwt: string,
+  jwtSecret: string,
+  username: string | null,
+  question: string | null,
+  audience: Audience,
+  durationInHours: number
+): Promise<boolean> => {
+  if (username === null && audience === Audience.ALL) {
+    return false;
+  }
+
+  if (username !== null && audience !== Audience.ALL) {
+    return false;
+  }
+
+  if (question !== null && audience !== Audience.QUESTIONS_ANSWERS) {
+    return false;
+  }
+
+  if (question === null && audience === Audience.QUESTIONS_ANSWERS) {
+    return false;
+  }
+
+  try {
+    const result = await jwtVerify(jwt, encoder.encode(jwtSecret), {
+      issuer,
+      audience,
+      maxTokenAge: convertHoursToSeconds(durationInHours),
+    });
+
+    return audience === Audience.ALL
+      ? verifyAllAudienceAccessToken(
+          (result.payload as unknown) as AllAudienceAccessToken,
+          username
+        )
+      : verifyQuestionAccessToken((result.payload as unknown) as QuestionAccessToken, question);
+  } catch (e) {
+    return false;
+  }
+};

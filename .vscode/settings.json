@@ -1,5 +1,6 @@
 {
   "sonarlint.connectedMode.project": {
     "projectKey": "ShaneLucy_pretty-good-playground-api"
-  }
+  },
+  "cSpell.words": ["Authorisation"]
 }
