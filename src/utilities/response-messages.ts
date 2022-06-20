@@ -10,6 +10,8 @@ enum ResponseMessages {
   "INCORRECT_CREDENTIALS" = "Username or password are not correct",
   "MALFORMED_REQUEST_BODY" = "The request body was not well formed",
   "UNAUTHORISED" = "You need to login to request this resource",
+  "INTERNAL_SERVER_ERROR" = "Unexpected internal server error",
+  "BAD_REQUEST" = "Bad Request",
 }
 
 export default ResponseMessages;
