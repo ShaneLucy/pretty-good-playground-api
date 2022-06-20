@@ -50,7 +50,7 @@ const loginHandler = async (
 
   return {
     body: {
-      authToken: await generateJWT(storedUserCredentialsUsername, jwtSecret),
+      authToken: await generateJWT(storedUserCredentialsUuid, jwtSecret),
       username: storedUserCredentialsUsername,
       uuid: storedUserCredentialsUuid,
     },

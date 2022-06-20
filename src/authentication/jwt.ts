@@ -1,9 +1,9 @@
 import { SignJWT } from "jose";
 
-const generateJWT = async (username: string, secret: string): Promise<string> => {
+const generateJWT = async (uuid: string, secret: string): Promise<string> => {
   const encoder = new TextEncoder();
   const thirtyMinutesInMilliseconds = 300_000;
-  return new SignJWT({ username })
+  return new SignJWT({ uuid })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setIssuer("pretty-good-playground")
