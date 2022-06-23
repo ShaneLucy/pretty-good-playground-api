@@ -3,9 +3,10 @@
 // In this case, if there are no errors trying to decode the request body the request will
 // get forwarded to the request handler
 import { responseBuilder, HttpStatusCodes, ResponseMessages } from "../../utilities";
+import type { CustomRequest } from "../../types/custom";
 
 const malformedRequestBodyHandler = async (
-  request: Request,
+  request: CustomRequest,
   env: Env
 ): Promise<Response | void> => {
   try {

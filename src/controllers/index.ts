@@ -1,16 +1,16 @@
 import { Router } from "itty-router";
 
-import type { RouterMethodTypes } from "../types/router-methods";
-import authRouter from "./auth-controller";
-import userRouter from "./user-controller";
+import type { RouterMethodTypes, CustomRequest } from "../types/custom";
+import authController from "./auth-controller";
+import userController from "./user-controller";
 
-const baseRouter = Router<IRequest, RouterMethodTypes>({ base: `/api` });
+const baseController = Router<CustomRequest, RouterMethodTypes>({ base: `/api` });
 
-baseRouter.get("/health-check", () => new Response("Service is Up!"));
-baseRouter.all("/authentication/*", authRouter.handle);
-baseRouter.all("/users/*", userRouter.handle);
+baseController.get("/health-check", () => new Response("Service is Up!"));
+baseController.all("/authentication/*", authController.handle);
+baseController.all("/users/*", userController.handle);
 
-export default baseRouter;
+export default baseController;
 
 /**
  * Public Routes
@@ -19,8 +19,8 @@ export default baseRouter;
  *      /authentication
  *          /register {POST}
  *          /login {POST}
- *      /questions/:uid {GET}
- *      /answers/:uid {GET}
+ *      /questions/ {GET}
+ *      /answers/ {GET}
  *
  * Protected Routes
  * /api

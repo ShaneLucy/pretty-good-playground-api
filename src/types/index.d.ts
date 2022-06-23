@@ -33,10 +33,16 @@ type FetchResponseData =
     }
   | string;
 
-type RequestMethodTypes = "GET" | "POST";
+type RequestMethodTypes = "GET" | "POST" | "DELETE";
 
-interface IRequest extends Request {
-  method: RequestMethodTypes;
-  url: string;
-  optional?: string;
-}
+type AccessTokenBody = {
+  uuid: string;
+  iat: string;
+  iss: string;
+  aud: string;
+  exp: number;
+};
+
+type UuidParam = {
+  uuid: string;
+};
