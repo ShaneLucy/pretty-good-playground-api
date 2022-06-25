@@ -1,10 +1,8 @@
 import { expect } from "vitest";
 
-import { baseUrlConfig, fetchWrapper } from "../../test-utils";
+import { baseUrlConfig, fetchWrapper, validUsername, validPassword } from "../../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
-const validUsername = "oewjkdofj";
-const validPassword = "password1";
 const requestUrl = `${baseUrlConfig.baseUrl}/authentication/register`;
 
 export const registerRequestWithValidData = async () => {
@@ -14,7 +12,7 @@ export const registerRequestWithValidData = async () => {
   });
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
-  expect(await result.json()).to.be.deep.equal(validUsername);
+  expect(await result.json()).to.be.deep.equal(ResponseMessages.SUCCESS);
 };
 
 export const registerRequestWithInvalidUsername = async () => {

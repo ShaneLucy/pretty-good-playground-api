@@ -8,5 +8,4 @@ type CombinedRequest = Request & IttyRouterRequest;
 export interface CustomRequest extends CombinedRequest {
   method: RequestMethodTypes;
   url: string;
-  optional?: string;
 }

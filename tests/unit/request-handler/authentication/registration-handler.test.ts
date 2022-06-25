@@ -1,17 +1,22 @@
 import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
+import "whatwg-fetch";
 
 import { registrationHandler } from "../../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
+import type { CustomRequest } from "../../../../src/types/custom";
 
-vi.stubGlobal("crypto", new Crypto());
-
-vi.mock("../../../../src/utilities/authentication", () => ({
-  generateSalt: vi.fn().mockReturnValue("test"),
-  convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
-}));
-
+/**
+ * @vitest-environment jsdom
+ */
 describe("the registrationHandler function works correctly", () => {
+  vi.stubGlobal("crypto", new Crypto());
+
+  vi.mock("../../../../src/utilities/authentication", () => ({
+    generateSalt: vi.fn().mockReturnValue("test"),
+    convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
+  }));
+
   const kvNamespace = {
     put: vi.fn(),
     get: vi.fn().mockReturnValue(null),
@@ -20,41 +25,54 @@ describe("the registrationHandler function works correctly", () => {
     list: vi.fn(),
   };
 
+  const env = {
+    USERS: kvNamespace,
+    JWT_SECRET: "AVerySecretPassphrase",
+    ALLOWED_ORIGIN: "*",
+    JWT_DURATION_HOURS: 2,
+  };
+
   it(`when given a valid username and password returns the correct status & success message`, async () => {
     const response = await registrationHandler(
-      { username: "test", password: "09483490054" },
-      kvNamespace,
-      "*"
+      new Request("hi", {
+        body: JSON.stringify({ username: "test", password: "09483490054" }),
+        method: "POST",
+      }) as CustomRequest,
+      env
     );
 
-    expect(response.code).to.be.equal(HttpStatusCodes.SUCCESS);
-    expect(response.body).to.be.equal(ResponseMessages.SUCCESS);
+    expect(response.status).to.be.equal(HttpStatusCodes.SUCCESS);
+    expect(await response.json()).to.be.equal(ResponseMessages.SUCCESS);
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
     const response = await registrationHandler(
-      { username: "t es t", password: "09483490589054" },
-      kvNamespace,
-      "*"
+      new Request("hi", {
+        body: JSON.stringify({ username: "t es t", password: "09483490589054" }),
+        method: "POST",
+      }) as CustomRequest,
+      env
     );
 
-    expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.body).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
+    expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+    expect(await response.json()).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
     const response = await registrationHandler(
-      { username: "test", password: "123456" },
-      kvNamespace,
-      "*"
+      new Request("hi", {
+        body: JSON.stringify({ username: "test", password: "123456" }),
+        method: "POST",
+      }) as CustomRequest,
+      env
     );
 
-    expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.body).to.be.equal(ResponseMessages.PASSWORD_INVALID);
+    expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+    expect(await response.json()).to.be.equal(ResponseMessages.PASSWORD_INVALID);
   });
 
   it(`when given a username that already exists returns the correct status  error message`, async () => {
-    const kvNamespaceWithGet = {
+    const kvNamespaceWithUserExists = {
       put: vi.fn(),
       get: vi.fn().mockReturnValue("test"),
       delete: vi.fn(),
@@ -62,13 +80,22 @@ describe("the registrationHandler function works correctly", () => {
       list: vi.fn(),
     };
 
+    const envWithUserExists = {
+      USERS: kvNamespaceWithUserExists,
+      JWT_SECRET: "AVerySecretPassphrase",
+      ALLOWED_ORIGIN: "*",
+      JWT_DURATION_HOURS: 2,
+    };
+
     const response = await registrationHandler(
-      { username: "test", password: "011589054" },
-      kvNamespaceWithGet,
-      "*"
+      new Request("hi", {
+        body: JSON.stringify({ username: "test", password: "011589054" }),
+        method: "POST",
+      }) as CustomRequest,
+      envWithUserExists
     );
 
-    expect(response.code).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-    expect(response.body).to.be.equal(ResponseMessages.USER_EXISTS);
+    expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+    expect(await response.json()).to.be.equal(ResponseMessages.USER_EXISTS);
   });
 });

@@ -14,6 +14,7 @@ port = 9000
 
 [vars]
 ALLOWED_ORIGIN = "*"
+JWT_DURATION_HOURS = 2
 [secrets]
 # JWT_SECRET
 

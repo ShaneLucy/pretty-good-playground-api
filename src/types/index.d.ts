@@ -11,19 +11,24 @@ type Env = {
   USERS: KVNamespace;
   JWT_SECRET: string;
   ALLOWED_ORIGIN: string;
+  JWT_DURATION_HOURS: number;
 };
 
 type ResponseData = {
-  body:
-    | string
-    | {
-        authToken: string;
-        username: string;
-        uuid: string;
-      };
-  code: number;
+  body: string;
+  status: number;
   accessControl: string;
 };
+
+type LoginResponseBody = {
+  authToken: string;
+  username: string;
+  uuid: string;
+};
+
+interface LoginResponseData extends ResponseData {
+  body: LoginResponseBody;
+}
 
 type FetchResponseData =
   | {
@@ -33,7 +38,7 @@ type FetchResponseData =
     }
   | string;
 
-type RequestMethodTypes = "GET" | "POST" | "DELETE";
+type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
 
 type AccessTokenBody = {
   uuid: string;

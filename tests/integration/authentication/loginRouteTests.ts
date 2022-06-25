@@ -1,11 +1,9 @@
 import { expect } from "vitest";
 import { decodeJwt } from "jose";
 
-import { baseUrlConfig, fetchWrapper } from "../../test-utils";
+import { baseUrlConfig, fetchWrapper, validUsername, validPassword } from "../../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
-const validUsername = "oewjkdofj";
-const validPassword = "password1";
 const requestUrl = `${baseUrlConfig.baseUrl}/authentication/login`;
 
 export const loginRequestWithValidData = async () => {
@@ -14,7 +12,7 @@ export const loginRequestWithValidData = async () => {
     password: validPassword,
   });
 
-  const responseData = (await result.json()) as FetchResponseData;
+  const responseData = (await result.json()) as LoginResponseBody;
   if (!(responseData instanceof Object)) {
     throw new TypeError("");
   }
@@ -22,7 +20,7 @@ export const loginRequestWithValidData = async () => {
   const jwt = decodeJwt(responseData.authToken);
 
   expect(result.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
-  expect(jwt?.username).to.be.deep.equal(validUsername);
+  expect(jwt?.uuid).to.be.deep.equal(responseData.uuid);
 };
 
 export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async () => {

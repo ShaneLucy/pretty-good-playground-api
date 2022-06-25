@@ -11,7 +11,7 @@ export default {
       console.error(error.message);
       return responseBuilder({
         body: ResponseMessages.INTERNAL_SERVER_ERROR,
-        code: HttpStatusCodes.INTERNAL_SERVER_ERROR,
+        status: HttpStatusCodes.INTERNAL_SERVER_ERROR,
         accessControl: env.ALLOWED_ORIGIN,
       });
     }

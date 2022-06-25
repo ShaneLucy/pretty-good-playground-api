@@ -1,17 +1,25 @@
 import { Router } from "itty-router";
 
-import type { RouterMethodTypes } from "../types/router-methods";
-
+import type { RouterMethodTypes, CustomRequest } from "../types/custom";
+import { deleteUserHandler } from "../request-handler";
 import userAuthenticatedHandler from "../middleware/authentication/user-authenticated-handler";
+import malformedRequestBodyHandler from "../middleware/error-handler/malformed-request-body-handler";
 import { responseBuilder } from "../utilities";
 
-const userRouter = Router<IRequest, RouterMethodTypes>({ base: `/api/users` });
+const userController = Router<CustomRequest, RouterMethodTypes>({ base: `/api/users` });
 
-userRouter.options("/:uuid", async () =>
-  responseBuilder({ body: "Success", code: 200, accessControl: "*" })
+userController.options("/:uuid", async () =>
+  responseBuilder({ body: "Success", status: 200, accessControl: "*" })
 );
-userRouter.get("/:uuid", userAuthenticatedHandler, async () =>
-  responseBuilder({ body: "Success", code: 200, accessControl: "*" })
+userController.get("/:uuid", userAuthenticatedHandler, async () =>
+  responseBuilder({ body: "Success", status: 200, accessControl: "*" })
 );
 
-export default userRouter;
+userController.delete(
+  "/:uuid",
+  userAuthenticatedHandler,
+  malformedRequestBodyHandler,
+  deleteUserHandler
+);
+
+export default userController;

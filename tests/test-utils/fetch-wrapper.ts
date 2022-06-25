@@ -1,18 +1,20 @@
-import fetch, { Response } from "node-fetch";
+import fetch, { Headers, Response } from "node-fetch";
 
 const fetchWrapper = async (
   requestUrl: string,
-  method: RequestMethodTypes,
-  data: Object
+  requestMethod: RequestMethodTypes,
+  body: Object,
+  headers?: Headers
 ): Promise<Response> => {
   try {
     return await fetch(requestUrl, {
-      method,
-      body: JSON.stringify(data),
+      method: requestMethod,
+      body: JSON.stringify(body),
+      headers,
     });
   } catch (e) {
     const error = e as Error;
-    throw new Error(`Error in request:\n${error.message}`);
+    throw new Error(`Error in request:\n${error.message}\n${error.cause}\n${error.stack}`);
   }
 };
 

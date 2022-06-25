@@ -4,6 +4,7 @@ import "whatwg-fetch";
 
 import malformedRequestBodyHandler from "../../../../src/middleware/error-handler/malformed-request-body-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
+import type { CustomRequest } from "../../../../src/types/custom";
 
 /**
  * @vitest-environment jsdom
@@ -20,11 +21,13 @@ const env = {
   USERS: kvNamespace,
   JWT_SECRET: "AVerySecretPassphrase",
   ALLOWED_ORIGIN: "*",
+  JWT_DURATION_HOURS: 2,
 };
+
 describe("the malformedRequestBodyHandler function works correctly", () => {
   it("given valid JSON returns undefined", async () => {
     const result = await malformedRequestBodyHandler(
-      new Request("hi", { body: JSON.stringify("Hi!"), method: "POST" }),
+      new Request("hi", { body: JSON.stringify("Hi!"), method: "POST" }) as CustomRequest,
       env
     );
 
@@ -33,7 +36,7 @@ describe("the malformedRequestBodyHandler function works correctly", () => {
 
   it("given invalid JSON returns a response with the correct status code & body", async () => {
     const result = await malformedRequestBodyHandler(
-      new Request("hi", { body: "Hi!", method: "POST" }),
+      new Request("hi", { body: "Hi!", method: "POST" }) as CustomRequest,
       env
     );
 

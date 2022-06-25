@@ -1,30 +1,34 @@
 import { convertPlainTextToPasswordHash, generateJWT } from "../../authentication";
 import { validateUser } from "../../validation";
-import { HttpStatusCodes, ResponseMessages } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
+import type { CustomRequest } from "../../types/custom";
 
-const loginHandler = async (
-  userAuthenticationData: UserAuthenticationData,
-  kvNamespace: KVNamespace,
-  jwtSecret: string,
-  accessControl: string
-): Promise<ResponseData> => {
+const loginHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
+  const [userAuthenticationData, kvNamespace, jwtSecret, accessControl, jwtDuraionHours] = [
+    (await request.json()) as UserAuthenticationData,
+    env.USERS,
+    env.JWT_SECRET,
+    env.ALLOWED_ORIGIN,
+    env.JWT_DURATION_HOURS,
+  ];
+
   const { username: providedUsername, password: providedPassword } = userAuthenticationData;
   const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
-    return {
+    return responseBuilder({
       body: isUserValid.errorMessage,
-      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
       accessControl,
-    };
+    });
   }
 
   const user = await kvNamespace.get(providedUsername);
   if (user === null) {
-    return {
+    return responseBuilder({
       body: ResponseMessages.USER_NOT_FOUND,
-      code: HttpStatusCodes.NOT_FOUND,
+      status: HttpStatusCodes.NOT_FOUND,
       accessControl,
-    };
+    });
   }
 
   const storedUserCredentials: StoredUserCredentials = JSON.parse(user);
@@ -41,22 +45,22 @@ const loginHandler = async (
   );
 
   if (hashedPassword !== storedUserCredentialsPassword) {
-    return {
+    return responseBuilder({
       body: ResponseMessages.INCORRECT_CREDENTIALS,
-      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
       accessControl,
-    };
+    });
   }
 
-  return {
+  return responseBuilder({
     body: {
-      authToken: await generateJWT(storedUserCredentialsUuid, jwtSecret),
+      authToken: await generateJWT(storedUserCredentialsUuid, jwtSecret, jwtDuraionHours),
       username: storedUserCredentialsUsername,
       uuid: storedUserCredentialsUuid,
     },
-    code: HttpStatusCodes.SUCCESS,
+    status: HttpStatusCodes.SUCCESS,
     accessControl,
-  };
+  });
 };
 
 export default loginHandler;

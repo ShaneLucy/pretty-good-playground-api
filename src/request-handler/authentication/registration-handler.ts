@@ -1,27 +1,29 @@
 import { generateSalt, convertPlainTextToPasswordHash } from "../../authentication";
 import { validateUser } from "../../validation";
-import { HttpStatusCodes, ResponseMessages } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
+import type { CustomRequest } from "../../types/custom";
 
-const registrationHandler = async (
-  userAuthenticationData: UserAuthenticationData,
-  kvNamespace: KVNamespace,
-  accessControl: string
-): Promise<ResponseData> => {
+const registrationHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
+  const [userAuthenticationData, kvNamespace, accessControl] = [
+    (await request.json()) as UserAuthenticationData,
+    env.USERS,
+    env.ALLOWED_ORIGIN,
+  ];
   const isUserValid = validateUser(userAuthenticationData);
   if (!isUserValid.isValid) {
-    return {
+    return responseBuilder({
       body: isUserValid.errorMessage,
-      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
       accessControl,
-    };
+    });
   }
 
   if ((await kvNamespace.get(userAuthenticationData.username)) !== null) {
-    return {
+    return responseBuilder({
       body: ResponseMessages.USER_EXISTS,
-      code: HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
       accessControl,
-    };
+    });
   }
 
   const [salt, uuid] = [generateSalt(), generateSalt()];
@@ -39,11 +41,11 @@ const registrationHandler = async (
 
   await kvNamespace.put(userAuthenticationData.username, JSON.stringify(userCredentialsToStore));
 
-  return {
+  return responseBuilder({
     body: ResponseMessages.SUCCESS,
-    code: HttpStatusCodes.SUCCESS,
+    status: HttpStatusCodes.SUCCESS,
     accessControl,
-  };
+  });
 };
 
 export default registrationHandler;

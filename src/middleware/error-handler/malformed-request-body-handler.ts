@@ -15,7 +15,7 @@ const malformedRequestBodyHandler = async (
   } catch (e) {
     return responseBuilder({
       body: ResponseMessages.MALFORMED_REQUEST_BODY,
-      code: HttpStatusCodes.BAD_REQUEST,
+      status: HttpStatusCodes.BAD_REQUEST,
       accessControl: env.ALLOWED_ORIGIN,
     });
   }
