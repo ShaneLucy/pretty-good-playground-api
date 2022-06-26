@@ -18,6 +18,12 @@ import {
   registerRequestWithValidData,
 } from "./authentication/registerRouteTests";
 
+import {
+  deleteUserRequestWithValidUsername,
+  deleteUserWithUsernameNotInSystem,
+  deleteUserWithMismatchedAuthToken,
+} from "./index";
+
 let server: ChildProcessWithoutNullStreams;
 
 beforeAll(async () => {
@@ -32,10 +38,10 @@ afterAll(() => {
 });
 
 describe("the register routes work correctly", () => {
-  // it(
-  //   "given valid user credentials, returns the correct response message and code",
-  //   registerRequestWithValidData
-  // );
+  it(
+    "given valid user credentials, returns the correct response message and code",
+    registerRequestWithValidData
+  );
   it(
     "given a valid username but invalid password, returns the correct error message and code",
     registerRequestWithInvalidPassword
@@ -74,5 +80,17 @@ describe("the login routes work correctly", () => {
     `given a request with a username that exists but an invalid password for this user, 
       returns the correct error message and code`,
     loginRequestWithUsernameInSystemButIncorrectPassword
+  );
+});
+
+describe("the delete user route works correctly", () => {
+  it("given a valid username it deletes the requested user", deleteUserRequestWithValidUsername);
+  it(
+    "given a username that doesn't exist in the system, returns the correct error status and message",
+    deleteUserWithUsernameNotInSystem
+  );
+  it(
+    "given a mismatched jwt it fails to delete the specified resource, then when supplied with the correct jwt deletes the resource",
+    deleteUserWithMismatchedAuthToken
   );
 });

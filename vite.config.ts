@@ -2,6 +2,7 @@
 import { defineConfig } from "vite";
 
 const twoMinutesInMilliSeconds = 120_000;
+const twentySecondsInMilliSeconds = 20_000;
 
 export default defineConfig({
   build: {
@@ -18,6 +19,7 @@ export default defineConfig({
       exclude: ["node_modules/**/*", "tests/**/*"],
       reporter: ["text", "lcov"],
     },
+    testTimeout: twentySecondsInMilliSeconds,
     hookTimeout: twoMinutesInMilliSeconds,
   },
 });

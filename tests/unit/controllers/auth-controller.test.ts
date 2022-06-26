@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { getRoute } from "../../test-utils";
 import authController from "../../../src/controllers/auth-controller";
-import malformedRequestBodyHandler from "../../../src/middleware/error-handler/malformed-request-body-handler";
+import { malformedRequestBodyHandler } from "../../../src/middleware";
 import { registrationHandler, loginHandler } from "../../../src/request-handler";
 
 const [loginRoute, registerRoute, allRoute] = [

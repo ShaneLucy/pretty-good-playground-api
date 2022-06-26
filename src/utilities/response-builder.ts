@@ -1,8 +1,4 @@
-const responseBuilder = ({
-  body,
-  status,
-  accessControl,
-}: ResponseData | LoginResponseData): Response =>
+const responseBuilder = ({ body, status, accessControl }: ResponseData): Response =>
   new Response(JSON.stringify(body), {
     headers: new Headers({
       "Content-type": "application/json",

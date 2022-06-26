@@ -4,62 +4,48 @@ import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilit
 import type { CustomRequest } from "../../types/custom";
 
 const loginHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
-  const [userAuthenticationData, kvNamespace, jwtSecret, accessControl, jwtDuraionHours] = [
-    (await request.json()) as UserAuthenticationData,
-    env.USERS,
-    env.JWT_SECRET,
-    env.ALLOWED_ORIGIN,
-    env.JWT_DURATION_HOURS,
-  ];
+  const { username, password } = (await request.json()) as UserAuthenticationData;
 
-  const { username: providedUsername, password: providedPassword } = userAuthenticationData;
-  const isUserValid = validateUser(userAuthenticationData);
+  const isUserValid = validateUser({ username, password });
   if (!isUserValid.isValid) {
     return responseBuilder({
       body: isUserValid.errorMessage,
       status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
-      accessControl,
+      accessControl: env.ALLOWED_ORIGIN,
     });
   }
 
-  const user = await kvNamespace.get(providedUsername);
+  const user = await env.USERS.get(username);
   if (user === null) {
     return responseBuilder({
       body: ResponseMessages.USER_NOT_FOUND,
       status: HttpStatusCodes.NOT_FOUND,
-      accessControl,
+      accessControl: env.ALLOWED_ORIGIN,
     });
   }
 
-  const storedUserCredentials: StoredUserCredentials = JSON.parse(user);
-  const {
-    username: storedUserCredentialsUsername,
-    salt: storedUserCredentialsSalt,
-    password: storedUserCredentialsPassword,
-    uuid: storedUserCredentialsUuid,
-  } = storedUserCredentials;
+  const { salt: userModelSalt, password: userModelPassword, uuid: userModelUuid } = JSON.parse(
+    user
+  ) as UserModel;
 
-  const hashedPassword = await convertPlainTextToPasswordHash(
-    providedPassword,
-    storedUserCredentialsSalt
-  );
+  const hashedPassword = await convertPlainTextToPasswordHash(password, userModelSalt);
 
-  if (hashedPassword !== storedUserCredentialsPassword) {
+  if (hashedPassword !== userModelPassword) {
     return responseBuilder({
       body: ResponseMessages.INCORRECT_CREDENTIALS,
       status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
-      accessControl,
+      accessControl: env.ALLOWED_ORIGIN,
     });
   }
 
   return responseBuilder({
     body: {
-      authToken: await generateJWT(storedUserCredentialsUuid, jwtSecret, jwtDuraionHours),
-      username: storedUserCredentialsUsername,
-      uuid: storedUserCredentialsUuid,
+      authToken: await generateJWT(userModelUuid, env.JWT_SECRET, env.JWT_DURATION_HOURS),
+      username,
+      uuid: userModelUuid,
     },
     status: HttpStatusCodes.SUCCESS,
-    accessControl,
+    accessControl: env.ALLOWED_ORIGIN,
   });
 };
 

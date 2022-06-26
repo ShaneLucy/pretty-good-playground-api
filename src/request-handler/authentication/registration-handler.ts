@@ -4,12 +4,12 @@ import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilit
 import type { CustomRequest } from "../../types/custom";
 
 const registrationHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
-  const [userAuthenticationData, kvNamespace, accessControl] = [
+  const [{ username, password }, kvNamespace, accessControl] = [
     (await request.json()) as UserAuthenticationData,
     env.USERS,
     env.ALLOWED_ORIGIN,
   ];
-  const isUserValid = validateUser(userAuthenticationData);
+  const isUserValid = validateUser({ username, password });
   if (!isUserValid.isValid) {
     return responseBuilder({
       body: isUserValid.errorMessage,
@@ -18,7 +18,7 @@ const registrationHandler = async (request: CustomRequest, env: Env): Promise<Re
     });
   }
 
-  if ((await kvNamespace.get(userAuthenticationData.username)) !== null) {
+  if ((await kvNamespace.get(username)) !== null) {
     return responseBuilder({
       body: ResponseMessages.USER_EXISTS,
       status: HttpStatusCodes.UNPROCESSABLE_ENTITY,
@@ -27,19 +27,15 @@ const registrationHandler = async (request: CustomRequest, env: Env): Promise<Re
   }
 
   const [salt, uuid] = [generateSalt(), generateSalt()];
-  const hashedPassword = await convertPlainTextToPasswordHash(
-    userAuthenticationData.password,
-    salt
-  );
+  const hashedPassword = await convertPlainTextToPasswordHash(password, salt);
 
-  const userCredentialsToStore: StoredUserCredentials = {
-    username: userAuthenticationData.username,
+  const userCredentialsToStore: UserModelValue = {
+    uuid,
     password: hashedPassword,
     salt,
-    uuid,
   };
 
-  await kvNamespace.put(userAuthenticationData.username, JSON.stringify(userCredentialsToStore));
+  await kvNamespace.put(username, JSON.stringify(userCredentialsToStore));
 
   return responseBuilder({
     body: ResponseMessages.SUCCESS,

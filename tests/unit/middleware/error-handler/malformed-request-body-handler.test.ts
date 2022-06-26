@@ -2,7 +2,7 @@
 import { describe, it, expect, vi } from "vitest";
 import "whatwg-fetch";
 
-import malformedRequestBodyHandler from "../../../../src/middleware/error-handler/malformed-request-body-handler";
+import { malformedRequestBodyHandler } from "../../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
 import type { CustomRequest } from "../../../../src/types/custom";
 

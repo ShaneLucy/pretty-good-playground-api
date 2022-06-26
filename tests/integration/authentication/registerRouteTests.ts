@@ -1,36 +1,53 @@
 import { expect } from "vitest";
+import axios, { AxiosError } from "axios";
 
-import { baseUrlConfig, fetchWrapper, validUsername, validPassword } from "../../test-utils";
+import {
+  baseUrlConfig,
+  validUsername,
+  validPassword,
+  invalidUsername,
+  invalidPassword,
+} from "../../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
 const requestUrl = `${baseUrlConfig.baseUrl}/authentication/register`;
 
 export const registerRequestWithValidData = async () => {
-  const result = await fetchWrapper(requestUrl, "POST", {
+  const response = await axios.post(requestUrl, {
     username: validUsername,
     password: validPassword,
   });
 
-  expect(result.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
-  expect(await result.json()).to.be.deep.equal(ResponseMessages.SUCCESS);
+  expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
+  expect(response.data).to.be.deep.equal(ResponseMessages.SUCCESS);
 };
 
 export const registerRequestWithInvalidUsername = async () => {
-  const result = await fetchWrapper(requestUrl, "POST", {
-    username: "",
-    password: validPassword,
-  });
+  let res;
+  try {
+    await axios.post(requestUrl, {
+      username: invalidUsername,
+      password: validPassword,
+    });
+  } catch (e) {
+    res = e as AxiosError;
+  }
 
-  expect(result.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-  expect(await result.json()).to.be.deep.equal(ResponseMessages.USERNAME_EMPTY);
+  expect(res?.response?.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+  expect(res?.response?.data).to.be.deep.equal(ResponseMessages.USERNAME_EMPTY);
 };
 
 export const registerRequestWithInvalidPassword = async () => {
-  const result = await fetchWrapper(requestUrl, "POST", {
-    username: validUsername,
-    password: "",
-  });
+  let res;
+  try {
+    await axios.post(requestUrl, {
+      username: validUsername,
+      password: invalidPassword,
+    });
+  } catch (e) {
+    res = e as AxiosError;
+  }
 
-  expect(result.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
-  expect(await result.json()).to.be.deep.equal(ResponseMessages.PASSWORD_EMPTY);
+  expect(res?.response?.status).to.be.deep.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
+  expect(res?.response?.data).to.be.deep.equal(ResponseMessages.PASSWORD_EMPTY);
 };

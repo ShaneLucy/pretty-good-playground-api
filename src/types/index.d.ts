@@ -1,11 +1,13 @@
-type StoredUserCredentials = {
+type UserModel = {
   username: string;
   password: string;
   salt: string;
   uuid: string;
 };
 
-type UserAuthenticationData = Pick<StoredUserCredentials, "username" | "password">;
+type UserAuthenticationData = Pick<UserModel, "username" | "password">;
+
+type UserModelValue = Omit<UserModel, "username">;
 
 type Env = {
   USERS: KVNamespace;
@@ -15,7 +17,7 @@ type Env = {
 };
 
 type ResponseData = {
-  body: string;
+  body: any;
   status: number;
   accessControl: string;
 };
@@ -25,10 +27,6 @@ type LoginResponseBody = {
   username: string;
   uuid: string;
 };
-
-interface LoginResponseData extends ResponseData {
-  body: LoginResponseBody;
-}
 
 type FetchResponseData =
   | {
@@ -48,6 +46,6 @@ type AccessTokenBody = {
   exp: number;
 };
 
-type UuidParam = {
-  uuid: string;
+type UserParam = {
+  username: string;
 };
