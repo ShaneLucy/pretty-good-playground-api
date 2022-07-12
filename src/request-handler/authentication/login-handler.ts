@@ -1,6 +1,6 @@
 import { convertPlainTextToPasswordHash, generateJWT } from "../../authentication";
 import { validateUser } from "../../validation";
-import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages, responseBuilder, Audience } from "../../utilities";
 import type { CustomRequest } from "../../types/custom";
 
 const loginHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
@@ -40,7 +40,12 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
 
   return responseBuilder({
     body: {
-      authToken: await generateJWT(userModelUuid, env.JWT_SECRET, env.JWT_DURATION_HOURS),
+      authToken: await generateJWT(
+        { uuid: userModelUuid, question: 1 },
+        env.JWT_SECRET,
+        env.JWT_DURATION_HOURS,
+        Audience.ALL
+      ),
       username,
       uuid: userModelUuid,
     },

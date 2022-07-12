@@ -1,11 +1,13 @@
 {
   "private": true,
   "name": "pretty-good-playground-api",
-  "version": "0.3.2",
+  "version": "0.1.0",
   "description": "A template for kick starting a Cloudflare Workers project",
   "main": "dist/pretty-good-playground-api.es.js",
   "scripts": {
-    "build": " vite build",
+    "build": "tsc && vite build",
+    "dev": "npm run build & wrangler dev",
+    "login": "wrangler login",
     "test": "vitest --dir tests/unit --run",
     "test-integration": "vitest --dir tests/integration --run",
     "format": "prettier --write '**/*.{js,css,json,md}'",
@@ -29,7 +31,8 @@
     "typescript": "^4.6.3",
     "vite": "^2.9.5",
     "vitest": "^0.13.1",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "wrangler": "^2.0.18"
   },
   "dependencies": {
     "@types/node": "^17.0.24",

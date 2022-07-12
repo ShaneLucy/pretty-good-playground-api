@@ -38,8 +38,13 @@ type FetchResponseData =
 
 type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
 
-type AccessTokenBody = {
-  uuid: string;
+type AccessTokenPayload = {
+  uuid: string | null;
+  question: number;
+};
+
+type AccessToken = {
+  payload: AccessTokenPayload;
   iat: string;
   iss: string;
   aud: string;

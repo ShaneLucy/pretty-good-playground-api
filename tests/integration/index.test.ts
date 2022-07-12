@@ -1,5 +1,5 @@
 import { describe, it, beforeAll, afterAll } from "vitest";
-import { ChildProcessWithoutNullStreams, execSync } from "child_process";
+import { ChildProcessWithoutNullStreams } from "child_process";
 
 import { testServer } from "../test-utils";
 
@@ -32,9 +32,6 @@ beforeAll(async () => {
 
 afterAll(() => {
   server.kill("SIGINT");
-
-  // kill any straggling wrangler process
-  execSync("pidof wrangler | xargs kill");
 });
 
 describe("the register routes work correctly", () => {

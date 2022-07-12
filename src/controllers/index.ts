@@ -19,12 +19,10 @@ export default baseController;
  *      /authentication
  *          /register {POST}
  *          /login {POST}
- *      /questions/ {GET}
- *      /answers/ {GET}
+ *      /questions/:id {GET}
+ *      /answers/:id {GET}
  *
  * Protected Routes
  * /api
  *      /user/:uuid {GET, POST, PUT, DELETE}
- *              /question-progress {GET, POST}
- *              /email-verification/:uhash
  */

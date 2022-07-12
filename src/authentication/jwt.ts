@@ -1,30 +1,31 @@
 import { SignJWT, jwtVerify } from "jose";
+import { Audience } from "../utilities";
 
-const [issuer, audience, encoder] = [
-  "pretty-good-playground",
-  "questions:answers:account",
-  new TextEncoder(),
-];
-const [secondsInAMinute, minutesInAnHour] = [60, 60];
+const [issuer, encoder] = ["pretty-good-playground", new TextEncoder()];
+const [millisecondsInASecond, secondsInAMinute, minutesInAnHour] = [1_000, 60, 60];
 export const convertHoursToSeconds = (hours: number) => secondsInAMinute * minutesInAnHour * hours;
 
 export const generateJWT = async (
-  uuid: string,
+  payload: AccessTokenPayload,
   secret: string,
-  durationInHours: number
+  durationInHours: number,
+  audience: Audience
 ): Promise<string> =>
-  new SignJWT({ uuid })
+  new SignJWT({ payload })
     .setProtectedHeader({ alg: "HS256", b64: true })
     .setIssuedAt()
     .setIssuer(issuer)
     .setAudience(audience)
-    .setExpirationTime(Math.floor(Date.now() / 1_000) + convertHoursToSeconds(durationInHours))
+    .setExpirationTime(
+      Math.floor(Date.now() / millisecondsInASecond) + convertHoursToSeconds(durationInHours)
+    )
     .sign(encoder.encode(secret));
 
 export const verifyJWT = async (
   jwt: string,
   jwtSecret: string,
   uuid: string | undefined,
+  audience: Audience,
   durationInHours: number
 ): Promise<boolean> => {
   if (uuid === undefined) {
@@ -38,9 +39,9 @@ export const verifyJWT = async (
       maxTokenAge: convertHoursToSeconds(durationInHours),
     });
 
-    const payload = (result.payload as unknown) as AccessTokenBody;
+    const accessToken = (result.payload as unknown) as AccessToken;
 
-    if (payload.uuid !== uuid) {
+    if (accessToken.payload.uuid !== uuid) {
       return false;
     }
 

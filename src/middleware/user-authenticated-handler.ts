@@ -3,7 +3,7 @@
 // In this case, if there are no errors trying to decode the request body the request will
 // get forwarded to the request handler
 import { verifyJWT } from "../authentication";
-import { responseBuilder, HttpStatusCodes, ResponseMessages } from "../utilities";
+import { responseBuilder, HttpStatusCodes, ResponseMessages, Audience } from "../utilities";
 import type { CustomRequest } from "../types/custom";
 
 const userAuthenticatedHandler = async (
@@ -42,7 +42,7 @@ const userAuthenticatedHandler = async (
 
   const { uuid } = JSON.parse(user) as UserModel;
 
-  if (!(await verifyJWT(jwt, env.JWT_SECRET, uuid, env.JWT_DURATION_HOURS))) {
+  if (!(await verifyJWT(jwt, env.JWT_SECRET, uuid, Audience.ALL, env.JWT_DURATION_HOURS))) {
     return responseBuilder({
       body: ResponseMessages.UNAUTHORISED,
       status: HttpStatusCodes.UNAUTHORISED,
