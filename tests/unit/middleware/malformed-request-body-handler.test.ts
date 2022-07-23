@@ -2,9 +2,9 @@
 import { describe, it, expect, vi } from "vitest";
 import "whatwg-fetch";
 
-import { malformedRequestBodyHandler } from "../../../../src/middleware";
-import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
-import type { CustomRequest } from "../../../../src/types/custom";
+import { malformedRequestBodyHandler } from "../../../src/middleware";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import type { CustomRequest } from "../../../src/types/custom";
 
 /**
  * @vitest-environment jsdom

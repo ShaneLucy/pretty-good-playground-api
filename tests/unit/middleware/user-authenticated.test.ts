@@ -2,10 +2,10 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import "whatwg-fetch";
 
-import { userAuthenticatedHandler } from "../../../../src/middleware";
-import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
-import * as authentication from "../../../../src/authentication";
-import type { CustomRequest } from "../../../../src/types/custom";
+import { userAuthenticatedHandler } from "../../../src/middleware";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import * as authentication from "../../../src/authentication";
+import type { CustomRequest } from "../../../src/types/custom";
 
 /**
  * @vitest-environment jsdom
