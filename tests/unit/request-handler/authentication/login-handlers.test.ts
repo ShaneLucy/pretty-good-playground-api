@@ -15,10 +15,13 @@ describe("the loginHandler function works correctly", async () => {
   const salt = "salt";
   const password = "12345678";
   const uuid = "uuid";
+  const questionId = "2";
 
   const kvNamespace = {
     put: vi.fn(),
-    get: vi.fn().mockReturnValue(JSON.stringify({ salt, password, uuid, username: "test" })),
+    get: vi
+      .fn()
+      .mockReturnValue(JSON.stringify({ salt, password, uuid, username: "test", questionId })),
     delete: vi.fn(),
     getWithMetadata: vi.fn(),
     list: vi.fn(),
@@ -66,6 +69,7 @@ describe("the loginHandler function works correctly", async () => {
     expect(responseData.authToken).to.be.equal("jwt");
     expect(responseData.username).to.be.equal("test");
     expect(responseData.uuid).to.be.equal(uuid);
+    expect(responseData.questionId).to.be.equal(questionId);
   });
 
   it(`when given a username that doesn't exist it returns the correct status and code`, async () => {

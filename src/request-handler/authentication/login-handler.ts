@@ -24,9 +24,12 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
     });
   }
 
-  const { salt: userModelSalt, password: userModelPassword, uuid: userModelUuid } = JSON.parse(
-    user
-  ) as UserModel;
+  const {
+    salt: userModelSalt,
+    password: userModelPassword,
+    uuid: userModelUuid,
+    questionId: userModelQuestionId,
+  } = JSON.parse(user) as UserModel;
 
   const hashedPassword = await convertPlainTextToPasswordHash(password, userModelSalt);
 
@@ -41,13 +44,14 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
   return responseBuilder({
     body: {
       authToken: await generateJWT(
-        { uuid: userModelUuid, question: 1 },
+        { uuid: userModelUuid, questionId: userModelQuestionId },
         env.JWT_SECRET,
         env.JWT_DURATION_HOURS,
         Audience.ALL
       ),
       username,
       uuid: userModelUuid,
+      questionId: userModelQuestionId,
     },
     status: HttpStatusCodes.SUCCESS,
     accessControl: env.ALLOWED_ORIGIN,

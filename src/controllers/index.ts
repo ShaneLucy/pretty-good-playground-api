@@ -19,10 +19,10 @@ export default baseController;
  *      /authentication
  *          /register {POST}
  *          /login {POST}
- *      /questions/:id {GET}
- *      /answers/:id {GET}
+ *      /questions/:id {GET, POST}
  *
  * Protected Routes
  * /api
- *      /user/:uuid {GET, POST, PUT, DELETE}
+ *      /user/:username {GET, POST, PUT, DELETE}
+ *      /user/:username/question-progress/ {GET, POST}
  */

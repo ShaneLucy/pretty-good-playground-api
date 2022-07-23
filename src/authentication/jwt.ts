@@ -6,7 +6,7 @@ const [millisecondsInASecond, secondsInAMinute, minutesInAnHour] = [1_000, 60, 6
 export const convertHoursToSeconds = (hours: number) => secondsInAMinute * minutesInAnHour * hours;
 
 export const generateJWT = async (
-  payload: AccessTokenPayload,
+  payload: AllAudienceAccessTokenPayload | QuestionAccessTokenPayload,
   secret: string,
   durationInHours: number,
   audience: Audience
@@ -21,14 +21,41 @@ export const generateJWT = async (
     )
     .sign(encoder.encode(secret));
 
+const verifyAllAudienceAccessToken = (accessToken: AllAudienceAccessToken, uuid: string | null) => {
+  if (accessToken.payload.uuid !== uuid) {
+    return false;
+  }
+  return true;
+};
+
+const verifyQuestionAccessToken = (accessToken: QuestionAccessToken, question: string | null) => {
+  if (accessToken.payload.questionId !== question) {
+    return false;
+  }
+  return true;
+};
+
 export const verifyJWT = async (
   jwt: string,
   jwtSecret: string,
-  uuid: string | undefined,
+  uuid: string | null,
+  question: string | null,
   audience: Audience,
   durationInHours: number
 ): Promise<boolean> => {
-  if (uuid === undefined) {
+  if (uuid === null && audience === Audience.ALL) {
+    return false;
+  }
+
+  if (uuid !== null && audience !== Audience.ALL) {
+    return false;
+  }
+
+  if (question !== null && audience !== Audience.QUESTIONS_ANSWERS) {
+    return false;
+  }
+
+  if (question === null && audience === Audience.QUESTIONS_ANSWERS) {
     return false;
   }
 
@@ -39,13 +66,9 @@ export const verifyJWT = async (
       maxTokenAge: convertHoursToSeconds(durationInHours),
     });
 
-    const accessToken = (result.payload as unknown) as AccessToken;
-
-    if (accessToken.payload.uuid !== uuid) {
-      return false;
-    }
-
-    return true;
+    return audience === Audience.ALL
+      ? verifyAllAudienceAccessToken((result.payload as unknown) as AllAudienceAccessToken, uuid)
+      : verifyQuestionAccessToken((result.payload as unknown) as QuestionAccessToken, question);
   } catch (e) {
     return false;
   }

@@ -24,10 +24,11 @@ export const loginRequestWithValidData = async () => {
   const responseData = response.data as LoginResponseBody;
   axios.defaults.headers.common.Authorization = responseData.authToken;
 
-  const jwt = (decodeJwt(responseData.authToken) as unknown) as AccessToken;
+  const jwt = (decodeJwt(responseData.authToken) as unknown) as AllAudienceAccessToken;
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(jwt.payload.uuid).to.be.deep.equal(responseData.uuid);
+  expect(jwt.payload.questionId).to.be.deep.equal(responseData.questionId);
 };
 
 export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async () => {

@@ -6,12 +6,12 @@ import { verifyJWT } from "../authentication";
 import { responseBuilder, HttpStatusCodes, ResponseMessages, Audience } from "../utilities";
 import type { CustomRequest } from "../types/custom";
 
-const userAuthenticatedHandler = async (
+const authenticatedUserAuthorisedForQuestion = async (
   request: CustomRequest,
   env: Env
 ): Promise<Response | void> => {
   const { params, headers } = request;
-  const param = params as UserParam;
+  const param = (params as unknown) as QuestionParam;
 
   if (headers === undefined) {
     return responseBuilder({
@@ -30,19 +30,16 @@ const userAuthenticatedHandler = async (
     });
   }
 
-  const user = await env.USERS.get(param?.username);
-
-  if (user === null || user === undefined) {
-    return responseBuilder({
-      body: ResponseMessages.UNAUTHORISED,
-      status: HttpStatusCodes.UNAUTHORISED,
-      accessControl: env.ALLOWED_ORIGIN,
-    });
-  }
-
-  const { uuid } = JSON.parse(user) as UserModel;
-
-  if (!(await verifyJWT(jwt, env.JWT_SECRET, uuid, null, Audience.ALL, env.JWT_DURATION_HOURS))) {
+  if (
+    !(await verifyJWT(
+      jwt,
+      env.JWT_SECRET,
+      null,
+      param.question,
+      Audience.QUESTIONS_ANSWERS,
+      env.JWT_DURATION_HOURS
+    ))
+  ) {
     return responseBuilder({
       body: ResponseMessages.UNAUTHORISED,
       status: HttpStatusCodes.UNAUTHORISED,
@@ -51,4 +48,4 @@ const userAuthenticatedHandler = async (
   }
 };
 
-export default userAuthenticatedHandler;
+export default authenticatedUserAuthorisedForQuestion;

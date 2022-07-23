@@ -3,6 +3,7 @@ type UserModel = {
   password: string;
   salt: string;
   uuid: string;
+  questionId: string;
 };
 
 type UserAuthenticationData = Pick<UserModel, "username" | "password">;
@@ -26,6 +27,7 @@ type LoginResponseBody = {
   authToken: string;
   username: string;
   uuid: string;
+  questionId: string;
 };
 
 type FetchResponseData =
@@ -38,19 +40,34 @@ type FetchResponseData =
 
 type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
 
-type AccessTokenPayload = {
-  uuid: string | null;
-  question: number;
+type AllAudienceAccessTokenPayload = {
+  uuid: string;
+  questionId: string;
+};
+
+type QuestionAccessTokenPayload = {
+  questionId: string;
 };
 
 type AccessToken = {
-  payload: AccessTokenPayload;
   iat: string;
   iss: string;
   aud: string;
   exp: number;
 };
 
+interface AllAudienceAccessToken extends AccessToken {
+  payload: AllAudienceAccessTokenPayload;
+}
+
+interface QuestionAccessToken extends AccessToken {
+  payload: QuestionAccessTokenPayload;
+}
+
 type UserParam = {
   username: string;
+};
+
+type QuestionParam = {
+  question: string;
 };

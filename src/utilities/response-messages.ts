@@ -12,6 +12,7 @@ enum ResponseMessages {
   UNAUTHORISED = "You need to login to request this resource",
   INTERNAL_SERVER_ERROR = "Unexpected internal server error",
   BAD_REQUEST = "Bad Request",
+  QUESTION_NOT_FOUND = "The request question could not be found",
 }
 
 export default ResponseMessages;
