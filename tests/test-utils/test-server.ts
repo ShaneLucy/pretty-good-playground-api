@@ -29,6 +29,9 @@ const testServer = (): Promise<ChildProcessWithoutNullStreams> =>
     const server = spawn("npx", ["wrangler", "dev", "--port", port.toString()], { detached: true });
 
     server.on("error", reject);
+    // server.stdout.on("data", (chunk: Buffer) => {
+    //   console.log(chunk.toString());
+    // });
 
     return waitForURLReachable(`${baseUrl}/health-check`, oneMinuteInMilliseconds)
       .then(() => resolve(server))

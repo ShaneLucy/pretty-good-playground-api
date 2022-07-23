@@ -1,28 +1,32 @@
-type StoredUserCredentials = {
+type UserModel = {
   username: string;
   password: string;
   salt: string;
-  uuid: string;
+  questionId: string;
 };
 
-type UserAuthenticationData = Pick<StoredUserCredentials, "username" | "password">;
+type UserAuthenticationData = Pick<UserModel, "username" | "password">;
+
+type UserModelValue = Omit<UserModel, "username">;
 
 type Env = {
   USERS: KVNamespace;
+  QUESTIONS: KVNamespace;
   JWT_SECRET: string;
   ALLOWED_ORIGIN: string;
+  JWT_DURATION_HOURS: number;
 };
 
 type ResponseData = {
-  body:
-    | string
-    | {
-        authToken: string;
-        username: string;
-        uuid: string;
-      };
-  code: number;
+  body: any;
+  status: number;
   accessControl: string;
+};
+
+type LoginResponseBody = {
+  authToken: string;
+  username: string;
+  questionId: string;
 };
 
 type FetchResponseData =
@@ -33,10 +37,36 @@ type FetchResponseData =
     }
   | string;
 
-type RequestMethodTypes = "GET" | "POST";
+type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
 
-interface IRequest extends Request {
-  method: RequestMethodTypes;
-  url: string;
-  optional?: string;
+type AllAudienceAccessTokenPayload = {
+  username: string;
+  questionId: string;
+};
+
+type QuestionAccessTokenPayload = {
+  questionId: string;
+};
+
+type AccessToken = {
+  iat: string;
+  iss: string;
+  aud: string;
+  exp: number;
+};
+
+interface AllAudienceAccessToken extends AccessToken {
+  payload: AllAudienceAccessTokenPayload;
 }
+
+interface QuestionAccessToken extends AccessToken {
+  payload: QuestionAccessTokenPayload;
+}
+
+type UserParam = {
+  username: string;
+};
+
+type QuestionParam = {
+  question: string;
+};

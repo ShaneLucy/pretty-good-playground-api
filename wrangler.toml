@@ -4,16 +4,19 @@ zone_id = ""
 account_id = "2cd8df55c7a88e252fc16663238a4c84"
 workers_dev = true
 compatibility_date = "2022-04-15"
+send_metrics = false
 
 kv_namespaces = [ 
-    { binding = "USERS", preview_id = "aba67727b1b243678dca96be42c46613", id = "a9a1f5b10df043a4b7d5d7b874dbba21" }
+    { binding = "USERS", preview_id = "aba67727b1b243678dca96be42c46613", id = "a9a1f5b10df043a4b7d5d7b874dbba21" },
+    { binding = "QUESTIONS", preview_id = "a6a70c0d8e914a82985f9560b3b54f35", id = "9131b83ca5ae475a85c9fdfdfd6c6f34" }
 ]
 
 [dev]
-port = 9000
+port = 9132
 
 [vars]
 ALLOWED_ORIGIN = "*"
+JWT_DURATION_HOURS = 2
 [secrets]
 # JWT_SECRET
 
