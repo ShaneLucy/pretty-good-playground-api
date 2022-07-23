@@ -26,11 +26,10 @@ const registrationHandler = async (request: CustomRequest, env: Env): Promise<Re
     });
   }
 
-  const [salt, uuid] = [generateSalt(), generateSalt()];
+  const salt = generateSalt();
   const hashedPassword = await convertPlainTextToPasswordHash(password, salt);
 
   const userCredentialsToStore: UserModelValue = {
-    uuid,
     password: hashedPassword,
     salt,
     questionId: "1",

@@ -24,19 +24,19 @@ describe("the deleteUserHandler function works correctly", async () => {
 
   const env = {
     USERS: kvNamespace,
+    QUESTIONS: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
   };
 
   it(`when given a valid request, returns the correct status, message and deletes the user`, async () => {
-    const response = await deleteUserHandler(
-      new Request("hi", {
-        body: JSON.stringify({ username: "test" }),
-        method: "DELETE",
-      }) as CustomRequest,
-      env
-    );
+    const request = new Request("hi", {
+      body: JSON.stringify({ username: "test" }),
+      method: "DELETE",
+    }) as CustomRequest;
+
+    const response = await deleteUserHandler(request, env);
 
     expect(kvNamespace.delete).toHaveBeenCalledTimes(1);
     expect(response.status).to.be.equal(HttpStatusCodes.SUCCESS);

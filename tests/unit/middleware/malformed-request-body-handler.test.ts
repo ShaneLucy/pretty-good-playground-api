@@ -19,26 +19,28 @@ const kvNamespace = {
 
 const env = {
   USERS: kvNamespace,
+  QUESTIONS: kvNamespace,
   JWT_SECRET: "AVerySecretPassphrase",
   ALLOWED_ORIGIN: "*",
   JWT_DURATION_HOURS: 2,
-};
+} as Env;
 
 describe("the malformedRequestBodyHandler function works correctly", () => {
   it("given valid JSON returns undefined", async () => {
-    const result = await malformedRequestBodyHandler(
-      new Request("hi", { body: JSON.stringify("Hi!"), method: "POST" }) as CustomRequest,
-      env
-    );
+    const request = new Request("hi", {
+      body: JSON.stringify("Hi!"),
+      method: "POST",
+    }) as CustomRequest;
+
+    const result = await malformedRequestBodyHandler(request, env);
 
     expect(result).to.deep.equal(undefined);
   });
 
   it("given invalid JSON returns a response with the correct status code & body", async () => {
-    const result = await malformedRequestBodyHandler(
-      new Request("hi", { body: "Hi!", method: "POST" }) as CustomRequest,
-      env
-    );
+    const request = new Request("hi", { body: "Hi!", method: "POST" }) as CustomRequest;
+
+    const result = await malformedRequestBodyHandler(request, env);
 
     expect(result?.status).to.deep.equal(HttpStatusCodes.BAD_REQUEST);
     // @ts-ignore

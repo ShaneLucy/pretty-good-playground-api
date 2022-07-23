@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import "whatwg-fetch";
 
-import { userAuthenticatedHandler } from "../../../src/middleware";
+import { userAuthorisedForQuestion } from "../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import * as authentication from "../../../src/authentication";
 import type { CustomRequest } from "../../../src/types/custom";
@@ -10,14 +10,14 @@ import type { CustomRequest } from "../../../src/types/custom";
 /**
  * @vitest-environment jsdom
  */
-describe("the userAuthenticatedHandler function works correctly", () => {
+describe("the userAuthorisedForQuestion function works correctly", () => {
   afterEach(() => {
     vi.resetAllMocks();
   });
 
   const kvNamespace = {
     put: vi.fn(),
-    get: vi.fn().mockReturnValue(JSON.stringify({ password: "", salt: "", uuid: "" })),
+    get: vi.fn(),
     delete: vi.fn(),
     getWithMetadata: vi.fn(),
     list: vi.fn(),
@@ -43,22 +43,20 @@ describe("the userAuthenticatedHandler function works correctly", () => {
     }) as CustomRequest;
 
     verifyJWTSpy.mockImplementationOnce(async () => true);
-    const result = await userAuthenticatedHandler(request, env);
+    const result = await userAuthorisedForQuestion(request, env);
 
     expect(result).to.deep.equal(undefined);
   });
 
-  it("given invalid JWT returns a response with the correct status code & body", async () => {
+  it("given a request without a JWT, returns the correct status code & body", async () => {
     const request = new Request("hi", {
       body: JSON.stringify("Hi!"),
       method: "POST",
-      headers: {
-        Authorization: "",
-      },
+      headers: {},
     }) as CustomRequest;
 
-    verifyJWTSpy.mockImplementationOnce(async () => false);
-    const result = await userAuthenticatedHandler(request, env);
+    verifyJWTSpy.mockImplementationOnce(async () => true);
+    const result = await userAuthorisedForQuestion(request, env);
 
     expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
     // @ts-ignore
@@ -71,29 +69,32 @@ describe("the userAuthenticatedHandler function works correctly", () => {
       method: "POST",
     }) as CustomRequest;
 
-    const result = await userAuthenticatedHandler(request, env);
+    const result = await userAuthorisedForQuestion(request, env);
 
     expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
     // @ts-ignore
     expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
   });
 
-  it("given a request without a JWT returns a response with the correct status code & body", async () => {
+  it("given an invalid JWT, returns  the correct status code & body", async () => {
     const request = new Request("hi", {
       body: JSON.stringify("Hi!"),
       method: "POST",
-      headers: {},
+      headers: {
+        Authorization: "",
+      },
     }) as CustomRequest;
 
-    const result = await userAuthenticatedHandler(request, env);
+    verifyJWTSpy.mockImplementationOnce(async () => false);
+    const result = await userAuthorisedForQuestion(request, env);
 
     expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
     // @ts-ignore
     expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
   });
 
-  it("when the username path parameter is for a user that doesn't exist, it returns the correct status code & body", async () => {
-    const kvNamespaceWithoutUser = {
+  it("when the question path parameter is for a question that doesn't exist, it returns the correct status code & body", async () => {
+    const kvNamespaceWithoutQuestion = {
       put: vi.fn(),
       get: vi.fn().mockReturnValue(null),
       delete: vi.fn(),
@@ -101,9 +102,9 @@ describe("the userAuthenticatedHandler function works correctly", () => {
       list: vi.fn(),
     };
 
-    const envWithoutUser = {
-      USERS: kvNamespaceWithoutUser,
-      QUESTIONS: kvNamespace,
+    const envWithoutQuestion = {
+      USERS: kvNamespace,
+      QUESTIONS: kvNamespaceWithoutQuestion,
       JWT_SECRET,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
@@ -117,8 +118,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
       },
     }) as CustomRequest;
 
-    const result = await userAuthenticatedHandler(request, envWithoutUser);
-
+    const result = await userAuthorisedForQuestion(request, envWithoutQuestion);
     expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
     // @ts-ignore
     expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);

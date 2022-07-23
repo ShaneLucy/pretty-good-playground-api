@@ -5,7 +5,7 @@ import { Audience } from "../../../src/utilities";
 import { generateJWT, verifyJWT } from "../../../src/authentication/index";
 
 const [
-  uuid,
+  username,
   secret,
   issuer,
   secondsInAMinute,
@@ -13,13 +13,13 @@ const [
   millisecondsInASecond,
   durationInHours,
   questionId,
-] = ["uuid", "secret", "pretty-good-playground", 60, 60, 1_000, 5, "2"];
+] = ["username", "secret", "pretty-good-playground", 60, 60, 1_000, 5, "2"];
 
-const allAudiencePayload: AllAudienceAccessTokenPayload = { uuid, questionId };
+const allAudiencePayload: AllAudienceAccessTokenPayload = { username, questionId };
 const questionsPayload: QuestionAccessTokenPayload = { questionId };
 
 describe("the generateJWT function works correctly", () => {
-  it("returns a jwt string, containing the correct uuid, iat, iss, aud and exp fields for All access audience", async () => {
+  it("returns a jwt string, containing the correct username, iat, iss, aud and exp fields for All access audience", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
     const decodedJWT = (decodeJwt(jwt) as unknown) as AllAudienceAccessToken;
 
@@ -31,7 +31,7 @@ describe("the generateJWT function works correctly", () => {
         secondsInAMinute * minutesInAnHour * durationInHours
     );
     expect(decodedJWT.iat).to.deep.equal(Math.floor(Date.now() / millisecondsInASecond));
-    expect(decodedJWT.payload.uuid).to.deep.equal(uuid);
+    expect(decodedJWT.payload.username).to.deep.equal(username);
     expect(decodedJWT.payload.questionId).to.deep.equal(questionId);
   });
 
@@ -52,34 +52,55 @@ describe("the generateJWT function works correctly", () => {
 });
 
 describe("the verifyJwt function works correctly for all audience claims", () => {
-  it("given a valid jwt, correct secret, correct audience and correct uuid, it returns true", async () => {
+  it("given a valid jwt, correct secret, correct audience and correct username, it returns true", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
-    const result = await verifyJWT(jwt, secret, uuid, null, Audience.ALL, durationInHours);
+    const result = await verifyJWT(jwt, secret, username, null, Audience.ALL, durationInHours);
     expect(result).toBeTruthy();
   });
 
-  it("given a valid jwt, correct secret, correct audience, correct uuid and a question, it returns false", async () => {
+  it("given a valid jwt, correct secret, correct audience, correct username and a question, it returns false", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
-    const result = await verifyJWT(jwt, secret, uuid, questionId, Audience.ALL, durationInHours);
+    const result = await verifyJWT(
+      jwt,
+      secret,
+      username,
+      questionId,
+      Audience.ALL,
+      durationInHours
+    );
     expect(result).toBeFalsy();
   });
 
   it("given a valid jwt but incorrect secret, it returns false", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
-    const result = await verifyJWT(jwt, "invalidSecret", uuid, null, Audience.ALL, durationInHours);
+    const result = await verifyJWT(
+      jwt,
+      "invalidSecret",
+      username,
+      null,
+      Audience.ALL,
+      durationInHours
+    );
     expect(result).toBeFalsy();
   });
 
   it("given a valid token but it has expired, it returns false", async () => {
     const expiredTokenDuration = 0;
     const jwt = await generateJWT(allAudiencePayload, secret, expiredTokenDuration, Audience.ALL);
-    const result = await verifyJWT(jwt, secret, uuid, null, Audience.ALL, expiredTokenDuration);
+    const result = await verifyJWT(jwt, secret, username, null, Audience.ALL, expiredTokenDuration);
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but the payload uuid doesn't match the path provided uuid, it returns false", async () => {
+  it("given a valid token but the payload username doesn't match the path provided username, it returns false", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
-    const result = await verifyJWT(jwt, secret, "invalidUuid", null, Audience.ALL, durationInHours);
+    const result = await verifyJWT(
+      jwt,
+      secret,
+      "invalidUsername",
+      null,
+      Audience.ALL,
+      durationInHours
+    );
     expect(result).toBeFalsy();
   });
 
@@ -88,7 +109,7 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
     const result = await verifyJWT(
       jwt,
       secret,
-      uuid,
+      username,
       null,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
@@ -97,7 +118,7 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
   });
 
   it("given an invalid token, it returns false", async () => {
-    const result = await verifyJWT("jwt", secret, uuid, null, Audience.ALL, durationInHours);
+    const result = await verifyJWT("jwt", secret, username, null, Audience.ALL, durationInHours);
     expect(result).toBeFalsy();
   });
 });
@@ -121,7 +142,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     expect(result).toBeTruthy();
   });
 
-  it("given a valid jwt, correct secret, correct audience, correct question and uuid, it returns false", async () => {
+  it("given a valid jwt, correct secret, correct audience, correct question and username, it returns false", async () => {
     const jwt = await generateJWT(
       questionsPayload,
       secret,
@@ -131,7 +152,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     const result = await verifyJWT(
       jwt,
       secret,
-      uuid,
+      username,
       questionId,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
@@ -209,7 +230,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     const result = await verifyJWT(
       "jwt",
       secret,
-      uuid,
+      username,
       null,
       Audience.QUESTIONS_ANSWERS,
       durationInHours

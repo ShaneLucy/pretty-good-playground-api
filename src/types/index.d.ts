@@ -2,7 +2,6 @@ type UserModel = {
   username: string;
   password: string;
   salt: string;
-  uuid: string;
   questionId: string;
 };
 
@@ -12,6 +11,7 @@ type UserModelValue = Omit<UserModel, "username">;
 
 type Env = {
   USERS: KVNamespace;
+  QUESTIONS: KVNamespace;
   JWT_SECRET: string;
   ALLOWED_ORIGIN: string;
   JWT_DURATION_HOURS: number;
@@ -26,7 +26,6 @@ type ResponseData = {
 type LoginResponseBody = {
   authToken: string;
   username: string;
-  uuid: string;
   questionId: string;
 };
 
@@ -41,7 +40,7 @@ type FetchResponseData =
 type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
 
 type AllAudienceAccessTokenPayload = {
-  uuid: string;
+  username: string;
   questionId: string;
 };
 

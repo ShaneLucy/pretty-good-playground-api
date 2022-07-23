@@ -40,9 +40,16 @@ const userAuthenticatedHandler = async (
     });
   }
 
-  const { uuid } = JSON.parse(user) as UserModel;
-
-  if (!(await verifyJWT(jwt, env.JWT_SECRET, uuid, null, Audience.ALL, env.JWT_DURATION_HOURS))) {
+  if (
+    !(await verifyJWT(
+      jwt,
+      env.JWT_SECRET,
+      param?.username ? param.username : null,
+      null,
+      Audience.ALL,
+      env.JWT_DURATION_HOURS
+    ))
+  ) {
     return responseBuilder({
       body: ResponseMessages.UNAUTHORISED,
       status: HttpStatusCodes.UNAUTHORISED,

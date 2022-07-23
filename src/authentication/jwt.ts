@@ -21,8 +21,11 @@ export const generateJWT = async (
     )
     .sign(encoder.encode(secret));
 
-const verifyAllAudienceAccessToken = (accessToken: AllAudienceAccessToken, uuid: string | null) => {
-  if (accessToken.payload.uuid !== uuid) {
+const verifyAllAudienceAccessToken = (
+  accessToken: AllAudienceAccessToken,
+  username: string | null
+) => {
+  if (accessToken.payload.username !== username) {
     return false;
   }
   return true;
@@ -38,16 +41,16 @@ const verifyQuestionAccessToken = (accessToken: QuestionAccessToken, question: s
 export const verifyJWT = async (
   jwt: string,
   jwtSecret: string,
-  uuid: string | null,
+  username: string | null,
   question: string | null,
   audience: Audience,
   durationInHours: number
 ): Promise<boolean> => {
-  if (uuid === null && audience === Audience.ALL) {
+  if (username === null && audience === Audience.ALL) {
     return false;
   }
 
-  if (uuid !== null && audience !== Audience.ALL) {
+  if (username !== null && audience !== Audience.ALL) {
     return false;
   }
 
@@ -67,7 +70,10 @@ export const verifyJWT = async (
     });
 
     return audience === Audience.ALL
-      ? verifyAllAudienceAccessToken((result.payload as unknown) as AllAudienceAccessToken, uuid)
+      ? verifyAllAudienceAccessToken(
+          (result.payload as unknown) as AllAudienceAccessToken,
+          username
+        )
       : verifyQuestionAccessToken((result.payload as unknown) as QuestionAccessToken, question);
   } catch (e) {
     return false;

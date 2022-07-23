@@ -27,7 +27,7 @@ export const loginRequestWithValidData = async () => {
   const jwt = (decodeJwt(responseData.authToken) as unknown) as AllAudienceAccessToken;
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
-  expect(jwt.payload.uuid).to.be.deep.equal(responseData.uuid);
+  expect(jwt.payload.username).to.be.deep.equal(responseData.username);
   expect(jwt.payload.questionId).to.be.deep.equal(responseData.questionId);
 };
 

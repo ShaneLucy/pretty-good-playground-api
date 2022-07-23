@@ -4,10 +4,11 @@ import userController from "../../../src/controllers/user-controller";
 import { userAuthenticatedHandler } from "../../../src/middleware";
 import { deleteUserHandler } from "../../../src/request-handler";
 
-const [optionsRoute, getUserRoute, deleteUserRoute] = [
+const [optionsRoute, getUserRoute, deleteUserRoute, undefinedRoute] = [
   userController.routes[0],
   userController.routes[1],
   userController.routes[2],
+  userController.routes[3],
 ];
 
 describe("the userController contains the correct routes and the routes map to the correct methods", () => {
@@ -33,5 +34,9 @@ describe("the userController contains the correct routes and the routes map to t
     expect(deleteUserRoute?.[2][0]).toMatchObject(userAuthenticatedHandler);
     expect(deleteUserRoute?.[2][1]).toMatchObject(deleteUserHandler);
     expect(deleteUserRoute?.[2][2]).toBeUndefined();
+  });
+
+  it("contains the correct amount of routes", () => {
+    expect(undefinedRoute).to.be.deep.equal(undefined);
   });
 });

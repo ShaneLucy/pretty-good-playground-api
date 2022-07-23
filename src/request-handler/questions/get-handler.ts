@@ -1,10 +1,11 @@
 import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
 import type { CustomRequest } from "../../types/custom";
 
-const loginHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
+const getQuestionHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
   const { params } = request;
   const param = (params as unknown) as QuestionParam;
-  const question = await env.USERS.get(param.question);
+
+  const question = await env.QUESTIONS.get(param?.question);
 
   if (question === null || question === undefined) {
     return responseBuilder({
@@ -21,4 +22,4 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
   });
 };
 
-export default loginHandler;
+export default getQuestionHandler;

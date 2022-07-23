@@ -31,4 +31,8 @@ describe("the authController contains the correct routes and the routes map to t
     expect(allRoute?.[2][0]).toMatchObject(malformedRequestBodyHandler);
     expect(allRoute?.[2][1]).toBeUndefined();
   });
+
+  it("contains the correct amount of routes", () => {
+    expect(authController.routes[3]).to.be.deep.equal(undefined);
+  });
 });

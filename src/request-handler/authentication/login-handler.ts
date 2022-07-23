@@ -27,7 +27,6 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
   const {
     salt: userModelSalt,
     password: userModelPassword,
-    uuid: userModelUuid,
     questionId: userModelQuestionId,
   } = JSON.parse(user) as UserModel;
 
@@ -44,13 +43,12 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
   return responseBuilder({
     body: {
       authToken: await generateJWT(
-        { uuid: userModelUuid, questionId: userModelQuestionId },
+        { username, questionId: userModelQuestionId },
         env.JWT_SECRET,
         env.JWT_DURATION_HOURS,
         Audience.ALL
       ),
       username,
-      uuid: userModelUuid,
       questionId: userModelQuestionId,
     },
     status: HttpStatusCodes.SUCCESS,

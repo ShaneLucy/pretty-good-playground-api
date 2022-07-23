@@ -27,46 +27,43 @@ describe("the registrationHandler function works correctly", () => {
 
   const env = {
     USERS: kvNamespace,
+    QUESTIONS: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
   };
 
   it(`when given a valid username and password returns the correct status & success message`, async () => {
-    const response = await registrationHandler(
-      new Request("hi", {
-        body: JSON.stringify({ username: "test", password: "09483490054" }),
-        method: "POST",
-      }) as CustomRequest,
-      env
-    );
+    const request = new Request("hi", {
+      body: JSON.stringify({ username: "test", password: "09483490054" }),
+      method: "POST",
+    }) as CustomRequest;
+
+    const response = await registrationHandler(request, env);
 
     expect(response.status).to.be.equal(HttpStatusCodes.SUCCESS);
     expect(await response.json()).to.be.equal(ResponseMessages.SUCCESS);
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const response = await registrationHandler(
-      new Request("hi", {
-        body: JSON.stringify({ username: "t es t", password: "09483490589054" }),
-        method: "POST",
-      }) as CustomRequest,
-      env
-    );
+    const request = new Request("hi", {
+      body: JSON.stringify({ username: "t es t", password: "09483490589054" }),
+      method: "POST",
+    }) as CustomRequest;
+
+    const response = await registrationHandler(request, env);
 
     expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
     expect(await response.json()).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const response = await registrationHandler(
-      new Request("hi", {
-        body: JSON.stringify({ username: "test", password: "123456" }),
-        method: "POST",
-      }) as CustomRequest,
-      env
-    );
+    const request = new Request("hi", {
+      body: JSON.stringify({ username: "test", password: "123456" }),
+      method: "POST",
+    }) as CustomRequest;
 
+    const response = await registrationHandler(request, env);
     expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
     expect(await response.json()).to.be.equal(ResponseMessages.PASSWORD_INVALID);
   });
@@ -82,18 +79,18 @@ describe("the registrationHandler function works correctly", () => {
 
     const envWithUserExists = {
       USERS: kvNamespaceWithUserExists,
+      QUESTIONS: kvNamespace,
       JWT_SECRET: "AVerySecretPassphrase",
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     };
 
-    const response = await registrationHandler(
-      new Request("hi", {
-        body: JSON.stringify({ username: "test", password: "011589054" }),
-        method: "POST",
-      }) as CustomRequest,
-      envWithUserExists
-    );
+    const request = new Request("hi", {
+      body: JSON.stringify({ username: "test", password: "011589054" }),
+      method: "POST",
+    }) as CustomRequest;
+
+    const response = await registrationHandler(request, envWithUserExists);
 
     expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
     expect(await response.json()).to.be.equal(ResponseMessages.USER_EXISTS);
