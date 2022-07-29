@@ -8,7 +8,8 @@ send_metrics = false
 
 kv_namespaces = [ 
     { binding = "USERS", preview_id = "aba67727b1b243678dca96be42c46613", id = "a9a1f5b10df043a4b7d5d7b874dbba21" },
-    { binding = "QUESTIONS", preview_id = "a6a70c0d8e914a82985f9560b3b54f35", id = "9131b83ca5ae475a85c9fdfdfd6c6f34" }
+    { binding = "QUESTIONS", preview_id = "a6a70c0d8e914a82985f9560b3b54f35", id = "9131b83ca5ae475a85c9fdfdfd6c6f34" },
+    { binding = "PGP_KEY", preview_id = "aaa774592cef451a849799b49c1431e1", id="978e86c86c664302a03369d64d26bd3c"}
 ]
 
 [dev]

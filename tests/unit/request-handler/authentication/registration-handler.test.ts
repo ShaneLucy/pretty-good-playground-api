@@ -28,10 +28,11 @@ describe("the registrationHandler function works correctly", () => {
   const env = {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
+    PGP_KEY: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
-  };
+  } as Env;
 
   it(`when given a valid username and password returns the correct status & success message`, async () => {
     const request = new Request("hi", {
@@ -80,10 +81,11 @@ describe("the registrationHandler function works correctly", () => {
     const envWithUserExists = {
       USERS: kvNamespaceWithUserExists,
       QUESTIONS: kvNamespace,
+      PGP_KEY: kvNamespace,
       JWT_SECRET: "AVerySecretPassphrase",
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
-    };
+    } as Env;
 
     const request = new Request("hi", {
       body: JSON.stringify({ username: "test", password: "011589054" }),

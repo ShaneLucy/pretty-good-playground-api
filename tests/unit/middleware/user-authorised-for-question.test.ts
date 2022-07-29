@@ -28,6 +28,7 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
   const env = {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
+    PGP_KEY: kvNamespace,
     JWT_SECRET,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
@@ -105,6 +106,7 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
     const envWithoutQuestion = {
       USERS: kvNamespace,
       QUESTIONS: kvNamespaceWithoutQuestion,
+      PGP_KEY: kvNamespace,
       JWT_SECRET,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,

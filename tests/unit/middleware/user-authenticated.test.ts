@@ -28,6 +28,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   const env = {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
+    PGP_KEY: kvNamespace,
     JWT_SECRET,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
@@ -104,6 +105,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
     const envWithoutUser = {
       USERS: kvNamespaceWithoutUser,
       QUESTIONS: kvNamespace,
+      PGP_KEY: kvNamespace,
       JWT_SECRET,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,

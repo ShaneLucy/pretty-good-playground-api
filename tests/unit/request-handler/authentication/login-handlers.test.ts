@@ -27,6 +27,7 @@ describe("the loginHandler function works correctly", async () => {
   const env = {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
+    PGP_KEY: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
@@ -43,6 +44,7 @@ describe("the loginHandler function works correctly", async () => {
   const envGetNull = {
     USERS: kvNamespaceGetNull,
     QUESTIONS: kvNamespace,
+    PGP_KEY: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
@@ -118,6 +120,7 @@ describe("the loginHandler function works correctly", async () => {
     const envMismatch = {
       USERS: kvNamespaceMismatch,
       QUESTIONS: kvNamespace,
+      PGP_KEY: kvNamespace,
       JWT_SECRET: "AVerySecretPassphrase",
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,

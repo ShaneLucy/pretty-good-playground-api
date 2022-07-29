@@ -25,10 +25,11 @@ describe("the startHandler function works correctly", () => {
   const env = {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
+    PGP_KEY: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
-  };
+  } as Env;
 
   it(`when given a request without an authorization header, returns a JWT`, async () => {
     const request = new Request("hi", {

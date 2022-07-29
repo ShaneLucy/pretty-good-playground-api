@@ -12,6 +12,7 @@ type UserModelValue = Omit<UserModel, "username">;
 type Env = {
   USERS: KVNamespace;
   QUESTIONS: KVNamespace;
+  PGP_KEY: KVNamespace;
   JWT_SECRET: string;
   ALLOWED_ORIGIN: string;
   JWT_DURATION_HOURS: number;
