@@ -26,10 +26,10 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   const JWT_SECRET = "AVerySecretPassphrase";
   const verifyJWTSpy = vi.spyOn(authentication, "verifyJWT");
   const env = {
+    JWT_SECRET,
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
     PGP_KEY: kvNamespace,
-    JWT_SECRET,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
   } as Env;
@@ -103,10 +103,10 @@ describe("the userAuthenticatedHandler function works correctly", () => {
     };
 
     const envWithoutUser = {
+      JWT_SECRET,
       USERS: kvNamespaceWithoutUser,
       QUESTIONS: kvNamespace,
       PGP_KEY: kvNamespace,
-      JWT_SECRET,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;

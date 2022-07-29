@@ -18,10 +18,10 @@ describe("the loginHandler function works correctly", async () => {
 
   const kvNamespace = {
     put: vi.fn(),
-    get: vi.fn().mockReturnValue(JSON.stringify({ salt, password, username: "test", questionId })),
     delete: vi.fn(),
     getWithMetadata: vi.fn(),
     list: vi.fn(),
+    get: vi.fn().mockReturnValue(JSON.stringify({ salt, password, username: "test", questionId })),
   };
 
   const env = {

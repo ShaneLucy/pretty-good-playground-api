@@ -30,8 +30,8 @@ const registrationHandler = async (request: CustomRequest, env: Env): Promise<Re
   const hashedPassword = await convertPlainTextToPasswordHash(password, salt);
 
   const userCredentialsToStore: UserModelValue = {
-    password: hashedPassword,
     salt,
+    password: hashedPassword,
     questionId: "1",
   };
 

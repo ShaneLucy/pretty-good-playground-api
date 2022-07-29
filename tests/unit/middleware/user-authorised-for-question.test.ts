@@ -26,10 +26,10 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
   const JWT_SECRET = "AVerySecretPassphrase";
   const verifyJWTSpy = vi.spyOn(authentication, "verifyJWT");
   const env = {
+    JWT_SECRET,
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
     PGP_KEY: kvNamespace,
-    JWT_SECRET,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
   } as Env;
@@ -104,10 +104,10 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
     };
 
     const envWithoutQuestion = {
+      JWT_SECRET,
       USERS: kvNamespace,
       QUESTIONS: kvNamespaceWithoutQuestion,
       PGP_KEY: kvNamespace,
-      JWT_SECRET,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;
