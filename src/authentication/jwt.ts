@@ -21,23 +21,6 @@ export const generateJWT = async (
     )
     .sign(encoder.encode(secret));
 
-const verifyAllAudienceAccessToken = (
-  accessToken: AllAudienceAccessToken,
-  username: string | null
-) => {
-  if (accessToken.payload.username !== username) {
-    return false;
-  }
-  return true;
-};
-
-const verifyQuestionAccessToken = (accessToken: QuestionAccessToken, question: string | null) => {
-  if (accessToken.payload.questionId !== question) {
-    return false;
-  }
-  return true;
-};
-
 export const verifyJWT = async (
   jwt: string,
   jwtSecret: string,
@@ -46,22 +29,6 @@ export const verifyJWT = async (
   audience: Audience,
   durationInHours: number
 ): Promise<boolean> => {
-  if (username === null && audience === Audience.ALL) {
-    return false;
-  }
-
-  if (username !== null && audience !== Audience.ALL) {
-    return false;
-  }
-
-  if (question !== null && audience !== Audience.QUESTIONS_ANSWERS) {
-    return false;
-  }
-
-  if (question === null && audience === Audience.QUESTIONS_ANSWERS) {
-    return false;
-  }
-
   try {
     const result = await jwtVerify(jwt, encoder.encode(jwtSecret), {
       issuer,
@@ -69,12 +36,27 @@ export const verifyJWT = async (
       maxTokenAge: convertHoursToSeconds(durationInHours),
     });
 
-    return audience === Audience.ALL
-      ? verifyAllAudienceAccessToken(
-          (result.payload as unknown) as AllAudienceAccessToken,
-          username
-        )
-      : verifyQuestionAccessToken((result.payload as unknown) as QuestionAccessToken, question);
+    switch (audience) {
+      case Audience.ALL:
+        if (username === null) {
+          return false;
+        }
+
+        return (
+          ((result.payload as unknown) as AllAudienceAccessToken).payload.username === username
+        );
+      case Audience.QUESTIONS_ANSWERS:
+        if (question === null) {
+          return true;
+        }
+
+        return (
+          parseInt(question, 10) <=
+          parseInt(((result.payload as unknown) as QuestionAccessToken).payload.questionId, 10)
+        );
+      default:
+        return false;
+    }
   } catch (e) {
     return false;
   }

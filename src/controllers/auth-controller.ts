@@ -6,7 +6,7 @@ import { malformedRequestBodyHandler } from "../middleware";
 import { BaseRoutes } from "../utilities";
 
 const authController = Router<CustomRequest, RouterMethodTypes>({
-  base: `/${BaseRoutes.API}/authentication`,
+  base: `/${BaseRoutes.API}/${BaseRoutes.AUTHENTICATION}`,
 });
 
 authController.all("*", malformedRequestBodyHandler);

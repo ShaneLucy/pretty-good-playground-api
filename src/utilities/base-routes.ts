@@ -5,6 +5,8 @@ enum BaseRoutes {
   AUTHENTICATION = "authentication",
   USERS = "users",
   QUESTIONS = "questions",
+  ANSWERS = "answers",
+  GAME = "game",
 }
 
 export default BaseRoutes;

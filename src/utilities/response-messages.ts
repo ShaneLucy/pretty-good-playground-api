@@ -11,7 +11,10 @@ enum ResponseMessages {
   UNAUTHORISED = "You are not authorised to view this resource",
   INTERNAL_SERVER_ERROR = "Unexpected internal server error",
   BAD_REQUEST = "Bad Request",
-  QUESTION_NOT_FOUND = "The request question could not be found",
+  QUESTION_NOT_FOUND = "The requested question could not be found",
+  ANSWER_NOT_FOUND = "The requested answer could not be found",
+  ANSWER_INCORRECT = "The answer you provided was incorrect",
+  ANSWER_EMPTY = "Answer cannot be empty",
 }
 
 export default ResponseMessages;

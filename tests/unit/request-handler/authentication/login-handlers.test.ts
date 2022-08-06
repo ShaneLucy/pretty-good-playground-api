@@ -28,6 +28,7 @@ describe("the loginHandler function works correctly", async () => {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
     PGP_KEY: kvNamespace,
+    ANSWERS: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
@@ -45,6 +46,7 @@ describe("the loginHandler function works correctly", async () => {
     USERS: kvNamespaceGetNull,
     QUESTIONS: kvNamespace,
     PGP_KEY: kvNamespace,
+    ANSWERS: kvNamespace,
     JWT_SECRET: "AVerySecretPassphrase",
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
@@ -106,7 +108,7 @@ describe("the loginHandler function works correctly", async () => {
     expect(await response.json()).to.be.equal(ResponseMessages.USERNAME_MALFORMED);
   });
 
-  it(`when the given password doesn't match the stored password, it returns the correct status and message`, async () => {
+  it(`when the given password doesn't match the stored password returns the correct status and message`, async () => {
     const kvNamespaceMismatch = {
       put: vi.fn(),
       get: vi
@@ -121,6 +123,7 @@ describe("the loginHandler function works correctly", async () => {
       USERS: kvNamespaceMismatch,
       QUESTIONS: kvNamespace,
       PGP_KEY: kvNamespace,
+      ANSWERS: kvNamespace,
       JWT_SECRET: "AVerySecretPassphrase",
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,

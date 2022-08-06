@@ -6,7 +6,7 @@ import { userAuthenticatedHandler } from "../middleware";
 import { BaseRoutes, PathParams, responseBuilder } from "../utilities";
 
 const userController = Router<CustomRequest, RouterMethodTypes>({
-  base: `/${BaseRoutes.API}/users`,
+  base: `/${BaseRoutes.API}/${BaseRoutes.USERS}`,
 });
 
 userController.options(`/:${PathParams.USERNAME}`, async () =>

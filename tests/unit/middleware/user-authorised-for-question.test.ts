@@ -30,6 +30,7 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
     PGP_KEY: kvNamespace,
+    ANSWERS: kvNamespace,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
   } as Env;
@@ -94,7 +95,7 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
     expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
   });
 
-  it("when the question path parameter is for a question that doesn't exist, it returns the correct status code & body", async () => {
+  it("when the question path parameter is for a question that doesn't exist returns the correct status code & body", async () => {
     const kvNamespaceWithoutQuestion = {
       put: vi.fn(),
       get: vi.fn().mockReturnValue(null),
@@ -108,6 +109,7 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
       USERS: kvNamespace,
       QUESTIONS: kvNamespaceWithoutQuestion,
       PGP_KEY: kvNamespace,
+      ANSWERS: kvNamespace,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;

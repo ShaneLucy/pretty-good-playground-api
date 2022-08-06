@@ -10,7 +10,7 @@ import type { CustomRequest } from "../../../../src/types/custom";
  * @vitest-environment jsdom
  */
 describe("the getQuestionHandler function works correctly", () => {
-  it(`when given a question id that exists, it returns the question text`, async () => {
+  it(`when given a question id that exists returns the question text`, async () => {
     const questionText = "question 1";
     const kvNamespace = {
       put: vi.fn(),
@@ -24,6 +24,7 @@ describe("the getQuestionHandler function works correctly", () => {
       USERS: kvNamespace,
       QUESTIONS: kvNamespace,
       PGP_KEY: kvNamespace,
+      ANSWERS: kvNamespace,
       JWT_SECRET: "AVerySecretPassphrase",
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
@@ -39,7 +40,7 @@ describe("the getQuestionHandler function works correctly", () => {
     expect(await response.json()).to.be.equal(questionText);
   });
 
-  it(`when given a question id that doesn't exist, it returns the correct status and message`, async () => {
+  it(`when given a question id that doesn't exist returns the correct status and message`, async () => {
     const kvNamespace = {
       put: vi.fn(),
       get: vi.fn().mockReturnValue(null),
@@ -52,6 +53,7 @@ describe("the getQuestionHandler function works correctly", () => {
       USERS: kvNamespace,
       QUESTIONS: kvNamespace,
       PGP_KEY: kvNamespace,
+      ANSWERS: kvNamespace,
       JWT_SECRET: "AVerySecretPassphrase",
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,

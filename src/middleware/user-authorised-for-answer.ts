@@ -6,13 +6,13 @@ import { verifyJWT } from "../authentication";
 import { responseBuilder, HttpStatusCodes, ResponseMessages, Audience } from "../utilities";
 import type { CustomRequest } from "../types/custom";
 
-const userAuthorisedForQuestion = async (
+const userAuthorisedForAnswer = async (
   request: CustomRequest,
   env: Env
 ): Promise<Response | void> => {
   const { params, headers } = request;
 
-  const param = (params as unknown) as QuestionParam;
+  const param = (params as unknown) as AnswerParam;
 
   if (headers === undefined) {
     return responseBuilder({
@@ -36,7 +36,7 @@ const userAuthorisedForQuestion = async (
       jwt,
       env.JWT_SECRET,
       null,
-      param?.question ? param.question : null,
+      param?.answer ? param.answer : null,
       Audience.QUESTIONS_ANSWERS,
       env.JWT_DURATION_HOURS
     ))
@@ -49,4 +49,4 @@ const userAuthorisedForQuestion = async (
   }
 };
 
-export default userAuthorisedForQuestion;
+export default userAuthorisedForAnswer;

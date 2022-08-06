@@ -52,13 +52,13 @@ describe("the generateJWT function works correctly", () => {
 });
 
 describe("the verifyJwt function works correctly for all audience claims", () => {
-  it("given a valid jwt, correct secret, correct audience and correct username, it returns true", async () => {
+  it("given a valid jwt, correct secret, correct audience and correct username returns true", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
     const result = await verifyJWT(jwt, secret, username, null, Audience.ALL, durationInHours);
     expect(result).toBeTruthy();
   });
 
-  it("given a valid jwt, correct secret, correct audience, correct username and a question, it returns false", async () => {
+  it("given a valid jwt, correct secret, correct audience, correct username and a question returns true", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
     const result = await verifyJWT(
       jwt,
@@ -68,10 +68,10 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
       Audience.ALL,
       durationInHours
     );
-    expect(result).toBeFalsy();
+    expect(result).toBeTruthy();
   });
 
-  it("given a valid jwt but incorrect secret, it returns false", async () => {
+  it("given a valid jwt but incorrect secret returns false", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
     const result = await verifyJWT(
       jwt,
@@ -84,14 +84,14 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but it has expired, it returns false", async () => {
+  it("given a valid token but it has expired returns false", async () => {
     const expiredTokenDuration = 0;
     const jwt = await generateJWT(allAudiencePayload, secret, expiredTokenDuration, Audience.ALL);
     const result = await verifyJWT(jwt, secret, username, null, Audience.ALL, expiredTokenDuration);
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but the payload username doesn't match the path provided username, it returns false", async () => {
+  it("given a valid token but the payload username doesn't match the path provided username returns false", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
     const result = await verifyJWT(
       jwt,
@@ -104,7 +104,7 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but the audience doesn't match, it returns false", async () => {
+  it("given a valid token but the audience doesn't match returns false", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
     const result = await verifyJWT(
       jwt,
@@ -117,14 +117,14 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given an invalid token, it returns false", async () => {
+  it("given an invalid token returns false", async () => {
     const result = await verifyJWT("jwt", secret, username, null, Audience.ALL, durationInHours);
     expect(result).toBeFalsy();
   });
 });
 
-describe("the verifyJwt function works correctly for all question claims", () => {
-  it("given a valid jwt, correct secret, correct audience and correct question, it returns true", async () => {
+describe("the verifyJwt function works correctly for question claims", () => {
+  it("given a valid jwt, correct secret, correct audience and correct question, without a username returns true", async () => {
     const jwt = await generateJWT(
       questionsPayload,
       secret,
@@ -142,7 +142,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     expect(result).toBeTruthy();
   });
 
-  it("given a valid jwt, correct secret, correct audience, correct question and username, it returns false", async () => {
+  it("given a valid jwt, correct secret, correct audience, correct question and username returns true", async () => {
     const jwt = await generateJWT(
       questionsPayload,
       secret,
@@ -157,10 +157,28 @@ describe("the verifyJwt function works correctly for all question claims", () =>
       Audience.QUESTIONS_ANSWERS,
       durationInHours
     );
-    expect(result).toBeFalsy();
+    expect(result).toBeTruthy();
   });
 
-  it("given a valid jwt but incorrect secret, it returns false", async () => {
+  it("given a request for a question less than or equal to the users current question, returns true", async () => {
+    const jwt = await generateJWT(
+      questionsPayload,
+      secret,
+      durationInHours,
+      Audience.QUESTIONS_ANSWERS
+    );
+    const result = await verifyJWT(
+      jwt,
+      secret,
+      null,
+      "1",
+      Audience.QUESTIONS_ANSWERS,
+      durationInHours
+    );
+    expect(result).toBeTruthy();
+  });
+
+  it("given a valid jwt but incorrect secret returns false", async () => {
     const jwt = await generateJWT(
       questionsPayload,
       secret,
@@ -178,7 +196,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but it has expired, it returns false", async () => {
+  it("given a valid token but it has expired returns false", async () => {
     const expiredTokenDuration = 0;
     const jwt = await generateJWT(
       questionsPayload,
@@ -197,7 +215,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but the payload question doesn't match the path provided question, it returns false", async () => {
+  it("given a valid token but the payload question doesn't match the path provided question, returns false", async () => {
     const jwt = await generateJWT(
       questionsPayload,
       secret,
@@ -215,7 +233,7 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given a valid token but the audience doesn't match, it returns false", async () => {
+  it("given a valid token but the audience doesn't match, returns false", async () => {
     const jwt = await generateJWT(
       questionsPayload,
       secret,
@@ -226,12 +244,30 @@ describe("the verifyJwt function works correctly for all question claims", () =>
     expect(result).toBeFalsy();
   });
 
-  it("given an invalid token, it returns false", async () => {
+  it("given an invalid token, returns false", async () => {
     const result = await verifyJWT(
       "jwt",
       secret,
       username,
       null,
+      Audience.QUESTIONS_ANSWERS,
+      durationInHours
+    );
+    expect(result).toBeFalsy();
+  });
+
+  it("given a request for a question greater then the users current question, returns false", async () => {
+    const jwt = await generateJWT(
+      questionsPayload,
+      secret,
+      durationInHours,
+      Audience.QUESTIONS_ANSWERS
+    );
+    const result = await verifyJWT(
+      jwt,
+      secret,
+      null,
+      "5",
       Audience.QUESTIONS_ANSWERS,
       durationInHours
     );

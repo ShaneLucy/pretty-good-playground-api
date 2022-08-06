@@ -13,6 +13,7 @@ type Env = {
   USERS: KVNamespace;
   QUESTIONS: KVNamespace;
   PGP_KEY: KVNamespace;
+  ANSWERS: KVNamespace;
   JWT_SECRET: string;
   ALLOWED_ORIGIN: string;
   JWT_DURATION_HOURS: number;
@@ -70,4 +71,12 @@ type UserParam = {
 
 type QuestionParam = {
   question: string;
+};
+
+type AnswerParam = {
+  answer: string;
+};
+
+type AnswerBody = {
+  answer: string;
 };

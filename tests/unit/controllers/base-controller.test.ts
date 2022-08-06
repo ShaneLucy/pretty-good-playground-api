@@ -6,14 +6,14 @@ import baseController from "../../../src/controllers/index";
 import { startHandler, healthCheckHandler } from "../../../src/request-handler";
 import authController from "../../../src/controllers/auth-controller";
 import userController from "../../../src/controllers/user-controller";
-import questionController from "../../../src/controllers/question-controller";
+import gameController from "../../../src/controllers/game-controller";
 
-const [healthCheckRoute, startRoute, authenticationRoutes, usersRoutes, questionsRoutes] = [
-  getRoute(BaseRoutes.HEALTH_CHECK, baseController),
-  getRoute(BaseRoutes.START, baseController),
-  getRoute(BaseRoutes.AUTHENTICATION, baseController),
-  getRoute(BaseRoutes.USERS, baseController),
-  getRoute(BaseRoutes.QUESTIONS, baseController),
+const [healthCheckRoute, startRoute, authenticationRoutes, usersRoutes, gameRoutes] = [
+  getRoute(`/${BaseRoutes.HEALTH_CHECK}`, baseController),
+  getRoute(`/${BaseRoutes.START}`, baseController),
+  getRoute(`/${BaseRoutes.AUTHENTICATION}`, baseController),
+  getRoute(`/${BaseRoutes.USERS}`, baseController),
+  getRoute(`/${BaseRoutes.GAME}`, baseController),
 ];
 
 describe("the baseController contains the correct routes and the routes map to the correct methods", () => {
@@ -45,11 +45,11 @@ describe("the baseController contains the correct routes and the routes map to t
     expect(usersRoutes?.[2][1]).toBeUndefined();
   });
 
-  it("the questions routes are configured correctly", async () => {
-    expect(questionsRoutes).to.not.be.deep.equal(undefined);
-    expect(questionsRoutes?.[0]).to.deep.equal("ALL");
-    expect(questionsRoutes?.[2][0]).toMatchObject(questionController.handle);
-    expect(questionsRoutes?.[2][1]).toBeUndefined();
+  it("the game routes are configured correctly", async () => {
+    expect(gameRoutes).to.not.be.deep.equal(undefined);
+    expect(gameRoutes?.[0]).to.deep.equal("ALL");
+    expect(gameRoutes?.[2][0]).toMatchObject(gameController.handle);
+    expect(gameRoutes?.[2][1]).toBeUndefined();
   });
 
   it("contains the correct amount of routes", () => {

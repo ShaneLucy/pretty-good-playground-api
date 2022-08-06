@@ -30,6 +30,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
     USERS: kvNamespace,
     QUESTIONS: kvNamespace,
     PGP_KEY: kvNamespace,
+    ANSWERS: kvNamespace,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
   } as Env;
@@ -93,7 +94,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
     expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
   });
 
-  it("when the username path parameter is for a user that doesn't exist, it returns the correct status code & body", async () => {
+  it("when the username path parameter is for a user that doesn't exist returns the correct status code & body", async () => {
     const kvNamespaceWithoutUser = {
       put: vi.fn(),
       get: vi.fn().mockReturnValue(null),
@@ -107,6 +108,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
       USERS: kvNamespaceWithoutUser,
       QUESTIONS: kvNamespace,
       PGP_KEY: kvNamespace,
+      ANSWERS: kvNamespace,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;

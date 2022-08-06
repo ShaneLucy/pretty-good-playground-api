@@ -21,6 +21,7 @@ const env = {
   USERS: kvNamespace,
   QUESTIONS: kvNamespace,
   PGP_KEY: kvNamespace,
+  ANSWERS: kvNamespace,
   JWT_SECRET: "AVerySecretPassphrase",
   ALLOWED_ORIGIN: "*",
   JWT_DURATION_HOURS: 2,
