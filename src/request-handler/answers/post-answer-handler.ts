@@ -4,7 +4,7 @@ import type { CustomRequest } from "../../types/custom";
 const postAnswerHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
   const body = (await request.json()) as AnswerBody;
 
-  if (body.answer.length === 0 || body.answer === undefined || body.answer === null) {
+  if (body.answer?.length === 0 || body.answer === undefined) {
     return responseBuilder({
       body: ResponseMessages.ANSWER_EMPTY,
       status: HttpStatusCodes.BAD_REQUEST,
@@ -14,7 +14,7 @@ const postAnswerHandler = async (request: CustomRequest, env: Env): Promise<Resp
   const { params } = request;
 
   const param = (params as unknown) as AnswerParam;
-
+  console.log(param);
   const answer = await env.ANSWERS.get(param?.answer);
 
   if (answer === null || answer === undefined) {
