@@ -23,6 +23,7 @@ const env = {
   PGP_KEY: kvNamespace,
   ANSWERS: kvNamespace,
   JWT_SECRET: "AVerySecretPassphrase",
+  PRIVATE_KEY_PASSPHRASE: "",
   ALLOWED_ORIGIN: "*",
   JWT_DURATION_HOURS: 2,
 } as Env;

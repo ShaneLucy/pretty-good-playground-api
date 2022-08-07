@@ -33,6 +33,7 @@ describe("the userAuthorisedForAnswer function works correctly", () => {
     ANSWERS: kvNamespace,
     ALLOWED_ORIGIN: "*",
     JWT_DURATION_HOURS: 2,
+    PRIVATE_KEY_PASSPHRASE: "",
   } as Env;
 
   it("given valid JWT & valid body returns undefined", async () => {
@@ -99,6 +100,7 @@ describe("the userAuthorisedForAnswer function works correctly", () => {
       ANSWERS: kvNamespaceWithoutAnswer,
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
+      PRIVATE_KEY_PASSPHRASE: "",
     } as Env;
 
     const request = new Request("hi", {

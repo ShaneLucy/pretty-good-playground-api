@@ -21,6 +21,7 @@ ALLOWED_ORIGIN = "*"
 JWT_DURATION_HOURS = 2
 [secrets]
 # JWT_SECRET
+# PRIVATE_KEY_PASSPHRASE
 
 [build]
 command = "npm run build"

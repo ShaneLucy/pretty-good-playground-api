@@ -15,6 +15,7 @@ type Env = {
   PGP_KEY: KVNamespace;
   ANSWERS: KVNamespace;
   JWT_SECRET: string;
+  PRIVATE_KEY_PASSPHRASE: string;
   ALLOWED_ORIGIN: string;
   JWT_DURATION_HOURS: number;
 };
