@@ -11,21 +11,21 @@ const [loginRoute, registerRoute, allRoute] = [
 ];
 
 describe("the authController contains the correct routes and the routes map to the correct methods", () => {
-  it("the register route is configured correctly", async () => {
+  it("the register route is configured correctly", () => {
     expect(registerRoute).to.not.be.deep.equal(undefined);
     expect(registerRoute?.[0]).to.deep.equal("POST");
     expect(registerRoute?.[2][0]).toMatchObject(registrationHandler);
     expect(registerRoute?.[2][1]).toBeUndefined();
   });
 
-  it("the login route is configured correctly", async () => {
+  it("the login route is configured correctly", () => {
     expect(loginRoute).to.not.be.deep.equal(undefined);
     expect(loginRoute?.[0]).to.deep.equal("POST");
     expect(loginRoute?.[2][0]).toMatchObject(loginHandler);
     expect(loginRoute?.[2][1]).toBeUndefined();
   });
 
-  it("the all route handler is configured correctly", async () => {
+  it("the all route handler is configured correctly", () => {
     expect(allRoute).to.not.be.deep.equal(undefined);
     expect(allRoute?.[0]).to.deep.equal("ALL");
     expect(allRoute?.[2][0]).toMatchObject(malformedRequestBodyHandler);

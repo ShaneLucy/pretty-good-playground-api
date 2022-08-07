@@ -17,7 +17,7 @@ const [postAnswerRoute, getQuestionRoute, undefinedRoute] = [
 ];
 
 describe("the gameController contains the correct routes and the routes map to the correct methods", () => {
-  it("the postAnswer route is configured correctly", async () => {
+  it("the postAnswer route is configured correctly", () => {
     expect(postAnswerRoute).to.not.be.deep.equal(undefined);
     expect(postAnswerRoute?.[0]).to.deep.equal("POST");
     expect(postAnswerRoute?.[2][0]).toMatchObject(malformedRequestBodyHandler);
@@ -26,7 +26,7 @@ describe("the gameController contains the correct routes and the routes map to t
     expect(postAnswerRoute?.[2][3]).toBeUndefined();
   });
 
-  it("the getQuestion route is configured correctly", async () => {
+  it("the getQuestion route is configured correctly", () => {
     expect(getQuestionRoute).to.not.be.deep.equal(undefined);
     expect(getQuestionRoute?.[0]).to.deep.equal("GET");
     expect(getQuestionRoute?.[2][0]).toMatchObject(userAuthorisedForQuestion);

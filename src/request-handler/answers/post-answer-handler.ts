@@ -14,7 +14,7 @@ const postAnswerHandler = async (request: CustomRequest, env: Env): Promise<Resp
   const { params } = request;
 
   const param = (params as unknown) as AnswerParam;
-  console.log(param);
+
   const answer = await env.ANSWERS.get(param?.answer);
 
   if (answer === null || answer === undefined) {
