@@ -103,24 +103,6 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
     );
     expect(result).toBeFalsy();
   });
-
-  it("given a valid token but the audience doesn't match returns false", async () => {
-    const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
-    const result = await verifyJWT(
-      jwt,
-      secret,
-      username,
-      null,
-      Audience.QUESTIONS_ANSWERS,
-      durationInHours
-    );
-    expect(result).toBeFalsy();
-  });
-
-  it("given an invalid token returns false", async () => {
-    const result = await verifyJWT("jwt", secret, username, null, Audience.ALL, durationInHours);
-    expect(result).toBeFalsy();
-  });
 });
 
 describe("the verifyJwt function works correctly for question claims", () => {

@@ -32,7 +32,6 @@ export const verifyJWT = async (
   try {
     const result = await jwtVerify(jwt, encoder.encode(jwtSecret), {
       issuer,
-      audience,
       maxTokenAge: convertHoursToSeconds(durationInHours),
     });
 

@@ -1,10 +1,14 @@
 import { Router } from "itty-router";
 
 import type { RouterMethodTypes, CustomRequest } from "../types/custom";
-import { deleteUserHandler } from "../request-handler";
-import { userAuthenticatedHandler } from "../middleware";
+import { deleteUserHandler, getQuestionHandler, postAnswerHandler } from "../request-handler";
+import {
+  malformedRequestBodyHandler,
+  userAuthenticatedHandler,
+  userAuthorisedForAnswer,
+  userAuthorisedForQuestion,
+} from "../middleware";
 import { BaseRoutes, PathParams, responseBuilder } from "../utilities";
-import gameController from "./game-controller";
 
 const userController = Router<CustomRequest, RouterMethodTypes>({
   base: `/${BaseRoutes.API}/${BaseRoutes.USERS}`,
@@ -19,10 +23,19 @@ userController.get(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, async (
 
 userController.delete(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, deleteUserHandler);
 
-userController.all(
-  `/:${PathParams.USERNAME}/game`,
+userController.get(
+  `/:${PathParams.USERNAME}/questions/:${PathParams.QUESTION}`,
   userAuthenticatedHandler,
-  gameController.handle
+  userAuthorisedForQuestion,
+  getQuestionHandler
+);
+
+userController.post(
+  `/:${PathParams.USERNAME}/answers/:${PathParams.ANSWER}`,
+  malformedRequestBodyHandler,
+  userAuthenticatedHandler,
+  userAuthorisedForAnswer,
+  postAnswerHandler
 );
 
 export default userController;

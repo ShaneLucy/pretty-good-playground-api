@@ -19,8 +19,10 @@ import {
   unauthorisedRequestForQuestion,
   authorisedRequestForQuestion,
   requestForQuestionOutOfBounds,
-  startRouteWithAuthorisationHeader,
-  startRouteWithoutAuthorisationHeader,
+  authorisedRequestForAnswer,
+  authorisedRequestForAnswerIncorrectData,
+  requestForAnswerOutOfBounds,
+  unauthorisedRequestForAnswer,
 } from "./index";
 
 let server: ChildProcessWithoutNullStreams;
@@ -33,23 +35,9 @@ afterAll(() => {
   server.kill("SIGINT");
 });
 
-describe("the unauthenticated question routes work correctly when the authorization header hasn't been set", () => {
+describe("unauthenticated users cannot request questions or answers", () => {
   it("returns the correct message and status", unauthorisedRequestForQuestion);
-});
-
-describe("the start route works correctly when the authorization header hasn't been set", () => {
-  it("returns the correct message and status", startRouteWithoutAuthorisationHeader);
-});
-
-describe("the unauthenticated question routes work correctly when the authorization header has been set", () => {
-  it(
-    "returns the correct message and status when requesting a question the user isn't authorised to view",
-    requestForQuestionOutOfBounds
-  );
-  it(
-    "returns the question text when a user requests a question they are authorised to view",
-    authorisedRequestForQuestion
-  );
+  it("returns the correct message and status", unauthorisedRequestForAnswer);
 });
 
 describe("the register routes work correctly", () => {
@@ -98,11 +86,30 @@ describe("the login routes work correctly", () => {
   );
 });
 
-describe("the delete user route works correctly", () => {
-  describe("the start route works correctly when an authorization header has already been set", () => {
-    it("returns the correct message and status", startRouteWithAuthorisationHeader);
-  });
+describe("the game routes work correctly for a user who is logged in", () => {
+  it(
+    "returns the question text when a user requests a question they are authorised to view",
+    authorisedRequestForQuestion
+  );
+  it(
+    "returns the correct message and status when providing an incorrect answer",
+    authorisedRequestForAnswerIncorrectData
+  );
+  it(
+    "returns the answer text when a user requests an answer they are authorised to view",
+    authorisedRequestForAnswer
+  );
+  it(
+    "returns the correct message and status when requesting a question the user isn't authorised to view",
+    requestForQuestionOutOfBounds
+  );
+  it(
+    "returns the correct message and status when requesting an answer the user isn't authorised to view",
+    requestForAnswerOutOfBounds
+  );
+});
 
+describe("the delete user route works correctly", () => {
   it("given a valid username it deletes the requested user", deleteUserRequestWithValidUsername);
   it(
     "given a username that doesn't exist in the system, returns the correct error status and message",

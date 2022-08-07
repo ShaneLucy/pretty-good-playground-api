@@ -1,16 +1,32 @@
 import { describe, it, expect } from "vitest";
 
 import userController from "../../../src/controllers/user-controller";
-import { userAuthenticatedHandler } from "../../../src/middleware";
-import { deleteUserHandler } from "../../../src/request-handler";
-import gameController from "../../../src/controllers/game-controller";
+import {
+  userAuthenticatedHandler,
+  userAuthorisedForAnswer,
+  userAuthorisedForQuestion,
+  malformedRequestBodyHandler,
+} from "../../../src/middleware";
+import {
+  deleteUserHandler,
+  postAnswerHandler,
+  getQuestionHandler,
+} from "../../../src/request-handler";
 
-const [optionsRoute, getUserRoute, deleteUserRoute, gameRoutes, undefinedRoute] = [
+const [
+  optionsRoute,
+  getUserRoute,
+  deleteUserRoute,
+  getQuestionRoute,
+  postAnswerRoute,
+  undefinedRoute,
+] = [
   userController.routes[0],
   userController.routes[1],
   userController.routes[2],
   userController.routes[3],
   userController.routes[4],
+  userController.routes[5],
 ];
 
 describe("the userController contains the correct routes and the routes map to the correct methods", () => {
@@ -38,12 +54,23 @@ describe("the userController contains the correct routes and the routes map to t
     expect(deleteUserRoute?.[2][2]).toBeUndefined();
   });
 
-  it("the gameRoute handler is configured correctly", () => {
-    expect(gameRoutes).to.not.be.deep.equal(undefined);
-    expect(gameRoutes?.[0]).to.deep.equal("ALL");
-    expect(gameRoutes?.[2][0]).toMatchObject(userAuthenticatedHandler);
-    expect(gameRoutes?.[2][1]).toMatchObject(gameController.handle);
-    expect(gameRoutes?.[2][2]).toBeUndefined();
+  it("the getQuestion route is configured correctly", () => {
+    expect(getQuestionRoute).to.not.be.deep.equal(undefined);
+    expect(getQuestionRoute?.[0]).to.deep.equal("GET");
+    expect(getQuestionRoute?.[2][0]).toMatchObject(userAuthenticatedHandler);
+    expect(getQuestionRoute?.[2][1]).toMatchObject(userAuthorisedForQuestion);
+    expect(getQuestionRoute?.[2][2]).toMatchObject(getQuestionHandler);
+    expect(getQuestionRoute?.[2][3]).toBeUndefined();
+  });
+
+  it("the postAnswer route is configured correctly", () => {
+    expect(postAnswerRoute).to.not.be.deep.equal(undefined);
+    expect(postAnswerRoute?.[0]).to.deep.equal("POST");
+    expect(postAnswerRoute?.[2][0]).toMatchObject(malformedRequestBodyHandler);
+    expect(postAnswerRoute?.[2][1]).toMatchObject(userAuthenticatedHandler);
+    expect(postAnswerRoute?.[2][2]).toMatchObject(userAuthorisedForAnswer);
+    expect(postAnswerRoute?.[2][3]).toMatchObject(postAnswerHandler);
+    expect(postAnswerRoute?.[2][4]).toBeUndefined();
   });
 
   it("contains the correct amount of routes", () => {
