@@ -29,6 +29,10 @@ describe("the postAnswerHandler function works correctly", () => {
     JWT_DURATION_HOURS: 2,
   } as Env;
 
+  vi.mock("../../../src/authentication", () => ({
+    generateJWT: vi.fn().mockReturnValue("jwt"),
+  }));
+
   it(`when given an answer that matches an answer id returns the answer`, async () => {
     const request = new Request("hi", {
       method: "POST",
@@ -36,9 +40,11 @@ describe("the postAnswerHandler function works correctly", () => {
     }) as CustomRequest;
 
     const response = await postAnswerHandler(request, env);
+    const responseData = (await response.json()) as AnswerResponseBody;
 
     expect(response.status).to.be.equal(HttpStatusCodes.SUCCESS);
-    expect(await response.json()).to.be.equal(answer);
+    expect(responseData.answer).to.be.equal(answer);
+    expect(responseData.authToken).to.be.deep.equal("jwt");
   });
 
   it("when given an empty request body, returns the correct status and message", async () => {

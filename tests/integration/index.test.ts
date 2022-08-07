@@ -18,11 +18,15 @@ import {
   loginRequestWithUsernameNotInSystemButWithAUsersPassword,
   unauthorisedRequestForQuestion,
   authorisedRequestForQuestion,
-  requestForQuestionOutOfBounds,
+  requestForSecondQuestionOutOfBounds,
   authorisedRequestForAnswer,
   authorisedRequestForAnswerIncorrectData,
-  requestForAnswerOutOfBounds,
+  requestForSecondAnswerOutOfBounds,
+  authorisedRequestForSecondAnswer,
+  authorisedRequestForSecondQuestion,
   unauthorisedRequestForAnswer,
+  requestForThirdAnswerOutOfBounds,
+  requestForThirdQuestionOutOfBounds,
 } from "./index";
 
 let server: ChildProcessWithoutNullStreams;
@@ -88,6 +92,14 @@ describe("the login routes work correctly", () => {
 
 describe("the game routes work correctly for a user who is logged in", () => {
   it(
+    "returns the correct message and status when requesting an answer the user isn't authorised to view",
+    requestForSecondAnswerOutOfBounds
+  );
+  it(
+    "returns the correct message and status when requesting a question the user isn't authorised to view",
+    requestForSecondQuestionOutOfBounds
+  );
+  it(
     "returns the question text when a user requests a question they are authorised to view",
     authorisedRequestForQuestion
   );
@@ -96,16 +108,24 @@ describe("the game routes work correctly for a user who is logged in", () => {
     authorisedRequestForAnswerIncorrectData
   );
   it(
-    "returns the answer text when a user requests an answer they are authorised to view",
+    "returns the answer text and updated access token when a user requests an answer they are authorised to view",
     authorisedRequestForAnswer
   );
   it(
-    "returns the correct message and status when requesting a question the user isn't authorised to view",
-    requestForQuestionOutOfBounds
+    "after successfully answering the first question, does not have access to the third question",
+    requestForThirdQuestionOutOfBounds
   );
   it(
-    "returns the correct message and status when requesting an answer the user isn't authorised to view",
-    requestForAnswerOutOfBounds
+    "after successfully answering the first question, does not have access to the third answer",
+    requestForThirdAnswerOutOfBounds
+  );
+  it(
+    "after successfully answering the first question, has access to the second question",
+    authorisedRequestForSecondQuestion
+  );
+  it(
+    "after successfully answering the first question, has access to the second answer",
+    authorisedRequestForSecondAnswer
   );
 });
 

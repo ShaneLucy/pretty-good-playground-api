@@ -69,14 +69,19 @@ type UserParam = {
   username: string;
 };
 
-type QuestionParam = {
+interface QuestionParam extends UserParam {
   question: string;
-};
+}
 
-type AnswerParam = {
+interface AnswerParam extends UserParam {
+  answer: string;
+}
+
+type AnswerRequestBody = {
   answer: string;
 };
 
-type AnswerBody = {
+type AnswerResponseBody = {
   answer: string;
+  authToken: string;
 };
