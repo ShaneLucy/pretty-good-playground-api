@@ -82,7 +82,7 @@ describe("the loginHandler function works correctly", async () => {
     const response = await loginHandler(request, envGetNull);
 
     expect(response.status).to.be.equal(HttpStatusCodes.NOT_FOUND);
-    expect(await response.json()).to.be.equal(ResponseMessages.USER_NOT_FOUND);
+    expect(await response.json()).to.be.equal(ResponseMessages.NOT_FOUND);
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {

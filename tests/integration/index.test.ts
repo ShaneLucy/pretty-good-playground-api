@@ -27,6 +27,9 @@ import {
   unauthorisedRequestForAnswer,
   requestForThirdAnswerOutOfBounds,
   requestForThirdQuestionOutOfBounds,
+  getRequestForMissingRoute,
+  postRequestForMissingRoute,
+  deleteRequestForMissingRoute,
 } from "./index";
 
 let server: ChildProcessWithoutNullStreams;
@@ -39,6 +42,11 @@ afterAll(() => {
   server.kill("SIGINT");
 });
 
+describe("the missing route handler works correctly", () => {
+  it("returns the correct status and message for a get request", getRequestForMissingRoute);
+  it("returns the correct status and message for a post request", postRequestForMissingRoute);
+  it("returns the correct status and message for a delete request", deleteRequestForMissingRoute);
+});
 describe("unauthenticated users cannot request questions or answers", () => {
   it("returns the correct message and status", unauthorisedRequestForQuestion);
   it("returns the correct message and status", unauthorisedRequestForAnswer);

@@ -66,6 +66,6 @@ describe("the getQuestionHandler function works correctly", () => {
     const response = await getQuestionHandler(request, env);
 
     expect(response.status).to.be.equal(HttpStatusCodes.NOT_FOUND);
-    expect(await response.json()).to.be.equal(ResponseMessages.QUESTION_NOT_FOUND);
+    expect(await response.json()).to.be.equal(ResponseMessages.NOT_FOUND);
   });
 });

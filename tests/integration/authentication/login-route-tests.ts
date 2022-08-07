@@ -43,7 +43,7 @@ export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async ()
   }
 
   expect(res?.response?.status).to.be.deep.equal(HttpStatusCodes.NOT_FOUND);
-  expect(res?.response?.data).to.be.deep.equal(ResponseMessages.USER_NOT_FOUND);
+  expect(res?.response?.data).to.be.deep.equal(ResponseMessages.NOT_FOUND);
 };
 
 export const loginRequestWithUsernameInSystemButIncorrectPassword = async () => {

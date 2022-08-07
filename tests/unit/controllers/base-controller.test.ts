@@ -3,14 +3,15 @@ import { describe, it, expect } from "vitest";
 import { getRoute } from "../../test-utils";
 import { BaseRoutes } from "../../../src/utilities";
 import baseController from "../../../src/controllers/index";
-import { healthCheckHandler } from "../../../src/request-handler";
+import { healthCheckHandler, missingRouteHandler } from "../../../src/request-handler";
 import authController from "../../../src/controllers/auth-controller";
 import userController from "../../../src/controllers/user-controller";
 
-const [healthCheckRoute, authenticationRoutes, usersRoutes] = [
+const [healthCheckRoute, authenticationRoutes, usersRoutes, e404Route] = [
   getRoute(`/${BaseRoutes.HEALTH_CHECK}`, baseController),
   getRoute(`/${BaseRoutes.AUTHENTICATION}`, baseController),
   getRoute(`/${BaseRoutes.USERS}`, baseController),
+  baseController.routes[3],
 ];
 
 describe("the baseController contains the correct routes and the routes map to the correct methods", () => {
@@ -35,7 +36,14 @@ describe("the baseController contains the correct routes and the routes map to t
     expect(usersRoutes?.[2][1]).toBeUndefined();
   });
 
+  it("the 404 route is configured correctly", () => {
+    expect(e404Route).to.not.be.deep.equal(undefined);
+    expect(e404Route?.[0]).to.deep.equal("ALL");
+    expect(e404Route?.[2][0]).toMatchObject(missingRouteHandler);
+    expect(e404Route?.[2][1]).toBeUndefined();
+  });
+
   it("contains the correct amount of routes", () => {
-    expect(baseController.routes[5]).to.be.deep.equal(undefined);
+    expect(baseController.routes[4]).to.be.deep.equal(undefined);
   });
 });

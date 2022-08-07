@@ -9,7 +9,7 @@ const getQuestionHandler = async (request: CustomRequest, env: Env): Promise<Res
 
   if (question === null || question === undefined) {
     return responseBuilder({
-      body: ResponseMessages.QUESTION_NOT_FOUND,
+      body: ResponseMessages.NOT_FOUND,
       status: HttpStatusCodes.NOT_FOUND,
       accessControl: env.ALLOWED_ORIGIN,
     });

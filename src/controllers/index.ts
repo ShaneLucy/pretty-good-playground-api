@@ -5,13 +5,14 @@ import authController from "./auth-controller";
 import userController from "./user-controller";
 
 import { BaseRoutes } from "../utilities";
-import { healthCheckHandler } from "../request-handler";
+import { healthCheckHandler, missingRouteHandler } from "../request-handler";
 
 const baseController = Router<CustomRequest, RouterMethodTypes>({ base: `/${BaseRoutes.API}` });
 
 baseController.get(`/${BaseRoutes.HEALTH_CHECK}`, healthCheckHandler);
 baseController.all(`/${BaseRoutes.AUTHENTICATION}/*`, authController.handle);
 baseController.all(`/${BaseRoutes.USERS}/*`, userController.handle);
+baseController.all("*", missingRouteHandler);
 
 export default baseController;
 
