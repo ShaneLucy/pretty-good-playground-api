@@ -34,21 +34,6 @@ describe("the generateJWT function works correctly", () => {
     expect(decodedJWT.payload.username).to.deep.equal(username);
     expect(decodedJWT.payload.questionId).to.deep.equal(questionId);
   });
-
-  it("returns a jwt string, containing the correct question, iat, iss, aud and exp fields for question audience", async () => {
-    const jwt = await generateJWT(questionsPayload, secret, durationInHours, Audience.ALL);
-    const decodedJWT = (decodeJwt(jwt) as unknown) as QuestionAccessToken;
-
-    expect(jwt).to.be.a("string");
-    expect(decodedJWT.iss).to.deep.equal(issuer);
-    expect(decodedJWT.aud).to.deep.equal(Audience.ALL);
-    expect(decodedJWT.exp).to.deep.equal(
-      Math.floor(Date.now() / millisecondsInASecond) +
-        secondsInAMinute * minutesInAnHour * durationInHours
-    );
-    expect(decodedJWT.iat).to.deep.equal(Math.floor(Date.now() / millisecondsInASecond));
-    expect(decodedJWT.payload.questionId).to.deep.equal(questionId);
-  });
 });
 
 describe("the verifyJwt function works correctly for all audience claims", () => {
