@@ -7,8 +7,8 @@ import {
   usernameNotInSystem,
   validUsername2,
   validPassword,
-} from "../../test-utils";
-import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+} from "../test-utils";
+import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
 const requestUrl = `${baseUrlConfig.baseUrl}/users`;
 

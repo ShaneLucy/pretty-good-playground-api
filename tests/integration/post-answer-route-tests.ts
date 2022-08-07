@@ -2,8 +2,8 @@ import { expect } from "vitest";
 import axios, { AxiosError } from "axios";
 import { decodeJwt } from "jose";
 
-import { baseUrlConfig, validUsername } from "../../test-utils";
-import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import { baseUrlConfig, validUsername } from "../test-utils";
+import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
 const requestUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/answers`;
 

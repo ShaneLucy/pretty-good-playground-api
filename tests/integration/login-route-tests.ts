@@ -10,8 +10,8 @@ import {
   invalidPassword,
   usernameNotInSystem,
   incorrectPasswordForValidUser,
-} from "../../test-utils";
-import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+} from "../test-utils";
+import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
 const requestUrl = `${baseUrlConfig.baseUrl}/authentication/login`;
 
