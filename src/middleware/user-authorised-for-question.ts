@@ -14,14 +14,6 @@ const userAuthorisedForQuestion = async (
 
   const param = (params as unknown) as QuestionParam;
 
-  if (headers === undefined) {
-    return responseBuilder({
-      body: ResponseMessages.UNAUTHORISED,
-      status: HttpStatusCodes.UNAUTHORISED,
-      accessControl: env.ALLOWED_ORIGIN,
-    });
-  }
-
   const jwt = headers.get("Authorization");
   if (jwt === null) {
     return responseBuilder({

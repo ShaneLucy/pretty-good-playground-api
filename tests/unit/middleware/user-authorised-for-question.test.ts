@@ -65,19 +65,6 @@ describe("the userAuthorisedForQuestion function works correctly", () => {
     expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
   });
 
-  it("given a request without headers, returns the correct status code & body", async () => {
-    const request = new Request("hi", {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-    }) as CustomRequest;
-
-    const result = await userAuthorisedForQuestion(request, env);
-
-    expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
-    // @ts-ignore
-    expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
-  });
-
   it("given an invalid JWT, returns  the correct status code & body", async () => {
     const request = new Request("hi", {
       body: JSON.stringify("Hi!"),

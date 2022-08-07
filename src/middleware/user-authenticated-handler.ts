@@ -13,14 +13,6 @@ const userAuthenticatedHandler = async (
   const { params, headers } = request;
   const param = params as UserParam;
 
-  if (headers === undefined) {
-    return responseBuilder({
-      body: ResponseMessages.UNAUTHORISED,
-      status: HttpStatusCodes.UNAUTHORISED,
-      accessControl: env.ALLOWED_ORIGIN,
-    });
-  }
-
   const jwt = headers.get("Authorization");
   if (jwt === null) {
     return responseBuilder({
