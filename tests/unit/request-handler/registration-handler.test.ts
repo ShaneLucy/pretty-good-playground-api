@@ -2,9 +2,9 @@ import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 import "whatwg-fetch";
 
-import { registrationHandler } from "../../../../src/request-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
-import type { CustomRequest } from "../../../../src/types/custom";
+import { registrationHandler } from "../../../src/request-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import type { CustomRequest } from "../../../src/types/custom";
 
 /**
  * @vitest-environment jsdom

@@ -2,9 +2,9 @@ import { describe, it, expect, vi } from "vitest";
 import { Crypto } from "@peculiar/webcrypto";
 import "whatwg-fetch";
 
-import { loginHandler } from "../../../../src/request-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
-import type { CustomRequest } from "../../../../src/types/custom";
+import { loginHandler } from "../../../src/request-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import type { CustomRequest } from "../../../src/types/custom";
 
 /**
  * @vitest-environment jsdom
@@ -52,12 +52,12 @@ describe("the loginHandler function works correctly", async () => {
     JWT_DURATION_HOURS: 2,
   } as Env;
 
-  vi.mock("../../../../src/authentication", () => ({
+  vi.mock("../../../src/authentication", () => ({
     generateJWT: vi.fn().mockReturnValue("jwt"),
     convertPlainTextToPasswordHash: vi.fn().mockReturnValue("12345678"),
   }));
 
-  it(`when given a valid username and password returns the correct status, a valid jwt, username & username`, async () => {
+  it(`when given a valid username and password returns the correct status, a valid jwt, username & questionId`, async () => {
     const request = new Request("hi", {
       body: JSON.stringify({ password, username: "test" }),
       method: "POST",

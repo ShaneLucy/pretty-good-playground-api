@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 
 import "whatwg-fetch";
 
-import { healthCheckHandler } from "../../../../src/request-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
+import { healthCheckHandler } from "../../../src/request-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
 /**
  * @vitest-environment jsdom

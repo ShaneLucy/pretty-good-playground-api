@@ -1,7 +1,7 @@
-import { generateSalt, convertPlainTextToPasswordHash } from "../../authentication";
-import { validateUser } from "../../validation";
-import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
-import type { CustomRequest } from "../../types/custom";
+import { generateSalt, convertPlainTextToPasswordHash } from "../authentication";
+import { validateUser } from "../validation";
+import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../utilities";
+import type { CustomRequest } from "../types/custom";
 
 const registrationHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
   const [{ username, password }, kvNamespace, accessControl] = [

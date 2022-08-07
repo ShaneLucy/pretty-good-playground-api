@@ -1,7 +1,7 @@
-import { convertPlainTextToPasswordHash, generateJWT } from "../../authentication";
-import { validateUser } from "../../validation";
-import { HttpStatusCodes, ResponseMessages, responseBuilder, Audience } from "../../utilities";
-import type { CustomRequest } from "../../types/custom";
+import { convertPlainTextToPasswordHash, generateJWT } from "../authentication";
+import { validateUser } from "../validation";
+import { HttpStatusCodes, ResponseMessages, responseBuilder, Audience } from "../utilities";
+import type { CustomRequest } from "../types/custom";
 
 const loginHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
   const { username, password } = (await request.json()) as UserAuthenticationData;

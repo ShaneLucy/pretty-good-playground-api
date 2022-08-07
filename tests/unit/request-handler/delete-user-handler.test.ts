@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import "whatwg-fetch";
 
-import { deleteUserHandler } from "../../../../src/request-handler";
-import { HttpStatusCodes, ResponseMessages } from "../../../../src/utilities";
-import type { CustomRequest } from "../../../../src/types/custom";
+import { deleteUserHandler } from "../../../src/request-handler";
+import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
+import type { CustomRequest } from "../../../src/types/custom";
 
 /**
  * @vitest-environment jsdom

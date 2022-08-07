@@ -1,5 +1,5 @@
-import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
-import type { CustomRequest } from "../../types/custom";
+import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../utilities";
+import type { CustomRequest } from "../types/custom";
 
 const deleteUserHandler = async (request: CustomRequest, env: Env): Promise<Response> => {
   const { params } = request;

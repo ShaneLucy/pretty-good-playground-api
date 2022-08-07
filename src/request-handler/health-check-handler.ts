@@ -1,4 +1,4 @@
-import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../../utilities";
+import { HttpStatusCodes, ResponseMessages, responseBuilder } from "../utilities";
 
 const healthCheckHandler = async (env: Env): Promise<Response> =>
   responseBuilder({
