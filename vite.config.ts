@@ -6,7 +6,7 @@ const twentySecondsInMilliSeconds = 20_000;
 
 export default defineConfig({
   build: {
-    minify: true,
+    minify: "esbuild",
     lib: {
       name: "lib",
       entry: "src/index.ts",

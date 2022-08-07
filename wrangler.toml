@@ -28,7 +28,7 @@ command = "npm run build"
 [build.upload]
 format = "modules"
 dir = "./dist"
-main = "./pretty-good-playground-api.es.js" 
+main = "./pretty-good-playground-api.mjs" 
 
 [[build.upload.rules]]
 type = "ESModule"
