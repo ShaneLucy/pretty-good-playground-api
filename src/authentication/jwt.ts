@@ -25,7 +25,7 @@ export const verifyJWT = async (
   jwt: string,
   jwtSecret: string,
   username: string | null,
-  question: string | null,
+  question: number | null,
   audience: Audience,
   durationInHours: number
 ): Promise<boolean> => {
@@ -49,10 +49,7 @@ export const verifyJWT = async (
           return true;
         }
 
-        return (
-          parseInt(question, 10) <=
-          parseInt(((result.payload as unknown) as QuestionAccessToken).payload.questionId, 10)
-        );
+        return question <= ((result.payload as unknown) as QuestionAccessToken).payload.questionId;
       default:
         return false;
     }

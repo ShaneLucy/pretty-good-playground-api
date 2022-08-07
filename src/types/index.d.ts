@@ -28,7 +28,7 @@ type ResponseData = {
 type LoginResponseBody = {
   authToken: string;
   username: string;
-  questionId: string;
+  questionId: number;
 };
 
 type FetchResponseData =
@@ -43,11 +43,11 @@ type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
 
 type AllAudienceAccessTokenPayload = {
   username: string;
-  questionId: string;
+  questionId: number;
 };
 
 type QuestionAccessTokenPayload = {
-  questionId: string;
+  questionId: number;
 };
 
 type AccessToken = {

@@ -44,12 +44,12 @@ const loginHandler = async (request: CustomRequest, env: Env): Promise<Response>
     body: {
       username,
       authToken: await generateJWT(
-        { username, questionId: userModelQuestionId },
+        { username, questionId: parseInt(userModelQuestionId, 10) },
         env.JWT_SECRET,
         env.JWT_DURATION_HOURS,
         Audience.ALL
       ),
-      questionId: userModelQuestionId,
+      questionId: parseInt(userModelQuestionId, 10),
     },
     status: HttpStatusCodes.SUCCESS,
     accessControl: env.ALLOWED_ORIGIN,

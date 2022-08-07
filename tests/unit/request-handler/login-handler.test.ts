@@ -14,7 +14,7 @@ describe("the loginHandler function works correctly", async () => {
   vi.stubGlobal("crypto", new Crypto());
   const salt = "salt";
   const password = "12345678";
-  const questionId = "2";
+  const questionId = 2;
 
   const kvNamespace = {
     put: vi.fn(),

@@ -13,7 +13,7 @@ const [
   millisecondsInASecond,
   durationInHours,
   questionId,
-] = ["username", "secret", "pretty-good-playground", 60, 60, 1_000, 5, "2"];
+] = ["username", "secret", "pretty-good-playground", 60, 60, 1_000, 5, 2];
 
 const allAudiencePayload: AllAudienceAccessTokenPayload = { username, questionId };
 const questionsPayload: QuestionAccessTokenPayload = { questionId };
@@ -138,7 +138,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
       jwt,
       secret,
       null,
-      "1",
+      1,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
     );
@@ -193,7 +193,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
       jwt,
       secret,
       null,
-      "invalidQuestionId",
+      33,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
     );
@@ -234,7 +234,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
       jwt,
       secret,
       null,
-      "5",
+      5,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
     );

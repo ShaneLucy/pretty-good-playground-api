@@ -38,7 +38,7 @@ const postAnswerHandler = async (request: CustomRequest, env: Env): Promise<Resp
     body: {
       answer,
       authToken: await generateJWT(
-        { username: param?.username, questionId: (parseInt(param?.answer, 10) + 1).toString() },
+        { username: param?.username, questionId: parseInt(param?.answer, 10) + 1 },
         env.JWT_SECRET,
         env.JWT_DURATION_HOURS,
         Audience.ALL

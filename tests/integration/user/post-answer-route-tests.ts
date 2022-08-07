@@ -28,7 +28,7 @@ export const authorisedRequestForAnswer = async () => {
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(responseData.answer).to.be.deep.equal("answer1");
-  expect(jwt.payload.questionId).to.be.deep.equal("2");
+  expect(jwt.payload.questionId).to.be.deep.equal(2);
 };
 
 export const authorisedRequestForSecondAnswer = async () => {
@@ -40,7 +40,7 @@ export const authorisedRequestForSecondAnswer = async () => {
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(responseData.answer).to.be.deep.equal("answer2");
-  expect(jwt.payload.questionId).to.be.deep.equal("3");
+  expect(jwt.payload.questionId).to.be.deep.equal(3);
 };
 
 export const authorisedRequestForAnswerIncorrectData = async () => {
