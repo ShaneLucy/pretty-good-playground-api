@@ -3,6 +3,7 @@ type UserModel = {
   password: string;
   salt: string;
   questionId: string;
+  publicKey: string;
 };
 
 type UserAuthenticationData = Pick<UserModel, "username" | "password">;
