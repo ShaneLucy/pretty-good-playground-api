@@ -33,7 +33,6 @@ const registrationHandler = async (request: CustomRequest, env: Env): Promise<Re
     salt,
     password: hashedPassword,
     questionId: "1",
-    publicKey: "",
   };
 
   await kvNamespace.put(username, JSON.stringify(userCredentialsToStore));

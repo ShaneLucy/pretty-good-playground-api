@@ -8,7 +8,7 @@ type UserModel = {
 
 type UserAuthenticationData = Pick<UserModel, "username" | "password">;
 
-type UserModelValue = Omit<UserModel, "username">;
+type UserModelValue = Omit<UserModel, "username" | "publicKey">;
 
 type Env = {
   USERS: KVNamespace;
@@ -87,3 +87,5 @@ type AnswerResponseBody = {
   answer: string;
   authToken: string;
 };
+
+type UserQueryParam = {};
