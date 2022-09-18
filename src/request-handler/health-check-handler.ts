@@ -6,4 +6,5 @@ const healthCheckHandler = async (env: Env): Promise<Response> =>
     status: HttpStatusCodes.SUCCESS,
     accessControl: env.ALLOWED_ORIGIN,
   });
+
 export default healthCheckHandler;
