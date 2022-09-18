@@ -24,8 +24,8 @@ export const generateJWT = async (
 export const verifyJWT = async (
   jwt: string,
   jwtSecret: string,
-  username: string | null,
-  question: number | null,
+  username: string | undefined,
+  question: number | undefined,
   audience: Audience,
   durationInHours: number
 ): Promise<boolean> => {
@@ -37,7 +37,7 @@ export const verifyJWT = async (
 
     switch (audience) {
       case Audience.ALL:
-        if (username === null) {
+        if (username === undefined) {
           return false;
         }
 
@@ -45,7 +45,7 @@ export const verifyJWT = async (
           ((result.payload as unknown) as AllAudienceAccessToken).payload.username === username
         );
       case Audience.QUESTIONS_ANSWERS:
-        if (question === null) {
+        if (question === undefined) {
           return true;
         }
 

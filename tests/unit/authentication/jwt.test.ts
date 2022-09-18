@@ -39,7 +39,7 @@ describe("the generateJWT function works correctly", () => {
 describe("the verifyJwt function works correctly for all audience claims", () => {
   it("given a valid jwt, correct secret, correct audience and correct username returns true", async () => {
     const jwt = await generateJWT(allAudiencePayload, secret, durationInHours, Audience.ALL);
-    const result = await verifyJWT(jwt, secret, username, null, Audience.ALL, durationInHours);
+    const result = await verifyJWT(jwt, secret, username, undefined, Audience.ALL, durationInHours);
     expect(result).toBeTruthy();
   });
 
@@ -62,7 +62,7 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
       jwt,
       "invalidSecret",
       username,
-      null,
+      undefined,
       Audience.ALL,
       durationInHours
     );
@@ -72,7 +72,14 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
   it("given a valid token but it has expired returns false", async () => {
     const expiredTokenDuration = 0;
     const jwt = await generateJWT(allAudiencePayload, secret, expiredTokenDuration, Audience.ALL);
-    const result = await verifyJWT(jwt, secret, username, null, Audience.ALL, expiredTokenDuration);
+    const result = await verifyJWT(
+      jwt,
+      secret,
+      username,
+      undefined,
+      Audience.ALL,
+      expiredTokenDuration
+    );
     expect(result).toBeFalsy();
   });
 
@@ -82,7 +89,7 @@ describe("the verifyJwt function works correctly for all audience claims", () =>
       jwt,
       secret,
       "invalidUsername",
-      null,
+      undefined,
       Audience.ALL,
       durationInHours
     );
@@ -101,7 +108,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
     const result = await verifyJWT(
       jwt,
       secret,
-      null,
+      undefined,
       questionId,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
@@ -137,7 +144,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
     const result = await verifyJWT(
       jwt,
       secret,
-      null,
+      undefined,
       1,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
@@ -155,7 +162,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
     const result = await verifyJWT(
       jwt,
       "invalidSecret",
-      null,
+      undefined,
       questionId,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
@@ -174,7 +181,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
     const result = await verifyJWT(
       jwt,
       secret,
-      null,
+      undefined,
       questionId,
       Audience.QUESTIONS_ANSWERS,
       expiredTokenDuration
@@ -192,7 +199,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
     const result = await verifyJWT(
       jwt,
       secret,
-      null,
+      undefined,
       33,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
@@ -207,7 +214,14 @@ describe("the verifyJwt function works correctly for question claims", () => {
       durationInHours,
       Audience.QUESTIONS_ANSWERS
     );
-    const result = await verifyJWT(jwt, secret, null, questionId, Audience.ALL, durationInHours);
+    const result = await verifyJWT(
+      jwt,
+      secret,
+      undefined,
+      questionId,
+      Audience.ALL,
+      durationInHours
+    );
     expect(result).toBeFalsy();
   });
 
@@ -216,7 +230,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
       "jwt",
       secret,
       username,
-      null,
+      undefined,
       Audience.QUESTIONS_ANSWERS,
       durationInHours
     );
@@ -233,7 +247,7 @@ describe("the verifyJwt function works correctly for question claims", () => {
     const result = await verifyJWT(
       jwt,
       secret,
-      null,
+      undefined,
       5,
       Audience.QUESTIONS_ANSWERS,
       durationInHours

@@ -27,8 +27,8 @@ const userAuthorisedForQuestion = async (
     !(await verifyJWT(
       jwt,
       env.JWT_SECRET,
-      null,
-      param?.question ? parseInt(param.question, 10) : null,
+      undefined,
+      param?.question ? parseInt(param.question, 10) : undefined,
       Audience.QUESTIONS_ANSWERS,
       env.JWT_DURATION_HOURS
     ))

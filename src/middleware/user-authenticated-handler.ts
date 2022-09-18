@@ -36,8 +36,8 @@ const userAuthenticatedHandler = async (
     !(await verifyJWT(
       jwt,
       env.JWT_SECRET,
-      param?.username ? param.username : null,
-      null,
+      param?.username,
+      undefined,
       Audience.ALL,
       env.JWT_DURATION_HOURS
     ))
