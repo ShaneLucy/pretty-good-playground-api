@@ -14,6 +14,8 @@ enum ResponseMessages {
   ANSWER_NOT_FOUND = "The requested answer could not be found",
   ANSWER_INCORRECT = "The answer you provided was incorrect",
   ANSWER_EMPTY = "Answer cannot be empty",
+  PRIVATE_KEY_GIVEN = "Private Key has been given instead of a public key",
+  KEY_EXPIRED = "The key supplied has expired",
 }
 
 export default ResponseMessages;
