@@ -1,10 +1,5 @@
 import { ResponseMessages } from "../utilities/index";
 
-type ValidationResponse = {
-  isValid: boolean;
-  errorMessage: string;
-};
-
 const minPasswordLength = 8;
 export const validateUsername = (username: string): ValidationResponse => {
   const response = {

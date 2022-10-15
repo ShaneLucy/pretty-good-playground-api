@@ -41,7 +41,7 @@ type FetchResponseData =
     }
   | string;
 
-type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE";
+type RequestMethodTypes = "GET" | "HEAD" | "POST" | "OPTIONS" | "DELETE" | "PATCH";
 
 type AllAudienceAccessTokenPayload = {
   username: string;
@@ -88,4 +88,9 @@ type AnswerResponseBody = {
   authToken: string;
 };
 
-type UserQueryParam = {};
+type UserModelEditableFields = Partial<Omit<UserModel, "salt" | "questionId" | "username">>;
+
+type ValidationResponse = {
+  isValid: boolean;
+  errorMessage: string;
+};
