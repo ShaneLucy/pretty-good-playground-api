@@ -34,7 +34,7 @@ describe("the deleteUserHandler function works correctly", async () => {
   } as Env;
 
   it(`when given a valid request, returns the correct status, message and deletes the user`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "test" }),
       method: "DELETE",
     }) as CustomRequest;

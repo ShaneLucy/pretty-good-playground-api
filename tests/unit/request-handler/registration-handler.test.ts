@@ -37,7 +37,7 @@ describe("the registrationHandler function works correctly", () => {
   } as Env;
 
   it(`when given a valid username and password returns the correct status & success message`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "test", password: "09483490054" }),
       method: "POST",
     }) as CustomRequest;
@@ -49,7 +49,7 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "t es t", password: "09483490589054" }),
       method: "POST",
     }) as CustomRequest;
@@ -61,7 +61,7 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "test", password: "123456" }),
       method: "POST",
     }) as CustomRequest;
@@ -91,7 +91,7 @@ describe("the registrationHandler function works correctly", () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "test", password: "011589054" }),
       method: "POST",
     }) as CustomRequest;

@@ -60,7 +60,7 @@ describe("the loginHandler function works correctly", async () => {
   }));
 
   it(`when given a valid username and password returns the correct status, a valid jwt, username & questionId`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ password, username: "test" }),
       method: "POST",
     }) as CustomRequest;
@@ -76,7 +76,7 @@ describe("the loginHandler function works correctly", async () => {
   });
 
   it(`when given a username that doesn't exist it returns the correct status and message`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "test", password: "09483490589054" }),
       method: "POST",
     }) as CustomRequest;
@@ -88,7 +88,7 @@ describe("the loginHandler function works correctly", async () => {
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "validUsername", password: "*" }),
       method: "POST",
     }) as CustomRequest;
@@ -100,7 +100,7 @@ describe("the loginHandler function works correctly", async () => {
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "not a valid username", password: "valid password" }),
       method: "POST",
     }) as CustomRequest;
@@ -132,7 +132,7 @@ describe("the loginHandler function works correctly", async () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ username: "valid", password: "12345678" }),
       method: "POST",
     }) as CustomRequest;

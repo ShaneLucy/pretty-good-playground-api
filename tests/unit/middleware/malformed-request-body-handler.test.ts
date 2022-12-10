@@ -1,14 +1,11 @@
-/* eslint no-underscore-dangle: 0 */
 import { describe, it, expect, vi } from "vitest";
 import "whatwg-fetch";
+import { fail } from "assert";
 
 import { malformedRequestBodyHandler } from "../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
 const kvNamespace = {
   put: vi.fn(),
   get: vi.fn(),
@@ -30,7 +27,7 @@ const env = {
 
 describe("the malformedRequestBodyHandler function works correctly", () => {
   it("given valid JSON returns undefined", async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify("Hi!"),
       method: "POST",
     }) as CustomRequest;
@@ -41,12 +38,19 @@ describe("the malformedRequestBodyHandler function works correctly", () => {
   });
 
   it("given invalid JSON returns a response with the correct status code & body", async () => {
-    const request = new Request("hi", { body: "Hi!", method: "POST" }) as CustomRequest;
+    const request = new Request("http://localhost", {
+      body: "Hi!",
+      method: "POST",
+    }) as CustomRequest;
 
     const result = await malformedRequestBodyHandler(request, env);
 
-    expect(result?.status).to.deep.equal(HttpStatusCodes.BAD_REQUEST);
-    // @ts-ignore
-    expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.MALFORMED_REQUEST_BODY}"`);
+    if (result === undefined) {
+      fail();
+    }
+
+    expect(result.status).to.deep.equal(HttpStatusCodes.BAD_REQUEST);
+
+    expect(await result.json()).to.deep.equal(`${ResponseMessages.MALFORMED_REQUEST_BODY}`);
   });
 });

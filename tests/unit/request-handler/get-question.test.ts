@@ -31,7 +31,7 @@ describe("the getQuestionHandler function works correctly", () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       method: "GET",
     }) as CustomRequest;
 
@@ -61,7 +61,7 @@ describe("the getQuestionHandler function works correctly", () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       method: "GET",
     }) as CustomRequest;
 

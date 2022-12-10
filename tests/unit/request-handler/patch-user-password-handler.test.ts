@@ -53,7 +53,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   } as Env;
 
   it(`when given a valid password, returns successful response`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ password }),
       method: "PATCH",
     }) as CustomRequest;
@@ -65,7 +65,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   });
 
   it(`when user not found, returns correct error response`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ password }),
       method: "PATCH",
     }) as CustomRequest;
@@ -76,7 +76,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   });
 
   it(`when given an invalid password, returns error correct response`, async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({ password: "12" }),
       method: "PATCH",
     }) as CustomRequest;
@@ -88,7 +88,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   });
 
   it("when password is missing, returns correct error response", async () => {
-    const request = new Request("hi", {
+    const request = new Request("http://localhost", {
       body: JSON.stringify({}),
       method: "PATCH",
     }) as CustomRequest;

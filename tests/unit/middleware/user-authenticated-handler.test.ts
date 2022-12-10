@@ -1,16 +1,14 @@
-/* eslint no-underscore-dangle: 0 */
 import { describe, it, expect, vi, afterEach } from "vitest";
 import "whatwg-fetch";
+import { fail } from "assert";
 
 import { userAuthenticatedHandler } from "../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import * as authentication from "../../../src/authentication";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the userAuthenticatedHandler function works correctly", () => {
+  const requestUrl = "http://localhost";
   afterEach(() => {
     vi.resetAllMocks();
   });
@@ -37,7 +35,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   } as Env;
 
   it("given valid JWT & valid body returns undefined", async () => {
-    const request = new Request("hi", {
+    const request = new Request(requestUrl, {
       body: JSON.stringify("Hi!"),
       method: "POST",
       headers: {
@@ -52,7 +50,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   });
 
   it("given invalid JWT returns a response with the correct status code & body", async () => {
-    const request = new Request("hi", {
+    const request = new Request(requestUrl, {
       body: JSON.stringify("Hi!"),
       method: "POST",
       headers: {
@@ -63,13 +61,16 @@ describe("the userAuthenticatedHandler function works correctly", () => {
     verifyJWTSpy.mockImplementationOnce(async () => false);
     const result = await userAuthenticatedHandler(request, env);
 
-    expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
-    // @ts-ignore
-    expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
+    if (result === undefined) {
+      fail();
+    }
+    expect(result.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
+
+    expect(await result.json()).to.deep.equal(`${ResponseMessages.UNAUTHORISED}`);
   });
 
   it("given a request without a JWT returns a response with the correct status code & body", async () => {
-    const request = new Request("hi", {
+    const request = new Request(requestUrl, {
       body: JSON.stringify("Hi!"),
       method: "POST",
       headers: {},
@@ -77,9 +78,12 @@ describe("the userAuthenticatedHandler function works correctly", () => {
 
     const result = await userAuthenticatedHandler(request, env);
 
-    expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
-    // @ts-ignore
-    expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
+    if (result === undefined) {
+      fail();
+    }
+
+    expect(result.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
+    expect(await result.json()).to.deep.equal(`${ResponseMessages.UNAUTHORISED}`);
   });
 
   it("when the username path parameter is for a user that doesn't exist returns the correct status code & body", async () => {
@@ -102,7 +106,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
       PRIVATE_KEY_PASSPHRASE: "",
     } as Env;
 
-    const request = new Request("hi", {
+    const request = new Request(requestUrl, {
       body: JSON.stringify("Hi!"),
       method: "POST",
       headers: {
@@ -112,8 +116,11 @@ describe("the userAuthenticatedHandler function works correctly", () => {
 
     const result = await userAuthenticatedHandler(request, envWithoutUser);
 
-    expect(result?.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
-    // @ts-ignore
-    expect(result?._bodyText).to.deep.equal(`"${ResponseMessages.UNAUTHORISED}"`);
+    if (result === undefined) {
+      fail();
+    }
+
+    expect(result.status).to.deep.equal(HttpStatusCodes.UNAUTHORISED);
+    expect(await result.json()).to.deep.equal(`${ResponseMessages.UNAUTHORISED}`);
   });
 });
