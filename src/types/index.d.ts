@@ -88,8 +88,13 @@ type AnswerResponseBody = {
   authToken: string;
 };
 
-type UserModelEditableFields = Partial<Omit<UserModel, "salt" | "questionId" | "username">>;
+type PasswordRequestBody = {
+  password: string;
+};
 
+type PublicKeyRequestBody = {
+  publicKey: string;
+};
 type ValidationResponse = {
   isValid: boolean;
   errorMessage: string;

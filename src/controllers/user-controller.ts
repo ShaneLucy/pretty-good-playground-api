@@ -5,7 +5,8 @@ import {
   deleteUserHandler,
   getQuestionHandler,
   postAnswerHandler,
-  patchUserHandler,
+  patchUserPasswordHandler,
+  patchUserPublicKeyHandler,
 } from "../request-handler";
 import {
   malformedRequestBodyHandler,
@@ -29,7 +30,16 @@ userController.get(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, async (
 
 userController.delete(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, deleteUserHandler);
 
-userController.patch(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, patchUserHandler);
+userController.patch(
+  `/:${PathParams.USERNAME}/password`,
+  userAuthenticatedHandler,
+  patchUserPasswordHandler
+);
+userController.patch(
+  `/:${PathParams.USERNAME}/public-key`,
+  userAuthenticatedHandler,
+  patchUserPublicKeyHandler
+);
 
 userController.get(
   `/:${PathParams.USERNAME}/questions/:${PathParams.QUESTION}`,

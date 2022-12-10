@@ -16,6 +16,8 @@ enum ResponseMessages {
   ANSWER_EMPTY = "Answer cannot be empty",
   PRIVATE_KEY_GIVEN = "Private Key has been given instead of a public key",
   KEY_EXPIRED = "The key supplied has expired",
+  NOT_UPDATED = "The resource has not been updated",
+  PUBLIC_KEY_EMPTY = "Public key cannot be empty",
 }
 
 export default ResponseMessages;

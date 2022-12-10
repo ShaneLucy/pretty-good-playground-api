@@ -4,33 +4,46 @@ import { ChildProcessWithoutNullStreams } from "child_process";
 import { testServer } from "../test-utils";
 
 import {
-  deleteUserRequestWithValidUsername,
-  deleteUserWithUsernameNotInSystem,
-  deleteUserWithMismatchedAuthToken,
+  loginRequestWithInvalidPassword,
+  loginRequestWithInvalidUsername,
+  loginRequestWithUsernameInSystemButIncorrectPassword,
+  loginRequestWithUsernameNotInSystemButWithAUsersPassword,
+  loginRequestWithValidData,
+  loginRequestWithoutAnyCredentials,
+} from "./login-route-tests";
+
+import {
   registerRequestWithInvalidPassword,
   registerRequestWithInvalidUsername,
   registerRequestWithValidData,
-  loginRequestWithInvalidPassword,
-  loginRequestWithInvalidUsername,
-  loginRequestWithValidData,
-  loginRequestWithoutAnyCredentials,
-  loginRequestWithUsernameInSystemButIncorrectPassword,
-  loginRequestWithUsernameNotInSystemButWithAUsersPassword,
-  unauthorisedRequestForQuestion,
+} from "./register-route-tests";
+import {
+  deleteUserRequestWithValidUsername,
+  deleteUserWithMismatchedAuthToken,
+  deleteUserWithUsernameNotInSystem,
+} from "./delete-user-route-tests";
+import {
   authorisedRequestForQuestion,
+  unauthorisedRequestForQuestion,
   requestForSecondQuestionOutOfBounds,
+  requestForThirdQuestionOutOfBounds,
+  authorisedRequestForSecondQuestion,
+} from "./get-question-route-tests";
+import {
+  unauthorisedRequestForAnswer,
   authorisedRequestForAnswer,
   authorisedRequestForAnswerIncorrectData,
-  requestForSecondAnswerOutOfBounds,
   authorisedRequestForSecondAnswer,
-  authorisedRequestForSecondQuestion,
-  unauthorisedRequestForAnswer,
+  requestForSecondAnswerOutOfBounds,
   requestForThirdAnswerOutOfBounds,
-  requestForThirdQuestionOutOfBounds,
+} from "./post-answer-route-tests";
+import {
   getRequestForMissingRoute,
   postRequestForMissingRoute,
   deleteRequestForMissingRoute,
-} from "./index";
+} from "./missing-route-test";
+import { updatePassword, updatePasswordWithInvalidData } from "./patch-user-password-route-tests";
+import { updatePublicKey, updatePublicKeyWithInvalidData } from "./patch-user-public-key-route";
 
 let server: ChildProcessWithoutNullStreams;
 
@@ -98,6 +111,23 @@ describe("the login routes work correctly", () => {
   );
 });
 
+describe("the patch user password route works correctly", () => {
+  it("given a valid password, updates the password", updatePassword);
+
+  it(
+    "given an invalid password, returns the correct error status and message",
+    updatePasswordWithInvalidData
+  );
+});
+
+describe("the patch user public key route works correctly", () => {
+  it("given a valid public key, updates the public key", updatePublicKey);
+  it(
+    "given an invalid public key, returns the correct error status and message",
+    updatePublicKeyWithInvalidData
+  );
+});
+
 describe("the game routes work correctly for a user who is logged in", () => {
   it(
     "returns the correct message and status when requesting an answer the user isn't authorised to view",
@@ -138,13 +168,13 @@ describe("the game routes work correctly for a user who is logged in", () => {
 });
 
 describe("the delete user route works correctly", () => {
-  it("given a valid username it deletes the requested user", deleteUserRequestWithValidUsername);
+  it("given a valid username, deletes the requested user", deleteUserRequestWithValidUsername);
   it(
     "given a username that doesn't exist in the system, returns the correct error status and message",
     deleteUserWithUsernameNotInSystem
   );
   it(
-    "given a mismatched jwt it fails to delete the specified resource, then when supplied with the correct jwt deletes the resource",
+    "given a mismatched jwt, fails to delete the specified resource, then when supplied with the correct jwt deletes the resource",
     deleteUserWithMismatchedAuthToken
   );
 });

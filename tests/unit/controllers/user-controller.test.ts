@@ -11,14 +11,16 @@ import {
   deleteUserHandler,
   postAnswerHandler,
   getQuestionHandler,
-  patchUserHandler,
+  patchUserPasswordHandler,
+  patchUserPublicKeyHandler,
 } from "../../../src/request-handler";
 
 const [
   optionsRoute,
   getUserRoute,
   deleteUserRoute,
-  patchUserRoute,
+  patchUserPasswordRoute,
+  patchUserPublicKeyRoute,
   getQuestionRoute,
   postAnswerRoute,
   undefinedRoute,
@@ -30,6 +32,7 @@ const [
   userController.routes[4],
   userController.routes[5],
   userController.routes[6],
+  userController.routes[7],
 ];
 
 describe("the userController contains the correct routes and the routes map to the correct methods", () => {
@@ -57,12 +60,20 @@ describe("the userController contains the correct routes and the routes map to t
     expect(deleteUserRoute?.[2][2]).toBeUndefined();
   });
 
-  it("the patchUser route is configured correctly", () => {
-    expect(patchUserRoute).to.not.be.deep.equal(undefined);
-    expect(patchUserRoute?.[0]).to.deep.equal("PATCH");
-    expect(patchUserRoute?.[2][0]).toMatchObject(userAuthenticatedHandler);
-    expect(patchUserRoute?.[2][1]).toMatchObject(patchUserHandler);
-    expect(patchUserRoute?.[2][2]).toBeUndefined();
+  it("the patchUserPassword route is configured correctly", () => {
+    expect(patchUserPasswordRoute).to.not.be.deep.equal(undefined);
+    expect(patchUserPasswordRoute?.[0]).to.deep.equal("PATCH");
+    expect(patchUserPasswordRoute?.[2][0]).toMatchObject(userAuthenticatedHandler);
+    expect(patchUserPasswordRoute?.[2][1]).toMatchObject(patchUserPasswordHandler);
+    expect(patchUserPasswordRoute?.[2][2]).toBeUndefined();
+  });
+
+  it("the patchUserPublicKey route is configured correctly", () => {
+    expect(patchUserPublicKeyRoute).to.not.be.deep.equal(undefined);
+    expect(patchUserPublicKeyRoute?.[0]).to.deep.equal("PATCH");
+    expect(patchUserPublicKeyRoute?.[2][0]).toMatchObject(userAuthenticatedHandler);
+    expect(patchUserPublicKeyRoute?.[2][1]).toMatchObject(patchUserPublicKeyHandler);
+    expect(patchUserPublicKeyRoute?.[2][2]).toBeUndefined();
   });
 
   it("the getQuestion route is configured correctly", () => {
