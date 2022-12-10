@@ -7,11 +7,11 @@ import userController from "./user-controller";
 import { BaseRoutes } from "../utilities";
 import { healthCheckHandler, missingRouteHandler } from "../request-handler";
 
-const baseController = Router<CustomRequest, RouterMethodTypes>({ base: `/${BaseRoutes.API}` });
+const baseController = Router<CustomRequest, RouterMethodTypes>();
 
-baseController.get(`/${BaseRoutes.HEALTH_CHECK}`, healthCheckHandler);
-baseController.all(`/${BaseRoutes.AUTHENTICATION}/*`, authController.handle);
-baseController.all(`/${BaseRoutes.USERS}/*`, userController.handle);
+baseController.get(`/${BaseRoutes.API}/${BaseRoutes.HEALTH_CHECK}`, healthCheckHandler);
+baseController.all(`/${BaseRoutes.API}/${BaseRoutes.AUTHENTICATION}/*`, authController.handle);
+baseController.all(`/${BaseRoutes.API}/${BaseRoutes.USERS}/*`, userController.handle);
 baseController.all("*", missingRouteHandler);
 
 export default baseController;
