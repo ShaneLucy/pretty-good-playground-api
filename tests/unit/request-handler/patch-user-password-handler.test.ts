@@ -5,10 +5,6 @@ import { patchUserPasswordHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
-
 describe("the patchUserPasswordHandler function works correctly", async () => {
   const salt = "salt";
   const password = "12345678";

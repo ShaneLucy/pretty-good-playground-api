@@ -5,9 +5,6 @@ import "whatwg-fetch";
 import { missingRouteHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the missingRouteHandler function works correctly", () => {
   const kvNamespace = {
     put: vi.fn(),

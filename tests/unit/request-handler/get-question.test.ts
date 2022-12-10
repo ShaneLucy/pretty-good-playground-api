@@ -6,9 +6,6 @@ import { getQuestionHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the getQuestionHandler function works correctly", () => {
   it(`when given a question id that exists returns the question text`, async () => {
     const questionText = "question 1";

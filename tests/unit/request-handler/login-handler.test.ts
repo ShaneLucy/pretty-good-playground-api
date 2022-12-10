@@ -6,10 +6,6 @@ import { loginHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
-
 describe("the loginHandler function works correctly", async () => {
   vi.stubGlobal("crypto", new Crypto());
   const salt = "salt";

@@ -6,9 +6,6 @@ import { postAnswerHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the postAnswerHandler function works correctly", () => {
   const answer = "answer 1";
   const kvNamespace = {

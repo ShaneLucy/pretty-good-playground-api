@@ -6,9 +6,6 @@ import { registrationHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the registrationHandler function works correctly", () => {
   vi.stubGlobal("crypto", new Crypto());
 

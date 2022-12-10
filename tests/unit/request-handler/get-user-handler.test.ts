@@ -6,9 +6,6 @@ import { getUserHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the getUserHandler function works correctly", () => {
   it(`when a user that exists returns the correct fields`, async () => {
     const salt = "salt";

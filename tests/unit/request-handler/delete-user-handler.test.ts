@@ -5,10 +5,6 @@ import { deleteUserHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import type { CustomRequest } from "../../../src/types/custom";
 
-/**
- * @vitest-environment jsdom
- */
-
 describe("the deleteUserHandler function works correctly", async () => {
   afterEach(() => {
     vi.restoreAllMocks();

@@ -5,9 +5,6 @@ import "whatwg-fetch";
 import { healthCheckHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 
-/**
- * @vitest-environment jsdom
- */
 describe("the healthCheckHandler function works correctly", () => {
   const kvNamespace = {
     put: vi.fn(),
