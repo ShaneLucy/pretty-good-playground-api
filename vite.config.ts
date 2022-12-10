@@ -8,9 +8,17 @@ export default defineConfig({
   build: {
     minify: "esbuild",
     lib: {
-      name: "lib",
       entry: "src/index.ts",
       formats: ["es"],
+    },
+    rollupOptions: {
+      treeshake: "smallest",
+      output: {
+        generatedCode: {
+          constBindings: true,
+        },
+        validate: true,
+      },
     },
   },
   test: {
