@@ -1,2 +1,2 @@
 export * from "./user";
-export { default as validatePublicKey } from "./public-key";
+export { default as validatePublicKey } from "./validate-public-key";

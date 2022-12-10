@@ -4,7 +4,7 @@ import "whatwg-fetch";
 
 import { postAnswerHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the postAnswerHandler function works correctly", () => {
   const answer = "answer 1";
@@ -32,10 +32,7 @@ describe("the postAnswerHandler function works correctly", () => {
   }));
 
   it(`when given an answer that matches an answer id returns the answer`, async () => {
-    const request = new Request("http://localhost", {
-      method: "POST",
-      body: JSON.stringify({ answer }),
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ answer }), "POST");
 
     const response = await postAnswerHandler(request, env);
     const responseData = (await response.json()) as AnswerResponseBody;
@@ -46,10 +43,7 @@ describe("the postAnswerHandler function works correctly", () => {
   });
 
   it("when given an empty request body, returns the correct status and message", async () => {
-    const request = new Request("http://localhost", {
-      method: "POST",
-      body: JSON.stringify({}),
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({}), "POST");
 
     const response = await postAnswerHandler(request, env);
 
@@ -58,10 +52,7 @@ describe("the postAnswerHandler function works correctly", () => {
   });
 
   it("when given a request body with an empty string, returns the correct status and message", async () => {
-    const request = new Request("http://localhost", {
-      method: "POST",
-      body: JSON.stringify({ answer: "" }),
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ answer: "" }), "POST");
 
     const response = await postAnswerHandler(request, env);
 
@@ -89,10 +80,7 @@ describe("the postAnswerHandler function works correctly", () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("http://localhost", {
-      method: "POST",
-      body: JSON.stringify({ answer }),
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ answer }), "POST");
 
     const response = await postAnswerHandler(request, envGetNull);
 
@@ -101,10 +89,7 @@ describe("the postAnswerHandler function works correctly", () => {
   });
 
   it("when the supplied answer doesn't match the requested answer, returns the correct status and message", async () => {
-    const request = new Request("http://localhost", {
-      method: "POST",
-      body: JSON.stringify({ answer: "incorrect answer" }),
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ answer: "incorrect answer" }), "POST");
 
     const response = await postAnswerHandler(request, env);
 

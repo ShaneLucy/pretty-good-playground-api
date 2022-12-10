@@ -10,10 +10,10 @@ import {
 } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/authentication/register`;
+const validUrl = `${baseUrlConfig.baseUrl}/authentication/register`;
 
 export const registerRequestWithValidData = async () => {
-  const response = await axios.post(requestUrl, {
+  const response = await axios.post(validUrl, {
     username: validUsername,
     password: validPassword,
   });
@@ -25,7 +25,7 @@ export const registerRequestWithValidData = async () => {
 export const registerRequestWithInvalidUsername = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: invalidUsername,
       password: validPassword,
     });
@@ -40,7 +40,7 @@ export const registerRequestWithInvalidUsername = async () => {
 export const registerRequestWithInvalidPassword = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: validUsername,
       password: invalidPassword,
     });

@@ -3,7 +3,7 @@ import "whatwg-fetch";
 
 import { patchUserPasswordHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the patchUserPasswordHandler function works correctly", async () => {
   const salt = "salt";
@@ -49,10 +49,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   } as Env;
 
   it(`when given a valid password, returns successful response`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ password }),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ password }), "PATCH");
 
     const response = await patchUserPasswordHandler(request, env);
 
@@ -61,10 +58,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   });
 
   it(`when user not found, returns correct error response`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ password }),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ password }), "PATCH");
 
     const response = await patchUserPasswordHandler(request, envGetNull);
     expect(response.status).to.be.deep.equal(HttpStatusCodes.NOT_FOUND);
@@ -72,10 +66,9 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   });
 
   it(`when given an invalid password, returns error correct response`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ password: "12" }),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ password: "12" }), "PATCH", {
+      Authorization: "",
+    });
 
     const response = await patchUserPasswordHandler(request, envGetNull);
 
@@ -84,10 +77,7 @@ describe("the patchUserPasswordHandler function works correctly", async () => {
   });
 
   it("when password is missing, returns correct error response", async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({}),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({}), "PATCH");
 
     const response = await patchUserPasswordHandler(request, envGetNull);
 

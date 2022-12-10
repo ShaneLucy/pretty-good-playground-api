@@ -5,10 +5,9 @@ import { fail } from "assert";
 import { userAuthorisedForAnswer } from "../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import * as authentication from "../../../src/authentication";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the userAuthorisedForAnswer function works correctly", () => {
-  const requestUrl = "http://localhost";
   afterEach(() => {
     vi.resetAllMocks();
   });
@@ -35,13 +34,9 @@ describe("the userAuthorisedForAnswer function works correctly", () => {
   } as Env;
 
   it("given valid JWT & valid body returns undefined", async () => {
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {
-        Authorization: "",
-      },
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST", {
+      Authorization: "",
+    });
 
     verifyJWTSpy.mockImplementationOnce(async () => true);
     const result = await userAuthorisedForAnswer(request, env);
@@ -50,11 +45,7 @@ describe("the userAuthorisedForAnswer function works correctly", () => {
   });
 
   it("given a request without a JWT, returns the correct status code & body", async () => {
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {},
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST");
 
     verifyJWTSpy.mockImplementationOnce(async () => true);
     const result = await userAuthorisedForAnswer(request, env);
@@ -68,13 +59,9 @@ describe("the userAuthorisedForAnswer function works correctly", () => {
   });
 
   it("given an invalid JWT, returns  the correct status code & body", async () => {
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {
-        Authorization: "",
-      },
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST", {
+      Authorization: "",
+    });
 
     verifyJWTSpy.mockImplementationOnce(async () => false);
     const result = await userAuthorisedForAnswer(request, env);
@@ -107,13 +94,9 @@ describe("the userAuthorisedForAnswer function works correctly", () => {
       PRIVATE_KEY_PASSPHRASE: "",
     } as Env;
 
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {
-        Authorization: "",
-      },
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST", {
+      Authorization: "",
+    });
 
     const result = await userAuthorisedForAnswer(request, envWithoutAnswer);
 

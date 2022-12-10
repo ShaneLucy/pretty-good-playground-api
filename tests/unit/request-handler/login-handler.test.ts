@@ -4,7 +4,7 @@ import "whatwg-fetch";
 
 import { loginHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the loginHandler function works correctly", async () => {
   vi.stubGlobal("crypto", new Crypto());
@@ -56,10 +56,7 @@ describe("the loginHandler function works correctly", async () => {
   }));
 
   it(`when given a valid username and password returns the correct status, a valid jwt, username & questionId`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ password, username: "test" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ password, username: "test" }), "POST");
 
     const response = await loginHandler(request, env);
 
@@ -72,10 +69,10 @@ describe("the loginHandler function works correctly", async () => {
   });
 
   it(`when given a username that doesn't exist it returns the correct status and message`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "test", password: "09483490589054" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "test", password: "09483490589054" }),
+      "POST"
+    );
 
     const response = await loginHandler(request, envGetNull);
 
@@ -84,10 +81,10 @@ describe("the loginHandler function works correctly", async () => {
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "validUsername", password: "*" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "validUsername", password: "*" }),
+      "POST"
+    );
 
     const response = await loginHandler(request, envGetNull);
 
@@ -96,10 +93,10 @@ describe("the loginHandler function works correctly", async () => {
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "not a valid username", password: "valid password" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "not a valid username", password: "valid password" }),
+      "POST"
+    );
 
     const response = await loginHandler(request, envGetNull);
     expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
@@ -128,10 +125,10 @@ describe("the loginHandler function works correctly", async () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "valid", password: "12345678" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "valid", password: "12345678" }),
+      "POST"
+    );
 
     const response = await loginHandler(request, envMismatch);
 

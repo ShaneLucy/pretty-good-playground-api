@@ -4,9 +4,10 @@ import "whatwg-fetch";
 
 import { getUserHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the getUserHandler function works correctly", () => {
+  const request = requestBuilder("", "GET");
   it(`when a user that exists returns the correct fields`, async () => {
     const salt = "salt";
     const password = "12345678";
@@ -41,10 +42,6 @@ describe("the getUserHandler function works correctly", () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("http://localhost", {
-      method: "GET",
-    }) as CustomRequest;
-
     const response = await getUserHandler(request, env);
 
     const responseData = (await response.json()) as UserModel;
@@ -76,10 +73,6 @@ describe("the getUserHandler function works correctly", () => {
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;
-
-    const request = new Request("http://localhost", {
-      method: "GET",
-    }) as CustomRequest;
 
     const response = await getUserHandler(request, env);
 

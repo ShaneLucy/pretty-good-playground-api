@@ -4,12 +4,12 @@ import axios, { AxiosError } from "axios";
 import { baseUrlConfig, validUsername, validUsername2 } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}`;
+const validUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}`;
 
 export const unauthorisedRequestForUser = async () => {
   let res;
   try {
-    await axios.get(`${requestUrl}`);
+    await axios.get(`${validUrl}`);
   } catch (e) {
     res = e as AxiosError;
   }
@@ -31,7 +31,7 @@ export const unauthorisedRequestForDifferentUser = async () => {
 };
 
 export const authorisedRequestForUser = async () => {
-  const response = await axios.get(`${requestUrl}`);
+  const response = await axios.get(`${validUrl}`);
 
   const responseData = response.data as UserModel;
 

@@ -4,11 +4,11 @@ import axios, { AxiosError } from "axios";
 import { baseUrlConfig, validPassword, validUsername } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/password`;
+const validUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/password`;
 
 export const updatePassword = async () => {
   const newPassword = "94578943w9er";
-  const response = await axios.patch(requestUrl, {
+  const response = await axios.patch(validUrl, {
     password: newPassword,
   });
 
@@ -21,7 +21,7 @@ export const updatePassword = async () => {
 export const updatePasswordWithInvalidData = async () => {
   let res;
   try {
-    await axios.patch(requestUrl, {
+    await axios.patch(validUrl, {
       password: "",
     });
   } catch (e) {

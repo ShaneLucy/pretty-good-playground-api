@@ -13,10 +13,10 @@ import {
 } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/authentication/login`;
+const validUrl = `${baseUrlConfig.baseUrl}/authentication/login`;
 
 export const loginRequestWithValidData = async () => {
-  const response = await axios.post(requestUrl, {
+  const response = await axios.post(validUrl, {
     username: validUsername,
     password: validPassword,
   });
@@ -34,7 +34,7 @@ export const loginRequestWithValidData = async () => {
 export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: usernameNotInSystem,
       password: validPassword,
     });
@@ -49,7 +49,7 @@ export const loginRequestWithUsernameNotInSystemButWithAUsersPassword = async ()
 export const loginRequestWithUsernameInSystemButIncorrectPassword = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: validUsername,
       password: incorrectPasswordForValidUser,
     });
@@ -64,7 +64,7 @@ export const loginRequestWithUsernameInSystemButIncorrectPassword = async () => 
 export const loginRequestWithInvalidUsername = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: invalidUsername,
       password: validPassword,
     });
@@ -79,7 +79,7 @@ export const loginRequestWithInvalidUsername = async () => {
 export const loginRequestWithInvalidPassword = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: validUsername,
       password: invalidPassword,
     });
@@ -94,7 +94,7 @@ export const loginRequestWithInvalidPassword = async () => {
 export const loginRequestWithoutAnyCredentials = async () => {
   let res;
   try {
-    await axios.post(requestUrl, {
+    await axios.post(validUrl, {
       username: "",
       password: "",
     });

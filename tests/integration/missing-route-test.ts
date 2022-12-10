@@ -4,12 +4,12 @@ import axios, { AxiosError } from "axios";
 import { baseUrlConfig } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/definitely/not/a/valid/url`;
+const validUrl = `${baseUrlConfig.baseUrl}/definitely/not/a/valid/url`;
 
 export const getRequestForMissingRoute = async () => {
   let res;
   try {
-    await axios.get(requestUrl);
+    await axios.get(validUrl);
   } catch (e) {
     res = e as AxiosError;
   }
@@ -21,7 +21,7 @@ export const getRequestForMissingRoute = async () => {
 export const postRequestForMissingRoute = async () => {
   let res;
   try {
-    await axios.post(requestUrl);
+    await axios.post(validUrl);
   } catch (e) {
     res = e as AxiosError;
   }
@@ -33,7 +33,7 @@ export const postRequestForMissingRoute = async () => {
 export const deleteRequestForMissingRoute = async () => {
   let res;
   try {
-    await axios.delete(requestUrl);
+    await axios.delete(validUrl);
   } catch (e) {
     res = e as AxiosError;
   }

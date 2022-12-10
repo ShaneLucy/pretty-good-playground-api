@@ -3,8 +3,7 @@ import "whatwg-fetch";
 
 import { patchUserPublicKeyHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
-import { validPublicKey } from "../../test-utils";
+import { validPublicKey, requestBuilder } from "../../test-utils";
 
 describe("the patchUserPublicKeyHandler function works correctly", async () => {
   const salt = "salt";
@@ -50,10 +49,7 @@ describe("the patchUserPublicKeyHandler function works correctly", async () => {
   } as Env;
 
   it(`when given a valid public key, returns successful response`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ publicKey: validPublicKey }),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ publicKey: validPublicKey }), "PATCH");
 
     const response = await patchUserPublicKeyHandler(request, env);
 
@@ -62,10 +58,7 @@ describe("the patchUserPublicKeyHandler function works correctly", async () => {
   });
 
   it(`when user not found, returns correct error response`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ publicKey: validPublicKey }),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ publicKey: validPublicKey }), "PATCH");
 
     const response = await patchUserPublicKeyHandler(request, envGetNull);
     expect(response.status).to.be.deep.equal(HttpStatusCodes.NOT_FOUND);
@@ -73,10 +66,7 @@ describe("the patchUserPublicKeyHandler function works correctly", async () => {
   });
 
   it(`when given an invalid publicKey, returns error correct response`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ publicKey: "12" }),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({ publicKey: "12" }), "PATCH");
 
     const response = await patchUserPublicKeyHandler(request, envGetNull);
 
@@ -85,10 +75,7 @@ describe("the patchUserPublicKeyHandler function works correctly", async () => {
   });
 
   it("when publicKey is missing, returns correct error response", async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({}),
-      method: "PATCH",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify({}), "PATCH");
 
     const response = await patchUserPublicKeyHandler(request, envGetNull);
 

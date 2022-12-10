@@ -4,12 +4,12 @@ import axios, { AxiosError } from "axios";
 import { baseUrlConfig, validUsername } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/questions`;
+const validUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/questions`;
 
 export const unauthorisedRequestForQuestion = async () => {
   let res;
   try {
-    await axios.get(`${requestUrl}/1`);
+    await axios.get(`${validUrl}/1`);
   } catch (e) {
     res = e as AxiosError;
   }
@@ -19,14 +19,14 @@ export const unauthorisedRequestForQuestion = async () => {
 };
 
 export const authorisedRequestForQuestion = async () => {
-  const response = await axios.get(`${requestUrl}/1`);
+  const response = await axios.get(`${validUrl}/1`);
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(response.data).to.be.deep.equal("question 1");
 };
 
 export const authorisedRequestForSecondQuestion = async () => {
-  const response = await axios.get(`${requestUrl}/2`);
+  const response = await axios.get(`${validUrl}/2`);
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(response.data).to.be.deep.equal("question 2");
@@ -35,7 +35,7 @@ export const authorisedRequestForSecondQuestion = async () => {
 export const requestForSecondQuestionOutOfBounds = async () => {
   let res;
   try {
-    await axios.get(`${requestUrl}/2`);
+    await axios.get(`${validUrl}/2`);
   } catch (e) {
     res = e as AxiosError;
   }
@@ -47,7 +47,7 @@ export const requestForSecondQuestionOutOfBounds = async () => {
 export const requestForThirdQuestionOutOfBounds = async () => {
   let res;
   try {
-    await axios.get(`${requestUrl}/3`);
+    await axios.get(`${validUrl}/3`);
   } catch (e) {
     res = e as AxiosError;
   }

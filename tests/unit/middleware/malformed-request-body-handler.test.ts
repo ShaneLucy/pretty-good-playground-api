@@ -4,7 +4,7 @@ import { fail } from "assert";
 
 import { malformedRequestBodyHandler } from "../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 const kvNamespace = {
   put: vi.fn(),
@@ -27,10 +27,7 @@ const env = {
 
 describe("the malformedRequestBodyHandler function works correctly", () => {
   it("given valid JSON returns undefined", async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST");
 
     const result = await malformedRequestBodyHandler(request, env);
 
@@ -38,10 +35,7 @@ describe("the malformedRequestBodyHandler function works correctly", () => {
   });
 
   it("given invalid JSON returns a response with the correct status code & body", async () => {
-    const request = new Request("http://localhost", {
-      body: "Hi!",
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder("Hi", "POST");
 
     const result = await malformedRequestBodyHandler(request, env);
 

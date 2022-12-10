@@ -10,10 +10,10 @@ import {
 } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/users`;
+const validUrl = `${baseUrlConfig.baseUrl}/users`;
 
 export const deleteUserRequestWithValidUsername = async () => {
-  const response = await axios.delete(`${requestUrl}/${validUsername}`);
+  const response = await axios.delete(`${validUrl}/${validUsername}`);
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(response.data).to.be.deep.equal(ResponseMessages.SUCCESS);
@@ -22,7 +22,7 @@ export const deleteUserRequestWithValidUsername = async () => {
 export const deleteUserWithUsernameNotInSystem = async () => {
   let res;
   try {
-    await axios.delete(`${requestUrl}/${usernameNotInSystem}`);
+    await axios.delete(`${validUrl}/${usernameNotInSystem}`);
   } catch (e) {
     res = e as AxiosError;
   }
@@ -46,12 +46,12 @@ export const deleteUserWithMismatchedAuthToken = async () => {
 
   let failedDeletion;
   try {
-    await axios.delete(`${requestUrl}/${validUsername2}`);
+    await axios.delete(`${validUrl}/${validUsername2}`);
   } catch (e) {
     failedDeletion = e as AxiosError;
   }
 
-  const successfulDeletion = await axios.delete(`${requestUrl}/${validUsername2}`, {
+  const successfulDeletion = await axios.delete(`${validUrl}/${validUsername2}`, {
     headers: {
       Authorization: secondUserLoginData.authToken,
     },

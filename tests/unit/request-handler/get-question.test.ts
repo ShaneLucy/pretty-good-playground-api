@@ -4,9 +4,10 @@ import "whatwg-fetch";
 
 import { getQuestionHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the getQuestionHandler function works correctly", () => {
+  const request = requestBuilder("", "GET");
   it(`when given a question id that exists returns the question text`, async () => {
     const questionText = "question 1";
     const kvNamespace = {
@@ -27,10 +28,6 @@ describe("the getQuestionHandler function works correctly", () => {
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;
-
-    const request = new Request("http://localhost", {
-      method: "GET",
-    }) as CustomRequest;
 
     const response = await getQuestionHandler(request, env);
 
@@ -57,10 +54,6 @@ describe("the getQuestionHandler function works correctly", () => {
       ALLOWED_ORIGIN: "*",
       JWT_DURATION_HOURS: 2,
     } as Env;
-
-    const request = new Request("http://localhost", {
-      method: "GET",
-    }) as CustomRequest;
 
     const response = await getQuestionHandler(request, env);
 

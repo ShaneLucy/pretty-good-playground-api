@@ -5,10 +5,9 @@ import { fail } from "assert";
 import { userAuthenticatedHandler } from "../../../src/middleware";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
 import * as authentication from "../../../src/authentication";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the userAuthenticatedHandler function works correctly", () => {
-  const requestUrl = "http://localhost";
   afterEach(() => {
     vi.resetAllMocks();
   });
@@ -35,13 +34,9 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   } as Env;
 
   it("given valid JWT & valid body returns undefined", async () => {
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {
-        Authorization: "",
-      },
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST", {
+      Authorization: "",
+    });
 
     verifyJWTSpy.mockImplementationOnce(async () => true);
     const result = await userAuthenticatedHandler(request, env);
@@ -50,13 +45,9 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   });
 
   it("given invalid JWT returns a response with the correct status code & body", async () => {
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {
-        Authorization: "",
-      },
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST", {
+      Authorization: "",
+    });
 
     verifyJWTSpy.mockImplementationOnce(async () => false);
     const result = await userAuthenticatedHandler(request, env);
@@ -70,11 +61,7 @@ describe("the userAuthenticatedHandler function works correctly", () => {
   });
 
   it("given a request without a JWT returns a response with the correct status code & body", async () => {
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {},
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST");
 
     const result = await userAuthenticatedHandler(request, env);
 
@@ -106,13 +93,9 @@ describe("the userAuthenticatedHandler function works correctly", () => {
       PRIVATE_KEY_PASSPHRASE: "",
     } as Env;
 
-    const request = new Request(requestUrl, {
-      body: JSON.stringify("Hi!"),
-      method: "POST",
-      headers: {
-        Authorization: "",
-      },
-    }) as CustomRequest;
+    const request = requestBuilder(JSON.stringify("Hi!"), "POST", {
+      Authorization: "",
+    });
 
     const result = await userAuthenticatedHandler(request, envWithoutUser);
 

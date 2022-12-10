@@ -4,7 +4,7 @@ import "whatwg-fetch";
 
 import { registrationHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the registrationHandler function works correctly", () => {
   vi.stubGlobal("crypto", new Crypto());
@@ -34,10 +34,10 @@ describe("the registrationHandler function works correctly", () => {
   } as Env;
 
   it(`when given a valid username and password returns the correct status & success message`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "test", password: "09483490054" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "test", password: "09483490054" }),
+      "POST"
+    );
 
     const response = await registrationHandler(request, env);
 
@@ -46,10 +46,10 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given an invalid username returns the correct status and error message`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "t es t", password: "09483490589054" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "t es t", password: "09483490589054" }),
+      "POST"
+    );
 
     const response = await registrationHandler(request, env);
 
@@ -58,10 +58,10 @@ describe("the registrationHandler function works correctly", () => {
   });
 
   it(`when given an invalid password returns the correct status and error message`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "test", password: "123456" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "test", password: "123456" }),
+      "POST"
+    );
 
     const response = await registrationHandler(request, env);
     expect(response.status).to.be.equal(HttpStatusCodes.UNPROCESSABLE_ENTITY);
@@ -88,10 +88,10 @@ describe("the registrationHandler function works correctly", () => {
       JWT_DURATION_HOURS: 2,
     } as Env;
 
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "test", password: "011589054" }),
-      method: "POST",
-    }) as CustomRequest;
+    const request = requestBuilder(
+      JSON.stringify({ username: "test", password: "011589054" }),
+      "POST"
+    );
 
     const response = await registrationHandler(request, envWithUserExists);
 

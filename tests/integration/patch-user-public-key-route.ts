@@ -4,10 +4,10 @@ import axios, { AxiosError } from "axios";
 import { baseUrlConfig, validPublicKey, validUsername } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/public-key`;
+const validUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/public-key`;
 
 export const updatePublicKey = async () => {
-  const response = await axios.patch(requestUrl, {
+  const response = await axios.patch(validUrl, {
     publicKey: validPublicKey,
   });
 
@@ -24,7 +24,7 @@ export const updatePublicKey = async () => {
 export const updatePublicKeyWithInvalidData = async () => {
   let res;
   try {
-    await axios.patch(requestUrl, {
+    await axios.patch(validUrl, {
       publicKey: "",
     });
   } catch (e) {

@@ -5,12 +5,12 @@ import { decodeJwt } from "jose";
 import { baseUrlConfig, validUsername } from "../test-utils";
 import { HttpStatusCodes, ResponseMessages } from "../../src/utilities";
 
-const requestUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/answers`;
+const validUrl = `${baseUrlConfig.baseUrl}/users/${validUsername}/answers`;
 
 export const unauthorisedRequestForAnswer = async () => {
   let res;
   try {
-    await axios.post(`${requestUrl}/1`, {});
+    await axios.post(`${validUrl}/1`, {});
   } catch (e) {
     res = e as AxiosError;
   }
@@ -20,7 +20,7 @@ export const unauthorisedRequestForAnswer = async () => {
 };
 
 export const authorisedRequestForAnswer = async () => {
-  const response = await axios.post(`${requestUrl}/1`, { answer: "answer1" });
+  const response = await axios.post(`${validUrl}/1`, { answer: "answer1" });
 
   const responseData = response.data as AnswerResponseBody;
   const jwt = (decodeJwt(responseData.authToken) as unknown) as AllAudienceAccessToken;
@@ -32,7 +32,7 @@ export const authorisedRequestForAnswer = async () => {
 };
 
 export const authorisedRequestForSecondAnswer = async () => {
-  const response = await axios.post(`${requestUrl}/2`, { answer: "answer2" });
+  const response = await axios.post(`${validUrl}/2`, { answer: "answer2" });
 
   const responseData = response.data as AnswerResponseBody;
   const jwt = (decodeJwt(responseData.authToken) as unknown) as AllAudienceAccessToken;
@@ -46,7 +46,7 @@ export const authorisedRequestForSecondAnswer = async () => {
 export const authorisedRequestForAnswerIncorrectData = async () => {
   let res;
   try {
-    await axios.post(`${requestUrl}/1`, { answer: "answer" });
+    await axios.post(`${validUrl}/1`, { answer: "answer" });
   } catch (e) {
     res = e as AxiosError;
   }
@@ -58,7 +58,7 @@ export const authorisedRequestForAnswerIncorrectData = async () => {
 export const requestForSecondAnswerOutOfBounds = async () => {
   let res;
   try {
-    await axios.post(`${requestUrl}/2`, { answer: "asdk" });
+    await axios.post(`${validUrl}/2`, { answer: "asdk" });
   } catch (e) {
     res = e as AxiosError;
   }
@@ -70,7 +70,7 @@ export const requestForSecondAnswerOutOfBounds = async () => {
 export const requestForThirdAnswerOutOfBounds = async () => {
   let res;
   try {
-    await axios.post(`${requestUrl}/3`, { answer: "asdk" });
+    await axios.post(`${validUrl}/3`, { answer: "asdk" });
   } catch (e) {
     res = e as AxiosError;
   }

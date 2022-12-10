@@ -3,7 +3,7 @@ import "whatwg-fetch";
 
 import { deleteUserHandler } from "../../../src/request-handler";
 import { HttpStatusCodes, ResponseMessages } from "../../../src/utilities";
-import type { CustomRequest } from "../../../src/types/custom";
+import { requestBuilder } from "../../test-utils";
 
 describe("the deleteUserHandler function works correctly", async () => {
   afterEach(() => {
@@ -30,11 +30,7 @@ describe("the deleteUserHandler function works correctly", async () => {
   } as Env;
 
   it(`when given a valid request, returns the correct status, message and deletes the user`, async () => {
-    const request = new Request("http://localhost", {
-      body: JSON.stringify({ username: "test" }),
-      method: "DELETE",
-    }) as CustomRequest;
-
+    const request = requestBuilder(JSON.stringify({ username: "test" }), "DELETE");
     const response = await deleteUserHandler(request, env);
 
     expect(kvNamespace.delete).toHaveBeenCalledTimes(1);
