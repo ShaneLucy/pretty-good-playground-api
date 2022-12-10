@@ -10,6 +10,8 @@ type UserAuthenticationData = Pick<UserModel, "username" | "password">;
 
 type UserModelValue = Omit<UserModel, "username" | "publicKey">;
 
+type UserModelDisplayableFields = Omit<UserModel, "password" | "salt">;
+
 type Env = {
   USERS: KVNamespace;
   QUESTIONS: KVNamespace;

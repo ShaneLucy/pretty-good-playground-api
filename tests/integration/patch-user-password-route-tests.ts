@@ -14,6 +14,8 @@ export const updatePassword = async () => {
 
   expect(response.status).to.be.deep.equal(HttpStatusCodes.SUCCESS);
   expect(response.data).to.be.deep.equal(ResponseMessages.SUCCESS);
+
+  // TODO once logout route has been implemented, logout here and re authenticate with updated password
 };
 
 export const updatePasswordWithInvalidData = async () => {

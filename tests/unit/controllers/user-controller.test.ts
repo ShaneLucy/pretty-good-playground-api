@@ -13,6 +13,7 @@ import {
   getQuestionHandler,
   patchUserPasswordHandler,
   patchUserPublicKeyHandler,
+  getUserHandler,
 } from "../../../src/request-handler";
 
 const [
@@ -47,7 +48,7 @@ describe("the userController contains the correct routes and the routes map to t
     expect(getUserRoute?.[0]).to.deep.equal("GET");
     expect(getUserRoute?.[1].toString()).to.contain("username");
     expect(getUserRoute?.[2][0]).toMatchObject(userAuthenticatedHandler);
-    // TODO add getUserRoute expect(getUserRoute?.[2][1]).toMatchObject(() => {});
+    expect(getUserRoute?.[2][1]).toMatchObject(getUserHandler);
     expect(getUserRoute?.[2][2]).toBeUndefined();
   });
 

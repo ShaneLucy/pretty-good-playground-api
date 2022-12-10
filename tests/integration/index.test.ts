@@ -44,6 +44,11 @@ import {
 } from "./missing-route-test";
 import { updatePassword, updatePasswordWithInvalidData } from "./patch-user-password-route-tests";
 import { updatePublicKey, updatePublicKeyWithInvalidData } from "./patch-user-public-key-route";
+import {
+  authorisedRequestForUser,
+  unauthorisedRequestForDifferentUser,
+  unauthorisedRequestForUser,
+} from "./get-user-route-test";
 
 let server: ChildProcessWithoutNullStreams;
 
@@ -60,9 +65,15 @@ describe("the missing route handler works correctly", () => {
   it("returns the correct status and message for a post request", postRequestForMissingRoute);
   it("returns the correct status and message for a delete request", deleteRequestForMissingRoute);
 });
+
 describe("unauthenticated users cannot request questions or answers", () => {
   it("returns the correct message and status", unauthorisedRequestForQuestion);
   it("returns the correct message and status", unauthorisedRequestForAnswer);
+});
+
+describe("unauthenticated users cannot request user details", () => {
+  it("returns the correct message and status", unauthorisedRequestForUser);
+  it("returns the correct message and status", unauthorisedRequestForDifferentUser);
 });
 
 describe("the register routes work correctly", () => {
@@ -108,6 +119,17 @@ describe("the login routes work correctly", () => {
     `given a request with a username that exists but an invalid password for this user,
       returns the correct error message and status`,
     loginRequestWithUsernameInSystemButIncorrectPassword
+  );
+});
+
+describe("the get user routes work correctly", () => {
+  it(
+    "when the authenticated user requests their details, returns a valid response",
+    authorisedRequestForUser
+  );
+  it(
+    "when the authenticated user requests a different users details, returns the correct error response",
+    unauthorisedRequestForDifferentUser
   );
 });
 

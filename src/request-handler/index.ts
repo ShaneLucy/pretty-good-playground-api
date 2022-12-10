@@ -7,3 +7,4 @@ export { default as postAnswerHandler } from "./post-answer-handler";
 export { default as missingRouteHandler } from "./missing-route-handler";
 export { default as patchUserPasswordHandler } from "./patch-user-password-handler";
 export { default as patchUserPublicKeyHandler } from "./patch-user-public-key-handler";
+export { default as getUserHandler } from "./get-user-handler";

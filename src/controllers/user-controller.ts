@@ -7,6 +7,7 @@ import {
   postAnswerHandler,
   patchUserPasswordHandler,
   patchUserPublicKeyHandler,
+  getUserHandler,
 } from "../request-handler";
 import {
   malformedRequestBodyHandler,
@@ -24,9 +25,7 @@ userController.options(`/:${PathParams.USERNAME}`, async () =>
   responseBuilder({ body: "Success", status: 200, accessControl: "*" })
 );
 
-userController.get(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, async () =>
-  responseBuilder({ body: "Success", status: 200, accessControl: "*" })
-);
+userController.get(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, getUserHandler);
 
 userController.delete(`/:${PathParams.USERNAME}`, userAuthenticatedHandler, deleteUserHandler);
 
